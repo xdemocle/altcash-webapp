@@ -10,7 +10,7 @@
     "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts"
   },
   "keywords": [],
-  "license": "ISC",
+  "license": "CC BY-NC 4.0",
   "dependencies": {
     "@binance/connector": "^3.6.1",
     "@graphql-modules/core": "^0.7.17",

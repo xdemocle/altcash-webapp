@@ -96,7 +96,7 @@ See `CLAUDE.md` for detailed development guidance and architecture information.
 
 ## License
 
-ISC
+CC BY-NC 4.0
 
 ## Author
 
