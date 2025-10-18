@@ -1,284 +1,190 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this monorepo.
+Guidelines for Claude Code when working with the Altcash monorepo. Review this before making changes to ensure tooling, architecture, and workflows stay aligned.
 
-## Monorepo Structure
+## Monorepo Overview
 
-This is a **bun workspaces** monorepo containing the full Altcash application:
+This repository is organized as a **Bun workspaces** monorepo housing both the frontend and backend applications:
 
-```
+```text
 altcash-webapp/
 ├── packages/
-│   ├── frontend/     # Next.js + React frontend (@altcash/frontend)
-│   └── backend/      # Express + GraphQL backend (@altcash/backend)
-└── package.json      # Root workspace configuration
+│   ├── frontend/     # Next.js + React client (@altcash/frontend)
+│   └── backend/      # Express + GraphQL server (@altcash/backend)
+└── package.json      # Workspace configuration and shared scripts
 ```
 
-## Package Manager
+## Package Manager & Root Scripts
 
-**IMPORTANT: This project uses `bun` as the package manager, NOT npm or yarn.**
+**IMPORTANT:** All package management uses `bun`. Do **not** use npm or yarn.
 
-All package operations should use `bun`:
 ```bash
-# Install all dependencies for all packages
+# Install all workspace dependencies
 bun install
 
-# Add a dependency to a specific package
-bun add <package> --filter frontend
-bun add <package> --filter backend
+# Add/remove packages scoped to a workspace
+bun add <pkg> --filter frontend
+bun remove <pkg> --filter backend
 
-# Run commands in specific packages
+# Run workspace scripts
 bun run --filter frontend <script>
 bun run --filter backend <script>
-```
 
-## Development Commands
-
-### Running Both Applications
+# Root-level commands
 
 ```bash
-# Run both frontend and backend concurrently
-bun dev
-
-# Run frontend only (http://localhost:3000)
-bun dev:frontend
-
-# Run backend only (http://localhost:4000)
-bun dev:backend
-```
-
-### Building
-
-```bash
-# Build both packages
-bun build
-
-# Build frontend only
+bun dev            # Start frontend + backend together
+bun dev:frontend   # Frontend only (port 3000)
+bun dev:backend    # Backend only (port 4000)
+bun build          # Build backend then frontend
 bun build:frontend
-
-# Build backend only
 bun build:backend
-```
-
-### Production
-
-```bash
-# Start frontend in production mode
 bun start:frontend
-
-# Start backend (currently alias for build)
 bun start:backend
+bun lint           # Lint frontend
+bun clean          # Remove node_modules/.next/dist
 ```
 
-### Maintenance
+## Environment Configuration
+
+- **Frontend (`packages/frontend/.env.local`):**
+
+  ```bash
+  NEXT_PUBLIC_GRAPHQL_SERVER=http://localhost:4000
+  ```
+
+- **Backend (`packages/backend/.env`):**
+
+  ```bash
+  NODE_ENV=development
+  PORT=4000
+  SENDGRID_API_KEY=<value>
+  CMC_PRO_API_KEY=<value>
+  BINANCE_API_KEY=<value>
+  BINANCE_API_SECRET=<value>
+  BINANCE_API_KEY_TESTNET=<value>
+  BINANCE_API_SECRET_TESTNET=<value>
+  BINANCE_API_URL=https://api.binance.com
+  ```
+
+## Frontend (`packages/frontend`)
+
+### Tech Stack & Tooling
+
+- Next.js **15.5.6** (Pages Router)
+- React **19.2.0** with TypeScript **5.9.3**
+- Apollo Client **4.0.7** with `apollo3-cache-persist`
+- MUI **v7.3.4** + `tss-react` for styling
+- Emotion for SSR-compatible CSS-in-JS
+- Bun scripts: `bun dev`, `bun run build`, `bun start`, `bun run lint`, `bun run fix-code`, `bun run export`
+
+### Architecture Highlights
+
+- **Atomic design:**
+  - `src/components/atoms/`, `molecules/`, `organisms/`, `templates/`
+  - Each folder typically includes an `index.tsx`, implementation file, and optional `use-styles.tsx`
+- **Styling with `tss-react`:** always use `const { classes } = useStyles();` (never assign the hook return directly).
+- **Apollo setup:**
+  - Client configuration in `src/common/apollo/apollo-client.ts`
+  - Cache defined in `src/common/apollo/apollo-cache.ts`
+  - Operations stored under `src/graphql/`
+- **Context providers:** `src/context/global.tsx`, `favourites.tsx`, `auth.tsx` (composed in `src/pages/_app.tsx`).
+- **Utilities:** `src/common/utils.tsx` exposes `isServer()` to guard browser-only code.
+- **Theme:** MUI theme in `src/common/theme.ts`; global CSS in `src/styles/global.css`.
+
+### Notes & Known Issues
+
+- Development SSR may emit a non-blocking “Element type is invalid…” warning from `tss-react`; it does not affect production builds.
+- Ensure the backend GraphQL endpoint (`NEXT_PUBLIC_GRAPHQL_SERVER`) is reachable before testing data-dependent views.
+
+## Backend (`packages/backend`)
+
+### Project Overview
+
+- GraphQL-based cryptocurrency exchange backend integrating Binance Spot API.
+- Handles order lifecycle: creation, queueing, execution, and tracking.
+- Built with Express + Apollo Server 3, TypeScript, and MongoDB.
+
+### Development Commands
 
 ```bash
-# Lint frontend code
-bun lint
-
-# Clean all node_modules and build artifacts
-bun clean
-
-# Reinstall all dependencies
-bun clean && bun install
+bun dev        # Nodemon + ts-node on port 4000
+bun run build  # tsc build → dist/ and copy schema.graphql
+bun start      # Alias for build (does not run server)
+bun run lint
+bun run fix-code
 ```
 
-## Environment Setup
+### Architecture & Data Flow
 
-### Frontend (.env.local in packages/frontend/)
-```
-NEXT_PUBLIC_GRAPHQL_SERVER=http://localhost:4000
-```
+1. **Entry Point (`src/index.ts`):** connects to MongoDB, starts cron jobs, bootstraps Apollo server on Express.
+2. **Order Processing Pipeline:**
+   - Orders created via GraphQL mutations are persisted in MongoDB.
+   - Cron (5s) `importAndCheckOrders` moves paid orders into the execution queue.
+   - Cron (15s) `checkAndExecuteOrderQueue` executes queued orders on Binance (market buy, BTC quote only).
+   - Queue documents track `isExecuted`, `isFilled`, `hasErrors`.
+3. **DataSources (`src/datasources/`):**
+   - `BinanceAPI` for Binance operations.
+   - `OrdersAPI` for order CRUD.
+   - `OrdersQueueAPI` encapsulates execution logic (`executeExchangeOrder` validates balances, posts orders, logs responses, marks errors).
+   - `MetadataAPI`, `MybitxAPI`, `NamesAPI` for supplemental data.
+4. **GraphQL Schema (`src/schema.graphql`):** schema-first approach with resolvers split under `src/resolvers/` and merged via `@graphql-tools/merge` inside `src/utilities/apollo.ts`.
+5. **Caching:** default InMemoryLRUCache (~100 MiB, 5 min TTL) with `@cacheControl` directives; Redis cache available but disabled.
 
-### Backend (.env in packages/backend/)
-```
-NODE_ENV=development
-PORT=4000
-SENDGRID_API_KEY=your_key
-CMC_PRO_API_KEY=your_key
-BINANCE_API_KEY=your_key
-BINANCE_API_SECRET=your_secret
-BINANCE_API_KEY_TESTNET=your_testnet_key
-BINANCE_API_SECRET_TESTNET=your_testnet_secret
-BINANCE_API_URL=https://api.binance.com
-```
+### Configuration & Constraints
 
-## Frontend Architecture (@altcash/frontend)
+- Environment variables listed above; `NODE_ENV` controls logging/TLS behaviour.
+- Binance requirements: account must have `canTrade: true`, maintain ≥ 0.0006 BTC, trade BTC-quoted pairs only, and place market orders.
+- MongoDB connection handled in `src/utilities/db.ts`.
+- Binance responses are appended to `orderReferences` for auditing.
+- Cron jobs defined in `src/utilities/cronlist.ts` (implemented with `setInterval`).
+- Logging with Winston (`src/utilities/logger.ts`); production logs are written to `./altcash.log`.
+- TypeScript config emits to `dist/`, enables source maps, sets `strict: false` and `noImplicitAny: true`, and uses `src/@types` as a type root.
 
-### Tech Stack
-- **Next.js 15.5.6** - React framework with Pages Router
-- **React 19** - Latest React version
-- **TypeScript 5.9.3**
-- **Apollo Client 4** - GraphQL client
-- **MUI v7** - Material-UI components
-- **tss-react** - Styling solution
+## Full-Stack Workflow
 
-### Key Patterns
-
-#### Component Structure (Atomic Design)
-- `src/components/atoms/` - Basic components
-- `src/components/molecules/` - Component combinations
-- `src/components/organisms/` - Complex UI sections
-- `src/components/templates/` - Page layouts
-
-#### Styling with tss-react
-```typescript
-// use-styles.tsx
-import { makeStyles } from 'tss-react/mui';
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    padding: theme.spacing(2)
-  }
-}));
-
-// Component
-const { classes } = useStyles();  // Always destructure!
+```mermaid
+graph LR
+Frontend[Next.js Frontend]
+Frontend -- Apollo Client --> GraphQL[Backend GraphQL API]
+GraphQL -- DataSources --> MongoDB[(MongoDB)]
+GraphQL -- DataSources --> Binance[Binance API]
+GraphQL -- Cron Jobs --> Queue[Order Queue]
+Queue --> Binance
 ```
 
-#### Context Providers
-- `src/context/global.tsx` - App state (sidebar, tabs, bitcoin price)
-- `src/context/favourites.tsx` - User favourites (localStorage)
-- Providers composed in `src/pages/_app.tsx`
+1. Start the backend first so the GraphQL API is available:
 
-#### GraphQL Integration
-- Apollo Client in `src/common/apollo/apollo-client.ts`
-- Queries in `src/graphql/queries.ts`
-- Connects to backend GraphQL server
-
-### Known Issues
-- Minor SSR warning during development (non-blocking, doesn't affect functionality)
-
-## Backend Architecture (@altcash/backend)
-
-### Tech Stack
-- **Apollo Server 3** with Express
-- **GraphQL** schema-first approach
-- **MongoDB** with Mongoose
-- **Binance API** integration
-- **TypeScript** with ts-node
-
-### Core Components
-
-#### Order Processing Pipeline
-1. User creates order → MongoDB
-2. **Cron 1** (5s): Import paid orders to queue
-3. **Cron 2** (15s): Execute queued orders on Binance
-4. Queue tracks: `isExecuted`, `isFilled`, `hasErrors`
-
-#### DataSources
-- `BinanceAPI` - Market data + order execution
-- `OrdersAPI` - Order MongoDB operations
-- `OrdersQueueAPI` - Queue management + Binance execution
-- `MetadataAPI` - Crypto metadata (CoinMarketCap)
-
-#### Key Patterns
-
-**Order Execution**:
-```typescript
-// In OrdersQueueAPI.executeExchangeOrder()
-1. Validate Binance account (balance > 0.0006 BTC)
-2. Post market buy order
-3. Update order.orderReferences with response
-4. Mark queue status
-```
-
-**GraphQL Resolvers**:
-- Domain-split resolvers in `src/resolvers/`
-- Merged in `src/utilities/apollo.ts`
-- Schema in `src/schema.graphql`
-
-### Important Constraints
-- All pairs must be BTC-quoted (base/BTC)
-- Market orders only
-- Minimum: 0.0006 BTC balance
-- Account must have `canTrade: true`
-
-## Full-Stack Integration
-
-### Development Workflow
-
-1. **Start backend first**:
    ```bash
-   cd packages/backend
-   bun dev  # Runs on port 4000
+   bun run --filter backend dev
    ```
 
-2. **Then start frontend**:
+2. Start the frontend:
+
    ```bash
-   cd packages/frontend
-   bun dev  # Runs on port 3000
+   bun run --filter frontend dev
    ```
 
-Or from root:
-```bash
-bun dev  # Starts both
-```
-
-### Data Flow
-
-```
-Frontend (React/Next.js)
-  ↓ Apollo Client
-Backend GraphQL API (port 4000)
-  ↓ DataSources
-MongoDB + Binance API
-  ↓ Cron Jobs
-Automated Order Processing
-```
-
-### API Communication
-
-- Frontend uses `NEXT_PUBLIC_GRAPHQL_SERVER` to connect to backend
-- Backend exposes GraphQL endpoint at `/graphql`
-- Apollo Client handles caching and state management
-- Backend cron jobs run independently of frontend requests
+3. Or run `bun dev` at the root to launch both simultaneously.
 
 ## Common Development Tasks
 
-### Adding a New Feature
+- **Add a frontend feature:**
+  1. Define or update GraphQL operations under `packages/frontend/src/graphql/`.
+  2. Build UI components following the atomic structure and style with `tss-react`.
+  3. Consume data using Apollo hooks (`useQuery`, `useMutation`, `useLazyQuery`).
+  4. Update context providers or themes if shared state/UI changes are needed.
 
-**Frontend**:
-1. Create GraphQL query in `packages/frontend/src/graphql/queries.ts`
-2. Create component in appropriate atomic design folder
-3. Use `useQuery` or `useMutation` hooks
-4. Style with tss-react
+- **Extend backend schema/resolvers:**
+  1. Update `packages/backend/src/schema.graphql`.
+  2. Implement resolvers within `src/resolvers/` and include them in the merge map (`src/utilities/apollo.ts`).
+  3. Extend or create DataSources in `src/datasources/` when new external access is required.
+  4. Adjust models (`src/models/`) and TypeScript types (`src/types.ts`) when database structures evolve.
 
-**Backend**:
-1. Define type in `packages/backend/src/schema.graphql`
-2. Create resolver in `packages/backend/src/resolvers/`
-3. Add to resolver merge in `src/utilities/apollo.ts`
-4. Create DataSource if needed
+- **Database model change:** modify Mongoose models, regenerate associated types, update GraphQL schema/resolvers, and verify queue/order handling logic.
 
-### Database Changes
+- **Debugging tips:**
+  - Frontend: Bun dev runs with `NODE_OPTIONS='--inspect'` for Chrome DevTools; monitor browser console and Apollo DevTools.
+  - Backend: inspect terminal output in development, or `altcash.log` otherwise; verify MongoDB connectivity as well as Binance credentials/balance when execution fails; inspect queue documents for `hasErrors`.
 
-1. Update Mongoose model in `packages/backend/src/models/`
-2. Update TypeScript types in `packages/backend/src/types.ts`
-3. Update GraphQL schema in `packages/backend/src/schema.graphql`
-4. Update resolvers accordingly
-
-### Working with Orders
-
-- Orders are queued and executed via cron jobs
-- Check `hasErrors` flag for failed orders
-- `orderReferences` contains Binance API response history
-- Queue linked by `orderId` (string of Order._id)
-
-## Debugging
-
-### Frontend
-- Dev server includes inspector: `NODE_OPTIONS='--inspect'`
-- Check browser console for client errors
-- Apollo DevTools for GraphQL debugging
-
-### Backend
-- Logs in `./altcash.log` (production)
-- Console output in development
-- MongoDB connection errors check connection string
-- Binance API errors check credentials and balance
-
-## Package-Specific Documentation
-
-For detailed package-specific information, see:
-- `packages/frontend/CLAUDE.md` - Frontend-specific details
-- `packages/backend/CLAUDE.md` - Backend-specific details
+Follow these practices to keep both applications synchronized and maintain dependable behaviour across the monorepo.
