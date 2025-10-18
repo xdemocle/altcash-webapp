@@ -4,7 +4,7 @@ Full-stack cryptocurrency exchange application built with Next.js and GraphQL.
 
 ## Monorepo Structure
 
-This is a bun workspaces monorepo containing:
+This monorepo is managed with **Bun workspaces** and contains:
 
 - **`packages/frontend`** - Next.js 15 + React 19 + TypeScript + Apollo Client
 - **`packages/backend`** - Express + Apollo GraphQL + MongoDB + Binance API
@@ -23,6 +23,18 @@ This is a bun workspaces monorepo containing:
 ```bash
 # Install all dependencies
 bun install
+```
+
+### Workspace Package Management
+
+```bash
+# Add/remove dependencies for a single workspace
+bun add <pkg> --filter frontend
+bun remove <pkg> --filter backend
+
+# Run package-specific scripts
+bun run --filter frontend <script>
+bun run --filter backend <script>
 ```
 
 ### Environment Setup
@@ -92,7 +104,7 @@ bun build
 
 ## Documentation
 
-See `CLAUDE.md` for detailed development guidance and architecture information.
+Refer to [`CLAUDE.md`](./CLAUDE.md) for comprehensive development workflows, architecture notes, and CLI guidance covering both frontend and backend packages.
 
 ## License
 
