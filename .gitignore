@@ -37,13 +37,10 @@ yarn-error.log
 
 # Dependencies
 node_modules/
-packages/*/node_modules/
 
 # Build outputs
 .next/
 dist/
-packages/*/.next/
-packages/*/dist/
 
 # Logs
 *.log
@@ -53,8 +50,6 @@ altcash.log
 .env
 .env.local
 .env*.local
-packages/*/.env
-packages/*/.env.local
 
 # OS files
 .DS_Store
