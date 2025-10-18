@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "strict": false,
+    "outDir": "dist",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": ["src/@types"]
+  },
+  "exclude": ["node_modules", "dist", "src/**/*.json"],
+  "include": ["src/**/*", "untyped-binance-connector", "datasources", "models", "resolvers", "utilities", "config.ts", "index.ts", "types.ts"]
+}

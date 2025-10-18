@@ -1,0 +1,21 @@
+.DrawerStyled {
+  width: 17rem;
+}
+
+.DrawerStyled--Close {
+  width: 6rem;
+}
+
+.DrawerStyled-Paper {
+  // position: fixed !important;
+  width: 17rem;
+}
+
+.DrawerStyled-Paper--Close {
+  overflow-x: hidden;
+  width: 6rem;
+}
+
+.DrawerStyled-Toolbar--Open {
+  width: 17rem !important;
+}

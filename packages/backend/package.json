@@ -1,0 +1,53 @@
+{
+  "name": "@altcash/backend",
+  "description": "Backend server altcash",
+  "version": "2.0.1",
+  "author": "Rocco R. <im@rocco.me>",
+  "main": "index.ts",
+  "scripts": {
+    "start": "bun run build",
+    "build": "tsc -p . && cp src/schema.graphql dist/",
+    "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "@binance/connector": "^3.6.1",
+    "@graphql-modules/core": "^0.7.17",
+    "@graphql-tools/graphql-file-loader": "^8.1.2",
+    "@graphql-tools/load": "^8.1.2",
+    "@graphql-tools/merge": "^9.1.1",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.8.1",
+    "@types/node-cron": "^3.0.11",
+    "apollo-datasource-mongodb": "^0.6.0",
+    "apollo-datasource-rest": "^3.7.0",
+    "apollo-server": "^3.13.0",
+    "apollo-server-cache-redis": "^3.3.1",
+    "apollo-server-core": "^3.13.0",
+    "apollo-server-express": "^3.13.0",
+    "apollo-server-plugin-response-cache": "^3.8.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0",
+    "graphql-request": "^7.3.0",
+    "ioredis": "^5.8.1",
+    "isomorphic-fetch": "^3.0.0",
+    "lodash": "^4.17.21",
+    "mongoose": "8.19.1",
+    "newrelic": "^13.5.0",
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7",
+    "pino": "^10.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "whatwg-url": "^15.1.0",
+    "winston": "^3.18.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "trustedDependencies": [
+    "protobufjs"
+  ]
+}
