@@ -28,11 +28,13 @@ bun install
 ### Environment Setup
 
 **Frontend** (`packages/frontend/.env.local`):
+
 ```bash
 NEXT_PUBLIC_GRAPHQL_SERVER=http://localhost:4000
 ```
 
 **Backend** (`packages/backend/.env`):
+
 ```bash
 NODE_ENV=development
 PORT=4000
@@ -70,6 +72,7 @@ bun build
 ## Tech Stack
 
 ### Frontend
+
 - Next.js 15 (Pages Router)
 - React 19
 - TypeScript
@@ -79,6 +82,7 @@ bun build
 - Socket.IO client
 
 ### Backend
+
 - Node.js + Express
 - Apollo Server (GraphQL)
 - MongoDB + Mongoose
