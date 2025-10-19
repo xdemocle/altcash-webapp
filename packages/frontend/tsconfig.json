@@ -29,7 +29,8 @@
     "graphql",
     "hooks",
     "pages",
-    "styles"
+    "styles",
+    "open-next.config.ts"
   ],
   "exclude": ["server"]
 }
