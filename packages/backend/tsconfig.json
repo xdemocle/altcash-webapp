@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
@@ -7,11 +8,21 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "typeRoots": ["src/@types"]
   },
   "exclude": ["node_modules", "dist", "src/**/*.json"],
-  "include": ["src/**/*", "untyped-binance-connector", "datasources", "models", "resolvers", "utilities", "config.ts", "index.ts", "types.ts"]
+  "include": [
+    "src/**/*",
+    "untyped-binance-connector",
+    "datasources",
+    "models",
+    "resolvers",
+    "utilities",
+    "config.ts",
+    "index.ts",
+    "types.ts"
+  ]
 }

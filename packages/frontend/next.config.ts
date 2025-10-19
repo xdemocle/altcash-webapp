@@ -1,6 +1,15 @@
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  distDir: 'dist',
+  cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 1000,
+  webpack: (config, options) => {
+    config.dir = 'packages/frontend';
+
+    return config;
+  },
   images: {
     domains: [
       's2.coinmarketcap.com',
@@ -22,4 +31,4 @@ if (process.env.NODE_ENV !== 'production') {
   initOpenNextCloudflareForDev();
 }
 
-module.exports = nextConfig;
+export default nextConfig;
