@@ -1,5 +1,5 @@
 {
-  "name": "@altcash/frontend",
+  "name": "altcash-frontend",
   "description": "A showcase of Next.js + React + Typescript + Apollo + GraphQL.",
   "version": "2.0.1",
   "license": "CC BY-NC 4.0",
@@ -11,7 +11,12 @@
     "export": "next export",
     "fix-code": "prettier --write $PWD/'src/**/*.{jsx,ts,tsx}'",
     "lint": "eslint ./src/ --ext .jsx,.ts,.tsx",
-    "node-app-host": "node server 80"
+    "node-app-host": "node server 80",
+    "opn-build": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "browserslist": {
     "production": [
@@ -80,7 +85,10 @@
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-gtm-module": "^2.0.4",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1"
+    "@typescript-eslint/parser": "^8.46.1",
+    "@opennextjs/cloudflare": "^1.11.0",
+    "@cloudflare/workers-types": "^4.20251011.0",
+    "wrangler": "^4.43.0"
   },
   "trustedDependencies": [
     "@parcel/watcher",
