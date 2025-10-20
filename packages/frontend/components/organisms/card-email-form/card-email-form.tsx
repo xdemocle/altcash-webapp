@@ -1,10 +1,10 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import {
   Alert,
   Box,
   Button,
   Card,
-  Grid,
+  GridLegacy,
   Snackbar,
   TextField
 } from '@mui/material';
@@ -59,8 +59,8 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
             <h2 className={classes.confirmationTitle}>Send order to E-Mail</h2>
 
             <form noValidate method="POST" onSubmit={onSubmitHandler}>
-              <Grid container gap={2}>
-                <Grid item xs={12} md={8}>
+              <GridLegacy container gap={2}>
+                <GridLegacy item xs={12} md={8}>
                   <TextField
                     id="email"
                     name="email"
@@ -81,9 +81,9 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
                     value={emailValue}
                     onChange={(e) => setEmailValue(e.target.value)}
                   />
-                </Grid>
+                </GridLegacy>
 
-                <Grid item xs={12} md={3.765}>
+                <GridLegacy item xs={12} md={3.765}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -93,8 +93,8 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
                   >
                     Send order copy
                   </Button>
-                </Grid>
-              </Grid>
+                </GridLegacy>
+              </GridLegacy>
             </form>
 
             {/* <hr className={classes.confirmationSeparator} /> */}

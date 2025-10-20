@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { Fragment } from 'react';
 import { GET_TICKERS } from '../../../graphql/queries';
 

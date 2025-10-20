@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Card,
-  Grid,
+  GridLegacy,
   InputAdornment,
   InputLabel,
   TextField,
@@ -31,7 +31,7 @@ import {
 } from '../../../common/constants';
 import { getPaystackConfig, isServer } from '../../../common/utils';
 import { CREATE_ORDER, UPDATE_ORDER } from '../../../graphql/mutations';
-import { Market, OrderParams, Ticker } from '../../../graphql/types';
+import { Market, Order, OrderParams, Ticker } from '../../../graphql/types';
 import useGlobal from '../../../hooks/use-global';
 import useMultiplier from '../../../hooks/use-multiplier';
 import useRound from '../../../hooks/use-round';
@@ -59,8 +59,14 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
   const { multiplier } = useMultiplier(ticker);
   const initializePayment = usePaystackPayment(getPaystackConfig(totalAmount));
-  const [createOrder, { error: errorCreateOrder }] = useMutation(CREATE_ORDER);
-  const [updateOrder, { error: errorUpdateOrder }] = useMutation(UPDATE_ORDER);
+  const [createOrder, { error: errorCreateOrder }] = useMutation<
+    { createOrder: Order },
+    OrderParams
+  >(CREATE_ORDER);
+  const [updateOrder, { error: errorUpdateOrder }] = useMutation<
+    { updateOrder: Order },
+    { id: string; input: OrderParams }
+  >(UPDATE_ORDER);
 
   if (errorCreateOrder || errorUpdateOrder) {
     console.debug('Mutations', errorCreateOrder, errorUpdateOrder);
@@ -120,14 +126,20 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
           }
         });
 
+        const createdOrder = data?.createOrder;
+
+        if (!createdOrder) {
+          throw new Error('Create order mutation returned no data');
+        }
+
         setOrderInfo(
-          data.createOrder._id +
+          createdOrder._id +
             '/' +
-            data.createOrder.amount +
+            createdOrder.amount +
             '/' +
-            data.createOrder.total +
+            createdOrder.total +
             '/' +
-            data.createOrder.pin
+            createdOrder.pin
         );
       } catch (error) {
         setOrderInfo('');
@@ -183,7 +195,10 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
         coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER +
           MIN_AMOUNT_EXTRA
       ) {
-        initializePayment(onPaymentSuccess as () => void, onPaymentClose);
+        initializePayment({
+          onSuccess: onPaymentSuccess as () => void,
+          onClose: onPaymentClose
+        });
       }
     }
   }, [orderInfo]);
@@ -241,8 +256,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     >
       <Card className={classes.root}>
         <div className={classes.grid}>
-          <Grid
-            item
+          <GridLegacy
             xs={12}
             md={4}
             className={classes.gridItem}
@@ -281,7 +295,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               disabled={formDisabled}
               onBlur={onBlurLocalCurrencyHandler}
             />
-          </Grid>
+          </GridLegacy>
 
           <div className={classes.flex}>
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -295,8 +309,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
             </Box>
           </div>
 
-          <Grid
-            item
+          <GridLegacy
             xs={12}
             md={4}
             className={classes.gridItem}
@@ -326,7 +339,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               onFocus={onFocusInputHandler}
               disabled
             />
-          </Grid>
+          </GridLegacy>
         </div>
 
         <Box className={classes.boxBuyButtonRoot}>

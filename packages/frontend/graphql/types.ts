@@ -54,6 +54,15 @@ export type PairVariables = {
   pair: string;
 };
 
+export type CountItem = {
+  name: string;
+  count: number;
+};
+
+export type CountResponse = {
+  count?: CountItem[];
+};
+
 export interface Order {
   _id: string;
   amount: string;

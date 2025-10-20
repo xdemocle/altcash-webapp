@@ -2,11 +2,11 @@
 import createEmotionServer from '@emotion/server/create-instance';
 import { AppType } from 'next/dist/shared/lib/utils';
 import Document, {
-  Html,
+  DocumentContext,
   Head,
+  Html,
   Main,
-  NextScript,
-  DocumentContext
+  NextScript
 } from 'next/document';
 import * as React from 'react';
 import createEmotionCache from '../common/createEmotionCache';
@@ -37,7 +37,7 @@ export default function MyDocument(props: any) {
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin="true"
+          crossOrigin="anonymous"
         />
         <link
           rel="stylesheet"
@@ -132,7 +132,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
     originalRenderPage({
       // @ts-ignore:next-line
       enhanceApp: (App: AppType) =>
-        function EnhanceApp(props: JSX.IntrinsicAttributes) {
+        function EnhanceApp(props: React.JSX.IntrinsicAttributes) {
           // @ts-ignore:next-line
           return <App emotionCache={cache} {...props} />;
         }
