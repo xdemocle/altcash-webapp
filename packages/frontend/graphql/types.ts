@@ -37,6 +37,23 @@ export interface Ticker {
   price: string;
 }
 
+export type MetaCoinAllItem = {
+  logo: string;
+  symbol: string;
+};
+
+export type PairResponse = {
+  pair?: {
+    pair: string;
+    last_trade: string;
+    timestamp: string;
+  };
+};
+
+export type PairVariables = {
+  pair: string;
+};
+
 export interface Order {
   _id: string;
   amount: string;

@@ -1,7 +1,7 @@
-import path from 'path';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config({ path: path.resolve(process.cwd(), './.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env.local') });
 
 export const NODE_ENV = process.env.NODE_ENV;
 

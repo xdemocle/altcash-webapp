@@ -1,33 +1,37 @@
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client/react';
 import { Fragment, useEffect } from 'react';
 import { REFRESH_BTCZAR_LIVE_PRICE } from '../../../common/constants';
 import { isServer } from '../../../common/utils';
 import { GET_PAIR } from '../../../graphql/queries';
+import type { PairResponse, PairVariables } from '../../../graphql/types';
 import useGlobal from '../../../hooks/use-global';
 
 const BitcoinRandLivePrice = () => {
   const { setBitcoinRandPrice } = useGlobal();
-  const [getLivePrice, { data }] = useLazyQuery(GET_PAIR, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      pair: 'XBTZAR'
-    }
+  const variables: PairVariables = { pair: 'XBTZAR' };
+  const [getLivePrice, { data }] = useLazyQuery<PairResponse, PairVariables>(GET_PAIR, {
+    fetchPolicy: 'cache-and-network'
   });
 
   useEffect(() => {
-    getLivePrice();
+    getLivePrice({ variables });
 
     const intervalBtcPrice = () => {
       if (!isServer()) {
-        return setInterval(() => getLivePrice(), REFRESH_BTCZAR_LIVE_PRICE);
+        return setInterval(
+          () => getLivePrice({ variables }),
+          REFRESH_BTCZAR_LIVE_PRICE
+        );
       }
 
       return 0;
     };
 
+    const intervalId = intervalBtcPrice();
+
     return () => {
       if (!isServer()) {
-        window.clearInterval(intervalBtcPrice());
+        window.clearInterval(intervalId);
       }
     };
   }, [getLivePrice]);

@@ -6,7 +6,7 @@ import Bottombar from '../../organisms/bottom-bar';
 import BottomNav from '../../organisms/bottom-nav';
 import Sidebar from '../../organisms/sidebar';
 
-const AppFrame = styled('div')(({ theme }) => ({
+const AppFrame = styled('div')(() => ({
   zIndex: 1,
   position: 'relative',
   width: '100%',

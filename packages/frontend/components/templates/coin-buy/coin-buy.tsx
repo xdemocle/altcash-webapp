@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useMutation } from '@apollo/client';
-import { ArrowForward, ArrowDownward } from '@mui/icons-material';
+import { useMutation } from '@apollo/client/react';
+import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -17,8 +17,8 @@ import {
   FC,
   FormEvent,
   SyntheticEvent,
-  useMemo,
   useEffect,
+  useMemo,
   useState
 } from 'react';
 import { usePaystackPayment } from 'react-paystack';
@@ -131,6 +131,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
         );
       } catch (error) {
         setOrderInfo('');
+        console.error(error);
       }
     }
 

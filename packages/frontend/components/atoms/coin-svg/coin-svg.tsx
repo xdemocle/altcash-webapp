@@ -1,11 +1,16 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import clsx from 'clsx';
 import { find } from 'lodash';
 import Image from 'next/image';
 import { ReactSVG } from 'react-svg';
 import { svgCoinPathHelper } from '../../../common/utils';
 import { GET_META_COIN_LOGO } from '../../../graphql/queries';
+import type { MetaCoinAllItem } from '../../../graphql/types';
 import useStyles from './use-styles';
+
+type MetaCoinLogoQuery = {
+  metaCoinAll?: MetaCoinAllItem[];
+};
 
 type Props = {
   coinSymbol: string;
@@ -18,7 +23,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
   let imgCoinPath = '';
   let svgCoinPath = null;
 
-  const { data: metadata } = useQuery(GET_META_COIN_LOGO, {
+  const { data: metadata } = useQuery<MetaCoinLogoQuery>(GET_META_COIN_LOGO, {
     // We refresh data list at least at reload
     fetchPolicy: 'cache-only'
   });
@@ -44,6 +49,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
     imgCoinPath =
       getCoinLogo(coinSymbol.toUpperCase()) ||
       'https://s2.coinmarketcap.com/static/img/coins/64x64/1831.png';
+    console.error(err);
   }
 
   return svgCoinPath ? (
