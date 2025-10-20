@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2016",
-    "module": "nodenext",
+    "target": "es2022",
+    "module": "es2022",
     "strict": false,
     "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "typeRoots": ["src/@types"]
