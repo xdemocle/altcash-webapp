@@ -1,4 +1,4 @@
-import { Button, Grid, Icon, Tooltip, Typography } from '@mui/material';
+import { Button, GridLegacy, Icon, Tooltip, Typography } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { Parallax } from 'react-parallax';
@@ -52,13 +52,13 @@ const Homepage = () => {
         </div>
       </Parallax>
 
-      <Grid
+      <GridLegacy
         className={classes.gridContainer}
         container
         alignContent="center"
         justifyContent="center"
       >
-        <Grid item xs={12}>
+        <GridLegacy item xs={12}>
           <Typography variant="h4" gutterBottom color="primary" align="center">
             The best way to start investing in crypto currencies!
           </Typography>
@@ -89,8 +89,8 @@ const Homepage = () => {
               Buy Altcoins now
             </Button>
           </Link>
-        </Grid>
-      </Grid>
+        </GridLegacy>
+      </GridLegacy>
 
       <Parallax
         bgImage="/assets/section.jpg"
@@ -99,8 +99,8 @@ const Homepage = () => {
       >
         <div style={{ minHeight: '45vh' }}>
           <div className={classes.parallaxContent}>
-            <Grid container alignContent="center" justifyContent="center">
-              <Grid
+            <GridLegacy container alignContent="center" justifyContent="center">
+              <GridLegacy
                 item
                 xs={12}
                 sm={5}
@@ -122,8 +122,8 @@ const Homepage = () => {
                   in aliquet odio. Aliquam eu est vitae tellus bibendum
                   tincidunt. Suspendisse potenti.
                 </Typography>
-              </Grid>
-              <Grid
+              </GridLegacy>
+              <GridLegacy
                 item
                 xs={12}
                 sm={5}
@@ -168,8 +168,8 @@ const Homepage = () => {
                     <Icon className={classes.leftIcon}>mail</Icon> Send e-mail
                   </Button>
                 </Typography>
-              </Grid>
-            </Grid>
+              </GridLegacy>
+            </GridLegacy>
           </div>
         </div>
       </Parallax>

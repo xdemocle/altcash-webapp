@@ -1,21 +1,26 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { btcToRandPriceWithSymbol } from '../../../common/currency';
 import { GET_PAIR, GET_TICKER } from '../../../graphql/queries';
-import { Market } from '../../../graphql/types';
+import {
+  Market,
+  PairResponse,
+  PairVariables,
+  Ticker
+} from '../../../graphql/types';
 
 type Props = {
   coin: Market;
 };
 
 const CoinTicker = ({ coin }: Props) => {
-  const { data } = useQuery(GET_TICKER, {
+  const { data } = useQuery<{ ticker: Ticker }, { id: string }>(GET_TICKER, {
     fetchPolicy: 'cache-first',
     variables: {
       id: coin && coin.id
     }
   });
 
-  const { data: dataPair } = useQuery(GET_PAIR, {
+  const { data: dataPair } = useQuery<PairResponse, PairVariables>(GET_PAIR, {
     fetchPolicy: 'cache-first',
     variables: {
       pair: 'XBTZAR'
@@ -26,15 +31,20 @@ const CoinTicker = ({ coin }: Props) => {
     return null;
   }
 
-  const dataTicker = data ? data.ticker : {};
-  const bitcoinRandPrice = dataPair
+  const fallbackTicker: Ticker = {
+    id: '',
+    price: '0'
+  };
+
+  const dataTicker = data?.ticker ?? fallbackTicker;
+  const bitcoinRandPrice = dataPair?.pair
     ? Number(dataPair.pair.last_trade)
     : undefined;
 
   return (
     <span>
       {dataTicker.price && bitcoinRandPrice
-        ? btcToRandPriceWithSymbol(dataTicker.price, bitcoinRandPrice)
+        ? btcToRandPriceWithSymbol(Number(dataTicker.price), bitcoinRandPrice)
         : 'n/d'}
     </span>
   );

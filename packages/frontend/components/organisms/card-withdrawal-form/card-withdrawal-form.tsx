@@ -1,10 +1,10 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import {
   Alert,
   Box,
   Button,
   Card,
-  Grid,
+  GridLegacy,
   Snackbar,
   TextField
 } from '@mui/material';
@@ -63,8 +63,8 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
             </h2>
 
             <form noValidate method="POST" onSubmit={onSubmitHandler}>
-              <Grid container gap={2}>
-                <Grid item xs={12} md={8}>
+              <GridLegacy container gap={2}>
+                <GridLegacy item xs={12} md={8}>
                   <TextField
                     id="walletAddress"
                     name="walletAddress"
@@ -75,9 +75,9 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
                     value={addressValue}
                     onChange={(e) => setAddressValue(e.target.value)}
                   />
-                </Grid>
+                </GridLegacy>
 
-                <Grid item xs={12} md={3.765}>
+                <GridLegacy item xs={12} md={3.765}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -87,8 +87,8 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
                   >
                     Widthdraw
                   </Button>
-                </Grid>
-              </Grid>
+                </GridLegacy>
+              </GridLegacy>
             </form>
           </Box>
         </Box>

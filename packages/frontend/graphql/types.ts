@@ -1,13 +1,13 @@
 export type MetadataUrls = {
-  website: string;
-  twitter: string;
-  chat: string;
-  message_board: string;
-  explorer: string;
-  reddit: string;
-  technical_doc: string;
-  source_code: string;
-  announcement: string;
+  website: string[];
+  twitter: string[];
+  chat: string[];
+  message_board: string[];
+  explorer: string[];
+  reddit: string[];
+  technical_doc: string[];
+  source_code: string[];
+  announcement: string[];
 };
 
 export type Metadata = {
@@ -32,9 +32,39 @@ export interface Market {
   stepSize: number;
 }
 
+export interface MarketsResponse {
+  markets: Market[];
+}
+
+export interface MarketsVariables {
+  offset?: number;
+  limit?: number;
+  term?: string;
+  symbols?: string;
+}
+
 export interface Ticker {
   id: string;
   price: string;
+}
+
+export interface Summary {
+  id: string;
+  high: number;
+  low: number;
+  volume: number;
+  quoteVolume: number;
+  percentChange: number;
+}
+
+export interface PageDataResponse {
+  market: Market;
+  summary: Summary;
+  ticker: Ticker;
+}
+
+export interface PageDataVariables {
+  id: string;
 }
 
 export type MetaCoinAllItem = {
