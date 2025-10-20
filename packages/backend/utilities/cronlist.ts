@@ -1,4 +1,4 @@
-import graphQLClient from './grapql-client';
+import graphQLClient from './graphql-client';
 import logger from './logger';
 import {
   queryCheckAndExecuteOrderQueue,

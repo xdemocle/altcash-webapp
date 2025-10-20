@@ -1,4 +1,4 @@
-import { gql } from './grapql-client';
+import { gql } from './graphql-client';
 
 export const queryImportAndCheckOrders = gql`
   query Query {
