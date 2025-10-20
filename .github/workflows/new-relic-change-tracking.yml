@@ -7,6 +7,9 @@ jobs:
   newrelic:
     runs-on: ubuntu-latest
     name: New Relic
+    env:
+      NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+      NEW_RELIC_DEPLOYMENT_ENTITY_GUID: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
     steps:
       # This step builds a var with the release tag value to use later
       - name: Set Release Version from Tag
@@ -15,8 +18,8 @@ jobs:
       - name: New Relic Application Deployment Marker
         uses: newrelic/deployment-marker-action@v2.3.0
         with:
-          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          guid: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
-          version: '${{ env.RELEASE_VERSION }}'
+          apiKey: ${{ env.NEW_RELIC_API_KEY }}
+          guid: ${{ env.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
+          version: ${{ env.RELEASE_VERSION }}
           user: '${{ github.actor }}'
           region: EU
