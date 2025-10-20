@@ -2,13 +2,13 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es2016",
-    "module": "node16",
+    "module": "nodenext",
     "strict": false,
     "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "typeRoots": ["src/@types"]

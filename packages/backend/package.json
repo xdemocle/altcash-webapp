@@ -4,6 +4,7 @@
   "version": "2.0.1",
   "author": "Rocco R. <im@rocco.me>",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start": "bun run build",
     "build": "tsc -p . && cp src/schema.graphql dist/",
