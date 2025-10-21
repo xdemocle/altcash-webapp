@@ -55,7 +55,7 @@ const CoinsList = ({ markets }: CoinsListProps) => {
   };
 
   const hidePagination = coinPageNeedle && !!coinPageNeedle.length;
-  const coinsList = isServer() ? markets : getListSlice(COINS_PER_PAGE);
+  const coinsList = getListSlice(COINS_PER_PAGE);
   const coinsTotal =
     dataCount && dataCount.count
       ? (find(dataCount.count, { name: 'markets' })?.count ?? 0)
@@ -78,7 +78,7 @@ const CoinsList = ({ markets }: CoinsListProps) => {
         />
       )}
 
-      {(networkStatus !== 4 || isServer()) && coinsList && (
+      {coinsList && (
         <CoinsListMap markets={coinsList} />
       )}
 
