@@ -3,7 +3,7 @@ import { ArrowBack } from '@mui/icons-material';
 import {
   Button,
   CircularProgress,
-  GridLegacy,
+  Grid,
   List,
   ListItem,
   ListItemText,
@@ -273,9 +273,9 @@ const CoinPage: NextPage = () => {
             >
               Links
             </Typography>
-            <GridLegacy container>
+            <Grid container>
               {!!metaCoin.urls.website?.length && (
-                <GridLegacy item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Paper className={classes.paper}>
                     <strong>Website:</strong>
                     <br />
@@ -283,11 +283,11 @@ const CoinPage: NextPage = () => {
                       <LinkExtBlank key={url} url={url} br />
                     ))}
                   </Paper>
-                </GridLegacy>
+                </Grid>
               )}
 
               {!!metaCoin.urls.twitter?.length && (
-                <GridLegacy item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Paper className={classes.paper}>
                     <strong>Social Media:</strong>
                     <br />
@@ -295,11 +295,11 @@ const CoinPage: NextPage = () => {
                       <LinkExtBlank key={url} url={url} br />
                     ))}
                   </Paper>
-                </GridLegacy>
+                </Grid>
               )}
 
               {!!metaCoin.urls.chat?.length && (
-                <GridLegacy item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Paper className={classes.paper}>
                     <strong>Chat:</strong>
                     <br />
@@ -307,9 +307,9 @@ const CoinPage: NextPage = () => {
                       <LinkExtBlank key={url} url={url} br />
                     ))}
                   </Paper>
-                </GridLegacy>
+                </Grid>
               )}
-            </GridLegacy>
+            </Grid>
           </div>
         )}
       </div>

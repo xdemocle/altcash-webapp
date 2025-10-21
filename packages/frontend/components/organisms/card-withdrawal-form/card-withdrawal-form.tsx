@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Card,
-  GridLegacy,
+  Grid,
   Snackbar,
   TextField
 } from '@mui/material';
@@ -63,8 +63,8 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
             </h2>
 
             <form noValidate method="POST" onSubmit={onSubmitHandler}>
-              <GridLegacy container gap={2}>
-                <GridLegacy item xs={12} md={8}>
+              <Grid container gap={2}>
+                <Grid size={{ xs: 12, md: 8 }}>
                   <TextField
                     id="walletAddress"
                     name="walletAddress"
@@ -75,9 +75,9 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
                     value={addressValue}
                     onChange={(e) => setAddressValue(e.target.value)}
                   />
-                </GridLegacy>
+                </Grid>
 
-                <GridLegacy item xs={12} md={3.765}>
+                <Grid size={{ xs: 12, md: 3.765 }}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -87,8 +87,8 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
                   >
                     Widthdraw
                   </Button>
-                </GridLegacy>
-              </GridLegacy>
+                </Grid>
+              </Grid>
             </form>
           </Box>
         </Box>

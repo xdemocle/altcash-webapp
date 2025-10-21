@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Card,
-  GridLegacy,
+  Grid,
   InputAdornment,
   InputLabel,
   TextField,
@@ -256,9 +256,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     >
       <Card className={classes.root}>
         <div className={classes.grid}>
-          <GridLegacy
-            xs={12}
-            md={4}
+          <Grid
+            size={{ xs: 12, md: 4 }}
             className={classes.gridItem}
             sx={{ minWidth: '45%' }}
           >
@@ -295,7 +294,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               disabled={formDisabled}
               onBlur={onBlurLocalCurrencyHandler}
             />
-          </GridLegacy>
+          </Grid>
 
           <div className={classes.flex}>
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -309,9 +308,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
             </Box>
           </div>
 
-          <GridLegacy
-            xs={12}
-            md={4}
+          <Grid
+            size={{ xs: 12, md: 4 }}
             className={classes.gridItem}
             sx={{ minWidth: '45%' }}
           >
@@ -339,7 +337,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               onFocus={onFocusInputHandler}
               disabled
             />
-          </GridLegacy>
+          </Grid>
         </div>
 
         <Box className={classes.boxBuyButtonRoot}>
