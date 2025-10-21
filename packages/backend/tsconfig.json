@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "exclude": ["node_modules", "dist", "**/*.json"],
   "include": [
@@ -20,7 +21,6 @@
     "utilities",
     "config.ts",
     "index.ts",
-    "types.ts",
-    "types/binance-connector.d.ts"
+    "types.ts"
   ]
 }
