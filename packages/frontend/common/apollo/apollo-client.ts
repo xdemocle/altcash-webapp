@@ -9,7 +9,7 @@ import { cache } from './apollo-cache';
 const uri =
   process.env.NODE_ENV !== 'development'
     ? 'https://altcash.vercel.app/graphql'
-    : process.env.NEXT_PUBLIC_GRAPHQL_SERVER + '/graphql';
+    : (process.env.NEXT_PUBLIC_GRAPHQL_SERVER || 'http://localhost:4000') + '/graphql';
 
 // Initialize Apollo client with cache and state
 export const apolloClient = new ApolloClient({
