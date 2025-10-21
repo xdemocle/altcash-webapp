@@ -23,8 +23,14 @@ import {
   useMemo,
   useState
 } from 'react';
-import { usePaystackPayment } from 'react-paystack';
+import dynamic from 'next/dynamic';
 import ReactPlaceholder from 'react-placeholder';
+
+let usePaystackPayment: any = null;
+if (typeof window !== 'undefined') {
+  const { usePaystackPayment: hook } = require('react-paystack');
+  usePaystackPayment = hook;
+}
 import {
   MIN_AMOUNT_EXTRA,
   MIN_AMOUNT_MULTIPLIER,
@@ -61,13 +67,18 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
   const { multiplier } = useMultiplier(ticker);
   const [initializePayment, setInitializePayment] = useState<any>(null);
-  
+
+  // Only initialize Paystack on client side
+  const payment =
+    typeof window !== 'undefined' && usePaystackPayment
+      ? usePaystackPayment(getPaystackConfig(totalAmount))
+      : null;
+
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const payment = usePaystackPayment(getPaystackConfig(totalAmount));
+    if (payment) {
       setInitializePayment(() => payment);
     }
-  }, [totalAmount]);
+  }, [payment]);
   const [createOrder, { error: errorCreateOrder }] = useMutation<
     { createOrder: Order },
     OrderParams
