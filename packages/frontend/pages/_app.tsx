@@ -73,10 +73,6 @@ function MyApp({
     }
   }, []);
 
-  if (!loaded) {
-    return <div>Loading Altcash...</div>;
-  }
-
   return (
     <>
       <Analytics />
