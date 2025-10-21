@@ -83,7 +83,7 @@ const CoinsList = ({ markets }: CoinsListProps) => {
       )}
 
       {!isServer() && !hidePagination && (
-        <div className={classes.pagination}>
+        <div className={classes.pagination} suppressHydrationWarning={true}>
           <Pagination
             count={paginationPages}
             size="large"
