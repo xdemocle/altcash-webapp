@@ -1,21 +1,21 @@
+import CoinSVG from '@/components/atoms/coin-svg';
+import CoinTicker from '@/components/organisms/coin-ticker';
+import { Market } from '@/graphql/types';
+import useFavourites from '@/hooks/use-favourites';
 import { ShoppingBasket, Star, StarBorder } from '@mui/icons-material';
 import {
+  Box,
   Button,
   Divider,
   ListItemButton,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
   Tooltip,
   useMediaQuery
 } from '@mui/material';
 import clsx from 'clsx';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment, SyntheticEvent } from 'react';
-import { Market } from '../../../graphql/types';
-import useFavourites from '../../../hooks/use-favourites';
-import CoinSVG from '../../atoms/coin-svg';
-import CoinTicker from '../coin-ticker';
 import useStyles from './use-styles';
 
 type Props = {
@@ -23,6 +23,7 @@ type Props = {
 };
 
 const CoinItem = ({ coin }: Props) => {
+  const router = useRouter();
   const { classes } = useStyles();
   const showBuy = useMediaQuery('(min-width:600px)');
   const { addFavourites, removeFavourites, userCoinFavourites } =
@@ -44,12 +45,46 @@ const CoinItem = ({ coin }: Props) => {
 
   const isStarred = userCoinFavourites.includes(coin.symbol as never);
 
+  const secondaryAction = (
+    <>
+      {showBuy && (
+        <Tooltip title="Buy now" placement="bottom">
+          <Button
+            aria-label="Buy now"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <ShoppingBasket />
+          </Button>
+        </Tooltip>
+      )}
+      <Tooltip
+        title={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
+        placement="bottom"
+      >
+        <Button
+          aria-label={`${
+            isStarred ? 'Remove from' : 'Add to'
+          } your favourites`}
+          onClick={iconButtonHandler}
+        >
+          {isStarred ? <Star /> : <StarBorder />}
+        </Button>
+      </Tooltip>
+    </>
+  );
+
+  const handleRowClick = () => {
+    router.push(`/coin/${coin.id.toLowerCase()}`);
+  };
+
   return (
     <Fragment>
       <ListItemButton
         className={classes.listItem}
-        component={Link}
-        href={`/coin/${coin.id.toLowerCase()}`}
+        onClick={handleRowClick}
       >
         <ListItemIcon>
           <CoinSVG coinSymbol={coin.symbol} />
@@ -66,34 +101,9 @@ const CoinItem = ({ coin }: Props) => {
           secondary="Live Price"
           className={clsx(classes.column, classes.ticker, coin.status)}
         />
-        <ListItemSecondaryAction>
-          {showBuy && (
-            <Tooltip title="Buy now" placement="bottom">
-              <Button
-                aria-label="Buy now"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <ShoppingBasket />
-              </Button>
-            </Tooltip>
-          )}
-          <Tooltip
-            title={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
-            placement="bottom"
-          >
-            <Button
-              aria-label={`${
-                isStarred ? 'Remove from' : 'Add to'
-              } your favourites`}
-              onClick={iconButtonHandler}
-            >
-              {isStarred ? <Star /> : <StarBorder />}
-            </Button>
-          </Tooltip>
-        </ListItemSecondaryAction>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          {secondaryAction}
+        </Box>
       </ListItemButton>
       <Divider />
     </Fragment>
