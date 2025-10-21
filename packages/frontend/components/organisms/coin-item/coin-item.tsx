@@ -46,53 +46,51 @@ const CoinItem = ({ coin }: Props) => {
 
   return (
     <Fragment>
-      <Link legacyBehavior href={`/coin/${coin.id.toLowerCase()}`}>
-        <a style={{ textDecoration: 'none' }}>
-          <ListItemButton className={classes.listItem}>
-            <ListItemIcon>
-              <CoinSVG coinSymbol={coin.symbol} />
-            </ListItemIcon>
-            <ListItemText
-              primary={coin.name || coin.id}
-              secondary={`${coin.symbol.toUpperCase()} ${
-                coin.status !== 'TRADING' ? ' / ' + coin.status : ''
-              }`}
-              className={classes.column}
-            />
-            <ListItemText
-              primary={<CoinTicker coin={coin} />}
-              secondary="Live Price"
-              className={clsx(classes.column, classes.ticker, coin.status)}
-            />
-            <ListItemSecondaryAction>
-              {showBuy && (
-                <Tooltip title="Buy now" placement="bottom">
-                  <Link href={`/coin/${coin.id.toLowerCase()}`}>
-                    <Button aria-label="Buy now">
-                      <ShoppingBasket />
-                    </Button>
-                  </Link>
-                </Tooltip>
-              )}
-              <Tooltip
-                title={`${
-                  isStarred ? 'Remove from' : 'Add to'
-                } your favourites`}
-                placement="bottom"
-              >
-                <Button
-                  aria-label={`${
-                    isStarred ? 'Remove from' : 'Add to'
-                  } your favourites`}
-                  onClick={iconButtonHandler}
-                >
-                  {isStarred ? <Star /> : <StarBorder />}
+      <ListItemButton
+        className={classes.listItem}
+        LinkComponent={Link}
+        href={`/coin/${coin.id.toLowerCase()}`}
+      >
+        <ListItemIcon>
+          <CoinSVG coinSymbol={coin.symbol} />
+        </ListItemIcon>
+        <ListItemText
+          primary={coin.name || coin.id}
+          secondary={`${coin.symbol.toUpperCase()} ${
+            coin.status !== 'TRADING' ? ' / ' + coin.status : ''
+          }`}
+          className={classes.column}
+        />
+        <ListItemText
+          primary={<CoinTicker coin={coin} />}
+          secondary="Live Price"
+          className={clsx(classes.column, classes.ticker, coin.status)}
+        />
+        <ListItemSecondaryAction>
+          {showBuy && (
+            <Tooltip title="Buy now" placement="bottom">
+              <Link href={`/coin/${coin.id.toLowerCase()}`}>
+                <Button aria-label="Buy now">
+                  <ShoppingBasket />
                 </Button>
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItemButton>
-        </a>
-      </Link>
+              </Link>
+            </Tooltip>
+          )}
+          <Tooltip
+            title={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
+            placement="bottom"
+          >
+            <Button
+              aria-label={`${
+                isStarred ? 'Remove from' : 'Add to'
+              } your favourites`}
+              onClick={iconButtonHandler}
+            >
+              {isStarred ? <Star /> : <StarBorder />}
+            </Button>
+          </Tooltip>
+        </ListItemSecondaryAction>
+      </ListItemButton>
       <Divider />
     </Fragment>
   );
