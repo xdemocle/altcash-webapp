@@ -2,7 +2,6 @@ import { ApolloProvider } from '@apollo/client/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { Analytics } from '@vercel/analytics/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -74,60 +73,56 @@ function MyApp({
   }, []);
 
   return (
-    <>
-      <Analytics />
+    <CacheProvider value={emotionCache}>
+      <GlobalProvider>
+        <UserCoinFavouritesProvider>
+          <ApolloProvider client={apolloClient}>
+            <ThemeProvider theme={theme}>
+              {/* <AuthProvider> */}
+              <Head>
+                <title>
+                  Altcash | Buy crypto coins fast and easy in South Africa!
+                </title>
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1"
+                />
+              </Head>
+              <div suppressHydrationWarning>
+                <CssBaseline />
+                <ScrollToTop />
+                {!isServer() && <BitcoinRandLivePrice />}
+                <TickersLivePrice />
 
-      <CacheProvider value={emotionCache}>
-        <GlobalProvider>
-          <UserCoinFavouritesProvider>
-            <ApolloProvider client={apolloClient}>
-              <ThemeProvider theme={theme}>
-                {/* <AuthProvider> */}
-                <Head>
-                  <title>
-                    Altcash | Buy crypto coins fast and easy in South Africa!
-                  </title>
-                  <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                  />
-                </Head>
-                <div suppressHydrationWarning>
-                  <CssBaseline />
-                  <ScrollToTop />
-                  {!isServer() && <BitcoinRandLivePrice />}
-                  <TickersLivePrice />
+                <DefaultLayout>
+                  <Component {...pageProps} />
+                </DefaultLayout>
 
-                  <DefaultLayout>
-                    <Component {...pageProps} />
-                  </DefaultLayout>
-
-                  <CookieConsent
-                    location="bottom"
-                    buttonText="Okay"
-                    cookieName="CookiePrivacySA"
-                    style={{ background: '#2B373B' }}
-                    buttonStyle={{
-                      color: '#ffffff',
-                      background: '#28a745',
-                      fontSize: '13px',
-                      font: 'inherit',
-                      textTransform: 'uppercase',
-                      fontWeight: '700',
-                      borderRadius: '.25rem'
-                    }}
-                    expires={150}
-                  >
-                    This website uses cookies to enhance the user experience.
-                  </CookieConsent>
-                </div>
-                {/* </AuthProvider> */}
-              </ThemeProvider>
-            </ApolloProvider>
-          </UserCoinFavouritesProvider>
-        </GlobalProvider>
-      </CacheProvider>
-    </>
+                <CookieConsent
+                  location="bottom"
+                  buttonText="Okay"
+                  cookieName="CookiePrivacySA"
+                  style={{ background: '#2B373B' }}
+                  buttonStyle={{
+                    color: '#ffffff',
+                    background: '#28a745',
+                    fontSize: '13px',
+                    font: 'inherit',
+                    textTransform: 'uppercase',
+                    fontWeight: '700',
+                    borderRadius: '.25rem'
+                  }}
+                  expires={150}
+                >
+                  This website uses cookies to enhance the user experience.
+                </CookieConsent>
+              </div>
+              {/* </AuthProvider> */}
+            </ThemeProvider>
+          </ApolloProvider>
+        </UserCoinFavouritesProvider>
+      </GlobalProvider>
+    </CacheProvider>
   );
 }
 
@@ -141,17 +136,6 @@ function MyApp({
 //   const appProps = await App.getInitialProps(appContext);
 //
 //   return { ...appProps }
-// }
-
-// export function reportWebVitals(metric: NextWebVitalsMetric) {
-//   const { id, name, label, value } = metric;
-
-//   event(name, {
-//     category: label === 'web-vital' ? 'Web Vitals' : 'Next.js custom metric',
-//     value: Math.round(name === 'CLS' ? value * 1000 : value), // values must be integers
-//     label: id, // id unique to current page load
-//     nonInteraction: true // avoids affecting bounce rate.
-//   });
 // }
 
 export default MyApp;
