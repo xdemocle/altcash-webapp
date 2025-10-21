@@ -96,7 +96,7 @@ function MyApp({
                     content="width=device-width, initial-scale=1"
                   />
                 </Head>
-                <div>
+                <div suppressHydrationWarning>
                   <CssBaseline />
                   <ScrollToTop />
                   {!isServer() && <BitcoinRandLivePrice />}

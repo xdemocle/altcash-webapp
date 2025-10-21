@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   distDir: 'dist',
+  publicDir: 'packages/public',
   cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 1000,

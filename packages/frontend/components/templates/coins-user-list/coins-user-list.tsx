@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { List, Typography } from '@mui/material';
 import { isUndefined } from 'lodash';
 import { isServer } from '../../../common/utils';
