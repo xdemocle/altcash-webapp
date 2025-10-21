@@ -28,7 +28,7 @@ const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
 
   const isFeaturedView = !isUndefined(predefined);
   const dataCoins = data?.markets;
-  const coinsList = dataCoins || markets;
+  const coinsList = isServer() ? markets : (dataCoins || []);
 
   return (
     <div>
@@ -40,12 +40,17 @@ const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
             : 'starred coins. Add some first.'}
         </Typography>
       )}
-      {coinsList && (
+      {coinsList && coinsList.length > 0 && (
         <List>
           {coinsList.map((coin: Market, ix: number) => (
             <CoinItem key={`${coin.name}${ix}`} coin={coin} />
           ))}
         </List>
+      )}
+      {!isServer() && !dataCoins && !loading && (
+        <Typography variant="subtitle1">
+          No coins available
+        </Typography>
       )}
       {!isServer() && loading && (!coinsList || networkStatus === 4) && (
         <Loader

@@ -127,10 +127,18 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
 //   };
 // }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   try {
+    const { tab } = context.params;
+    let symbols = '';
+
+    if (tab === 'featured') {
+      symbols = SYMBOLS_FEATURED.sort().join('|');
+    }
+
     const { data } = await apolloClient.query<{ markets: Market[] }>({
-      query: GET_MARKETS
+      query: GET_MARKETS,
+      variables: symbols ? { symbols } : undefined
     });
 
     return {
