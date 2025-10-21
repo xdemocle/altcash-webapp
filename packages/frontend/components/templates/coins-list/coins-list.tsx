@@ -1,19 +1,19 @@
-import { useQuery } from '@apollo/client/react';
-import { Pagination, Typography } from '@mui/material';
-import { clone, find } from 'lodash';
-import { ChangeEvent, Fragment } from 'react';
-import { COINS_PER_PAGE } from '../../../common/constants';
-import { isServer } from '../../../common/utils';
-import Loader from '../../../components/molecules/loader';
-import CoinsListMap from '../../../components/organisms/coins-list-map';
-import { GET_COUNT, GET_MARKETS } from '../../../graphql/queries';
+import { COINS_PER_PAGE } from '@/common/constants';
+import { isServer } from '@/common/utils';
+import Loader from '@/components/molecules/loader';
+import CoinsListMap from '@/components/organisms/coins-list-map';
+import { GET_COUNT, GET_MARKETS } from '@/graphql/queries';
 import {
   CountResponse,
   Market,
   MarketsResponse,
   MarketsVariables
-} from '../../../graphql/types';
-import useGlobal from '../../../hooks/use-global';
+} from '@/graphql/types';
+import useGlobal from '@/hooks/use-global';
+import { useQuery } from '@apollo/client/react';
+import { Pagination, Typography } from '@mui/material';
+import { clone, find } from 'lodash';
+import { ChangeEvent, Fragment } from 'react';
 import useStyles from './use-styles';
 
 interface CoinsListProps {
