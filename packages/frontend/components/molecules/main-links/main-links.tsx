@@ -1,3 +1,4 @@
+import { theme } from '@/common/theme';
 import {
   ContactSupportOutlined,
   HomeOutlined, // LockOutlined,
@@ -11,12 +12,9 @@ import {
   ListItemText,
   Tooltip
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
-// import Link from 'next/link';
+import { styled, ThemeProvider } from '@mui/material/styles';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SyntheticEvent } from 'react';
-import { UrlObject } from 'url';
 // import useAuth from '../../hooks/use-auth';
 
 const StyledList = styled(List)({
@@ -42,32 +40,57 @@ const StyledListItemText = styled(ListItemText)({
   paddingLeft: '.7rem'
 });
 
-const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
-  flexGrow: '0 !important',
-  position: 'relative',
-  paddingLeft: '1rem',
-  paddingRight: '1.8rem',
-  margin: '0',
-  height: '4.75rem',
-  width: '100%',
-  textDecoration: 'none !important',
-  color: 'inherit',
-  '&:visited': {
-    color: 'inherit'
-  },
-  '&.active::after': {
-    content: '""',
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    left: '1.5rem',
-    width: '3.2rem',
-    height: '3.2rem',
-    borderRadius: '.6rem',
-    backgroundColor: theme.palette.primary.main,
-    zIndex: -1
-  }
-}));
+const StyledListItemButton = ({
+  children,
+  href,
+  label,
+  selected,
+  ...rest
+}: {
+  children: React.ReactNode;
+  href: string;
+  label: string;
+  selected?: boolean;
+}) => {
+  return (
+    <ListItemButton
+      {...rest}
+      component={Link}
+      href={href}
+      sx={{
+        flexGrow: '0 !important',
+        position: 'relative',
+        paddingLeft: '1rem',
+        paddingRight: '1.8rem',
+        margin: '0',
+        height: '4.75rem',
+        width: '100%',
+        textDecoration: 'none !important',
+        color: 'inherit',
+        '&:visited': {
+          color: 'inherit'
+        },
+        ...(selected && {
+          '&.active::after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            left: '1.5rem',
+            width: '3.2rem',
+            height: '3.2rem',
+            borderRadius: '.6rem',
+            backgroundColor: theme.palette.primary.main,
+            zIndex: -1
+          }
+        })
+      }}
+    >
+      <StyledListItemIcon>{children}</StyledListItemIcon>
+      <StyledListItemText primary={label} />
+    </ListItemButton>
+  );
+};
 
 type Props = {
   isSidebarOpen: boolean;
@@ -77,100 +100,66 @@ const MainLinks = ({ isSidebarOpen }: Props) => {
   // const auth = useAuth();
   const router = useRouter();
 
-  const navTo = (e: SyntheticEvent, href: string | UrlObject) => {
-    e.preventDefault();
-
-    router.push(href);
-  };
-
   return (
-    <StyledList as="nav">
-      <Tooltip
-        title="Homepage"
-        placement="right"
-        enterDelay={isSidebarOpen ? 2000 : 50}
-      >
-        <StyledListItemButton
-          // component="a"
-          // href="/"
-          selected={router.pathname == '/'}
-          className={clsx(router.pathname == '/' ? 'active' : '')}
-          onClick={(e: SyntheticEvent) => navTo(e, '/')}
+    <ThemeProvider theme={theme}>
+      <StyledList as="nav">
+        <Tooltip
+          title="Homepage"
+          placement="right"
+          enterDelay={isSidebarOpen ? 2000 : 50}
         >
-          <StyledListItemIcon>
+          <StyledListItemButton href="/" label="Home">
             <HomeOutlined />
-          </StyledListItemIcon>
-          <StyledListItemText primary="Home" />
-        </StyledListItemButton>
-      </Tooltip>
+          </StyledListItemButton>
+        </Tooltip>
 
-      <Tooltip
-        title="Buy crypto coins"
-        placement="right"
-        enterDelay={isSidebarOpen ? 2000 : 50}
-      >
-        <StyledListItemButton
-          as="a"
-          // href="/buy"
-          className={clsx(
-            router.pathname == '/buy' ||
+        <Tooltip
+          title="Buy crypto coins"
+          placement="right"
+          enterDelay={isSidebarOpen ? 2000 : 50}
+        >
+          <StyledListItemButton
+            href="/buy"
+            label="Buy"
+            selected={
+              router.pathname == '/buy' ||
               router.pathname == '/buy/[tab]' ||
               router.pathname == '/coin/[id]'
-              ? 'active'
-              : ''
-          )}
-          selected={
-            router.pathname == '/buy' ||
-            router.pathname == '/buy/[tab]' ||
-            router.pathname == '/coin/[id]'
-          }
-          onClick={(e: SyntheticEvent) => navTo(e, '/buy')}
-        >
-          <StyledListItemIcon>
+            }
+          >
             <MonetizationOnOutlined />
-          </StyledListItemIcon>
-          <StyledListItemText primary="Crypto Coins" />
-        </StyledListItemButton>
-      </Tooltip>
+          </StyledListItemButton>
+        </Tooltip>
 
-      <Tooltip
-        title="About Us"
-        placement="right"
-        enterDelay={isSidebarOpen ? 2000 : 50}
-      >
-        <StyledListItemButton
-          as="a"
-          // href="/about"
-          selected={router.pathname == '/about'}
-          className={clsx(router.pathname == '/about' ? 'active' : '')}
-          onClick={(e: SyntheticEvent) => navTo(e, '/about')}
+        <Tooltip
+          title="About Us"
+          placement="right"
+          enterDelay={isSidebarOpen ? 2000 : 50}
         >
-          <StyledListItemIcon>
+          <StyledListItemButton
+            href="/about"
+            label="About Us"
+            selected={router.pathname == '/about'}
+          >
             <PeopleAltOutlined />
-          </StyledListItemIcon>
-          <StyledListItemText primary="About Us" />
-        </StyledListItemButton>
-      </Tooltip>
+          </StyledListItemButton>
+        </Tooltip>
 
-      <Tooltip
-        title="Support"
-        placement="right"
-        enterDelay={isSidebarOpen ? 2000 : 50}
-      >
-        <StyledListItemButton
-          as="a"
-          // href="/support"
-          selected={router.pathname == '/support'}
-          className={clsx(router.pathname == '/support' ? 'active' : '')}
-          onClick={(e: SyntheticEvent) => navTo(e, '/support')}
+        <Tooltip
+          title="Support"
+          placement="right"
+          enterDelay={isSidebarOpen ? 2000 : 50}
         >
-          <StyledListItemIcon>
+          <StyledListItemButton
+            href="/support"
+            label="Support"
+            selected={router.pathname == '/support'}
+          >
             <ContactSupportOutlined />
-          </StyledListItemIcon>
-          <StyledListItemText primary="Support" />
-        </StyledListItemButton>
-      </Tooltip>
-    </StyledList>
+          </StyledListItemButton>
+        </Tooltip>
+      </StyledList>
+    </ThemeProvider>
   );
 };
 
