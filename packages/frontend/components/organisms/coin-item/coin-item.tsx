@@ -48,7 +48,7 @@ const CoinItem = ({ coin }: Props) => {
     <Fragment>
       <ListItemButton
         className={classes.listItem}
-        LinkComponent={Link}
+        component={Link}
         href={`/coin/${coin.id.toLowerCase()}`}
       >
         <ListItemIcon>
@@ -69,11 +69,15 @@ const CoinItem = ({ coin }: Props) => {
         <ListItemSecondaryAction>
           {showBuy && (
             <Tooltip title="Buy now" placement="bottom">
-              <Link href={`/coin/${coin.id.toLowerCase()}`}>
-                <Button aria-label="Buy now">
-                  <ShoppingBasket />
-                </Button>
-              </Link>
+              <Button
+                aria-label="Buy now"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
+                <ShoppingBasket />
+              </Button>
             </Tooltip>
           )}
           <Tooltip
