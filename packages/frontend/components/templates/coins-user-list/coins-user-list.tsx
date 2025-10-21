@@ -15,7 +15,7 @@ interface CoinsUserListProps {
 
 const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
   const { userCoinFavourites } = useFavourites();
-  const { loading, data, networkStatus } = useQuery(GET_MARKETS, {
+  const { loading, data, networkStatus } = useQuery<{ markets: Market[] }>(GET_MARKETS, {
     variables: {
       symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|')
     }
