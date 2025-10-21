@@ -147,7 +147,7 @@ export async function getServerSideProps(context: any) {
       }
     };
   } catch (error) {
-    console.error('Failed to fetch markets:', error);
+    console.debug('Failed to fetch markets:', error);
     return {
       props: {
         markets: []

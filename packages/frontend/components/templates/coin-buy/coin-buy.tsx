@@ -143,7 +143,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
         );
       } catch (error) {
         setOrderInfo('');
-        console.error(error);
+        console.debug(error);
       }
     }
 

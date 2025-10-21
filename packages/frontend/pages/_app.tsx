@@ -60,7 +60,7 @@ function MyApp({
       try {
         await persistCacheInstance;
       } catch (error) {
-        console.error('Error restoring Apollo cache', error);
+        console.debug('Error restoring Apollo cache', error);
       }
 
       setLoaded(true);
