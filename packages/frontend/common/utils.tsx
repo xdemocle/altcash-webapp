@@ -3,7 +3,12 @@ import { PAYSTACK_EMAIL, PAYSTACK_PUBLICK_KEY } from './constants';
 import { PaystackCurrency } from './types';
 
 export const svgCoinPathHelper = (name: string) => {
-  return require(`cryptocurrency-icons/svg/color/${name}.svg`);
+  try {
+    return require(`cryptocurrency-icons/svg/color/${name}.svg`);
+  } catch (err) {
+    console.debug(`SVG not found for coin: ${name}`);
+    return null;
+  }
 };
 
 export const strPxRem = (px: string) => {

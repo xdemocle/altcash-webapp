@@ -29,7 +29,7 @@ const StyledList = styled(List)({
 
 const StyledListItemIcon = styled(ListItemIcon)({
   marginLeft: '1.3rem',
-  marginRight: '1.4rem',
+  marginRight: '0.4rem',
   color: '#A09EA0',
   '.active &': {
     color: '#fff'
@@ -37,7 +37,8 @@ const StyledListItemIcon = styled(ListItemIcon)({
 });
 
 const StyledListItemText = styled(ListItemText)({
-  paddingLeft: '.7rem'
+  paddingLeft: '0rem',
+  marginLeft: '0rem'
 });
 
 const StyledListItemButton = ({
