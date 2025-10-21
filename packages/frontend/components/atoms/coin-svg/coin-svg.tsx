@@ -62,7 +62,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
         size === 'large' && classes[size]
       )}
     />
-  ) : (
+  ) : imgCoinPath ? (
     <Image
       src={imgCoinPath}
       alt={`Logo ${coinSymbol}`}
@@ -70,7 +70,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
       height="32"
       title={`Logo ${coinSymbol}`}
     />
-  );
+  ) : null;
 };
 
 export default CoinSVG;
