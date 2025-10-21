@@ -42,7 +42,7 @@ const CoinTicker = ({ coin }: Props) => {
     : undefined;
 
   return (
-    <span>
+    <span suppressHydrationWarning>
       {dataTicker.price && bitcoinRandPrice
         ? btcToRandPriceWithSymbol(Number(dataTicker.price), bitcoinRandPrice)
         : 'n/d'}
