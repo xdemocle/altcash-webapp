@@ -2,27 +2,25 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es2022",
-    "module": "es2022",
+    "module": "commonjs",
     "strict": false,
     "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "typeRoots": ["src/@types"]
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules", "dist", "src/**/*.json"],
+  "exclude": ["node_modules", "dist", "**/*.json"],
   "include": [
-    "src/**/*",
-    "untyped-binance-connector",
     "datasources",
     "models",
     "resolvers",
     "utilities",
     "config.ts",
     "index.ts",
-    "types.ts"
+    "types.ts",
+    "types/binance-connector.d.ts"
   ]
 }
