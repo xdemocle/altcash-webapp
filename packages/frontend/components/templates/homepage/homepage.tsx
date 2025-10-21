@@ -153,11 +153,11 @@ const Homepage = () => {
                     </Button>
                   </Tooltip>
                   <Tooltip title="Send a message on Telegram" placement="top">
-                    <Button variant="text" size="small" href="">
+                    <Button variant="text" size="small" href="#">
                       <Icon className={classes.leftIcon}>chat</Icon> Telegram: Altcash
                     </Button>
                   </Tooltip>
-                  <Button variant="text" size="small" href="">
+                  <Button variant="text" size="small" href="#">
                     <Icon className={classes.leftIcon}>mail</Icon> Send e-mail
                   </Button>
                 </Typography>
