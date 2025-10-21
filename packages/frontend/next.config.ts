@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
   cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 1000,
-  webpack: (config, options) => {
-    config.dir = 'packages/frontend';
+  // webpack: (config, options) => {
+  //   config.dir = 'packages/frontend';
 
-    return config;
-  },
+  //   return config;
+  // },
   images: {
     domains: [
       's2.coinmarketcap.com',

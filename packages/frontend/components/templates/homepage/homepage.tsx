@@ -1,5 +1,4 @@
-import { Chat, Mail } from '@mui/icons-material';
-import { Button, Grid, Tooltip, Typography } from '@mui/material';
+import { Button, Grid, Icon, Tooltip, Typography } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { Parallax } from 'react-parallax';
@@ -149,17 +148,17 @@ const Homepage = () => {
                       size="small"
                       href="https://api.whatsapp.com/send?phone=34604367510&text=Hello%20Alts.sale%20Customer%20Care"
                     >
-                      <Chat className={classes.leftIcon} /> Whatsapp: +27 777
+                      <Icon className={classes.leftIcon}>chat</Icon> Whatsapp: +27 777
                       867 5309
                     </Button>
                   </Tooltip>
                   <Tooltip title="Send a message on Telegram" placement="top">
                     <Button variant="text" size="small" href="">
-                      <Chat className={classes.leftIcon} /> Telegram: Altcash
+                      <Icon className={classes.leftIcon}>chat</Icon> Telegram: Altcash
                     </Button>
                   </Tooltip>
                   <Button variant="text" size="small" href="">
-                    <Mail className={classes.leftIcon} /> Send e-mail
+                    <Icon className={classes.leftIcon}>mail</Icon> Send e-mail
                   </Button>
                 </Typography>
               </Grid>

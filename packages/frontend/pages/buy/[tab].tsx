@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import {
-  Star,
   List as ListIcon,
-  NewReleases as NewReleasesIcon
+  NewReleases as NewReleasesIcon,
+  Star
 } from '@mui/icons-material';
 import { Paper, Tab, Tabs, Typography } from '@mui/material';
 import type { NextPage } from 'next';
