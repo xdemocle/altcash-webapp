@@ -10,8 +10,7 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "esModuleInterop": true
   },
   "exclude": ["node_modules", "dist", "**/*.json"],
   "include": [
@@ -21,6 +20,7 @@
     "utilities",
     "config.ts",
     "index.ts",
-    "types.ts"
+    "types.ts",
+    "global.d.ts"
   ]
 }
