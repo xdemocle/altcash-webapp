@@ -78,12 +78,10 @@ const CoinsList = ({ markets }: CoinsListProps) => {
         />
       )}
 
-      {coinsList && (
-        <CoinsListMap markets={coinsList} />
-      )}
+      {coinsList && <CoinsListMap markets={coinsList} />}
 
       {!isServer() && !hidePagination && (
-        <div className={classes.pagination} suppressHydrationWarning={true}>
+        <div className={classes.pagination}>
           <Pagination
             count={paginationPages}
             size="large"

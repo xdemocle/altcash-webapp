@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMutation } from '@apollo/client/react';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
@@ -58,7 +60,14 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [localCurrency, setLocalCurrency] = useState(0);
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
   const { multiplier } = useMultiplier(ticker);
-  const initializePayment = usePaystackPayment(getPaystackConfig(totalAmount));
+  const [initializePayment, setInitializePayment] = useState<any>(null);
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const payment = usePaystackPayment(getPaystackConfig(totalAmount));
+      setInitializePayment(() => payment);
+    }
+  }, [totalAmount]);
   const [createOrder, { error: errorCreateOrder }] = useMutation<
     { createOrder: Order },
     OrderParams
