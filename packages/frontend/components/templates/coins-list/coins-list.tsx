@@ -13,8 +13,25 @@ import useGlobal from '@/hooks/use-global';
 import { useQuery } from '@apollo/client/react';
 import { Pagination, Typography } from '@mui/material';
 import { clone, find } from 'lodash';
+import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useMemo } from 'react';
 import useStyles from './use-styles';
+
+const PaginationClient = dynamic(
+  () => Promise.resolve(({ count, page, onChange }: any) => (
+    <Pagination
+      count={count}
+      size="large"
+      color="primary"
+      page={page}
+      defaultPage={1}
+      siblingCount={6}
+      onChange={onChange}
+      className="pagination-coins-list"
+    />
+  )),
+  { ssr: false }
+);
 
 interface CoinsListProps {
   markets: Market[];
@@ -92,16 +109,11 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
       {coinsList && <CoinsListMap markets={coinsList} />}
 
       {!hidePagination && (
-        <div className={classes.pagination} suppressHydrationWarning>
-          <Pagination
+        <div className={classes.pagination}>
+          <PaginationClient
             count={paginationPages}
-            size="large"
-            color="primary"
             page={coinListPage}
-            defaultPage={1}
-            siblingCount={6}
             onChange={handleChange}
-            className="pagination-coins-list"
           />
         </div>
       )}
