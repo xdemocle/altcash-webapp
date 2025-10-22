@@ -60,8 +60,8 @@ const dataSources: DataSourcesFn = () => ({
   metadataAPI: new MetadataAPI() as any,
   namesAPI: new NamesAPI() as any,
   mybitxAPI: new MybitxAPI() as any,
-  ordersAPI: new OrdersAPI(OrderModel) as any,
-  ordersQueueAPI: new OrdersQueueAPI(OrderQueueModel) as any
+  ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }) as any,
+  ordersQueueAPI: new OrdersQueueAPI({ modelOrCollection: OrderQueueModel }) as any
 });
 
 const resolvers = mergeResolvers([
