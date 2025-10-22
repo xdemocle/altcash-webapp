@@ -56,14 +56,12 @@ export const ApolloDataSources = (options: {
 });
 
 const dataSources: DataSourcesFn = () => ({
-  marketsAPI: new BinanceAPI(),
-  metadataAPI: new MetadataAPI(),
-  namesAPI: new NamesAPI(),
-  mybitxAPI: new MybitxAPI(),
-  ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }),
-  ordersQueueAPI: new OrdersQueueAPI({
-    modelOrCollection: OrderQueueModel
-  })
+  marketsAPI: new BinanceAPI() as any,
+  metadataAPI: new MetadataAPI() as any,
+  namesAPI: new NamesAPI() as any,
+  mybitxAPI: new MybitxAPI() as any,
+  ordersAPI: new OrdersAPI(OrderModel) as any,
+  ordersQueueAPI: new OrdersQueueAPI(OrderQueueModel) as any
 });
 
 const resolvers = mergeResolvers([
@@ -75,7 +73,7 @@ const resolvers = mergeResolvers([
   resolverTickers,
   resolverOrders,
   resolverOrderQueues
-]);
+]) as any;
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.

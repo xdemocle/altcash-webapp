@@ -19,6 +19,7 @@
         "@mui/material": "7.3.4",
         "@paystack/inline-js": "^2.22.7",
         "apollo-datasource": "^3.3.2",
+        "apollo-datasource-mongodb": "^0.6.0",
         "apollo3-cache-persist": "^0.15.0",
         "axios": "^1.12.2",
         "bson": "^6.10.4",
@@ -886,6 +887,8 @@
 
     "apollo-datasource": ["apollo-datasource@3.3.2", "", { "dependencies": { "@apollo/utils.keyvaluecache": "^1.0.1", "apollo-server-env": "^4.2.1" } }, "sha512-L5TiS8E2Hn/Yz7SSnWIVbZw0ZfEIXZCa5VUiVxD9P53JvSrf4aStvsFDlGWPvpIdCR+aly2CfoB79B9/JjKFqg=="],
 
+    "apollo-datasource-mongodb": ["apollo-datasource-mongodb@0.6.0", "", { "dependencies": { "@apollo/utils.keyvaluecache": "^3.0.0", "bson": "^5.4.0", "dataloader": "^1.4.0" } }, "sha512-WdQORVKBleXLrmLQINLYmUfFtsqgwlLmLedr8Ebtxy15aT4iMC4er6tJEStyOTDaahQp6JpL7rT7fFII1642Vg=="],
+
     "apollo-server-env": ["apollo-server-env@4.2.1", "", { "dependencies": { "node-fetch": "^2.6.7" } }, "sha512-vm/7c7ld+zFMxibzqZ7SSa5tBENc4B0uye9LTfjJwGoQFY5xsUPH5FpO5j0bMUDZ8YYNbrF9SNtzc5Cngcr90g=="],
 
     "apollo3-cache-persist": ["apollo3-cache-persist@0.15.0", "", { "peerDependencies": { "@apollo/client": "^3.7.17" } }, "sha512-asxhPOHGddgXYvY4/Wa+XLODYpjci/kPB4zdy82D0tVGzVmvO4lqp3k06NtzHvd//gd9kCnTaG8iziwAcXZYjw=="],
@@ -1027,6 +1030,8 @@
     "data-view-byte-length": ["data-view-byte-length@1.0.2", "", { "dependencies": { "call-bound": "^1.0.3", "es-errors": "^1.3.0", "is-data-view": "^1.0.2" } }, "sha512-tuhGbE6CfTM9+5ANGf+oQb72Ky/0+s3xKUpHvShfiz2RxMFgFPjsXuRLBVMtvMs15awe45SRb83D6wH4ew6wlQ=="],
 
     "data-view-byte-offset": ["data-view-byte-offset@1.0.1", "", { "dependencies": { "call-bound": "^1.0.2", "es-errors": "^1.3.0", "is-data-view": "^1.0.1" } }, "sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ=="],
+
+    "dataloader": ["dataloader@1.4.0", "", {}, "sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw=="],
 
     "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
 
@@ -2534,6 +2539,10 @@
 
     "apollo-datasource/@apollo/utils.keyvaluecache": ["@apollo/utils.keyvaluecache@1.0.2", "", { "dependencies": { "@apollo/utils.logger": "^1.0.0", "lru-cache": "7.10.1 - 7.13.1" } }, "sha512-p7PVdLPMnPzmXSQVEsy27cYEjVON+SH/Wb7COyW3rQN8+wJgT1nv9jZouYtztWW8ZgTkii5T6tC9qfoDREd4mg=="],
 
+    "apollo-datasource-mongodb/@apollo/utils.keyvaluecache": ["@apollo/utils.keyvaluecache@3.1.0", "", { "dependencies": { "@apollo/utils.logger": "^3.0.0", "lru-cache": "^10.0.0" } }, "sha512-MM/DKIqpQQbuNG1gNPAlGc45THdWkroTmN8o/J09merFwf/LlZ7+lAfcHFDXIYIknwKmUjJrOMS3OxYbjrz2hA=="],
+
+    "apollo-datasource-mongodb/bson": ["bson@5.5.1", "", {}, "sha512-ix0EwukN2EpC0SRWIj/7B5+A6uQMQy6KMREI9qQqvgpkV2frH63T0UDVd1SYedL6dNCmDBYB3QtXi4ISk9YT+g=="],
+
     "chalk/ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 
     "cliui/strip-ansi": ["strip-ansi@7.1.2", "", { "dependencies": { "ansi-regex": "^6.0.1" } }, "sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA=="],
@@ -3109,6 +3118,8 @@
     "@typescript-eslint/typescript-estree/fast-glob/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
 
     "@typescript-eslint/typescript-estree/minimatch/brace-expansion": ["brace-expansion@2.0.2", "", { "dependencies": { "balanced-match": "^1.0.0" } }, "sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ=="],
+
+    "apollo-datasource-mongodb/@apollo/utils.keyvaluecache/lru-cache": ["lru-cache@10.4.3", "", {}, "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="],
 
     "apollo-datasource/@apollo/utils.keyvaluecache/@apollo/utils.logger": ["@apollo/utils.logger@1.0.1", "", {}, "sha512-XdlzoY7fYNK4OIcvMD2G94RoFZbzTQaNP0jozmqqMudmaGo2I/2Jx71xlDJ801mWA/mbYRihyaw6KJii7k5RVA=="],
 

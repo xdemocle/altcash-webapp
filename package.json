@@ -65,6 +65,7 @@
     "@mui/material": "7.3.4",
     "@paystack/inline-js": "^2.22.7",
     "apollo-datasource": "^3.3.2",
+    "apollo-datasource-mongodb": "^0.6.0",
     "apollo3-cache-persist": "^0.15.0",
     "axios": "^1.12.2",
     "bson": "^6.10.4",

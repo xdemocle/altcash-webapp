@@ -110,7 +110,7 @@ class OrdersAPI extends MongoDataSource<Order> {
     const orders = await this.getOrders();
     const pendingOrders: Order[] = [];
 
-    orders.forEach((order) => {
+    orders?.forEach((order) => {
       if (order.isPending === true && order.isPaid === true) {
         pendingOrders.push(order);
       }
