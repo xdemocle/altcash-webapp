@@ -6,10 +6,10 @@ import { RetryLink } from '@apollo/client/link/retry';
 import { isServer } from '../utils';
 import { cache } from './apollo-cache';
 
-const uri =
-  process.env.NODE_ENV !== 'development'
-    ? 'https://altcash.vercel.app/graphql'
-    : (process.env.NEXT_PUBLIC_GRAPHQL_SERVER || 'http://localhost:4000') + '/graphql';
+// Use Next.js API route for GraphQL
+// - On server (SSR): absolute localhost URL
+// - On client: relative path
+const uri = isServer() ? 'http://localhost:3000/api/graphql' : '/api/graphql';
 
 // Initialize Apollo client with cache and state
 export const apolloClient = new ApolloClient({

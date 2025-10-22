@@ -21,24 +21,6 @@ const nextConfig: NextConfig = {
         hostname: 'bittrexblobstorage.blob.core.windows.net'
       }
     ]
-  },
-  async rewrites() {
-    const graphqlServer = process.env.NEXT_PUBLIC_GRAPHQL_SERVER;
-
-    if (!graphqlServer) {
-      return [];
-    }
-
-    const destinationBase = graphqlServer.endsWith('/graphql')
-      ? graphqlServer
-      : `${graphqlServer.replace(/\/$/, '')}/graphql`;
-
-    return [
-      {
-        source: '/graphql',
-        destination: destinationBase
-      }
-    ];
   }
 };
 

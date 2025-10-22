@@ -61,7 +61,7 @@ This plan outlines the steps to integrate the existing Node.js/Express backend i
 
 ### 7. Update Frontend
 
-- Change `NEXT_PUBLIC_GRAPHQL_SERVER` to `/api/graphql` in .env.local.
+- ~Remove~ `NEXT_PUBLIC_GRAPHQL_SERVER` to `/api/graphql` in .env.local.
 - Update any hard-coded URLs in code.
 
 ### 8. Deploy and Test

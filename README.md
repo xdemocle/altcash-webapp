@@ -42,7 +42,7 @@ bun run --filter backend <script>
 **Frontend** (`packages/frontend/.env.local`):
 
 ```bash
-NEXT_PUBLIC_GRAPHQL_SERVER=http://localhost:4000
+
 ```
 
 **Backend** (`packages/backend/.env`):

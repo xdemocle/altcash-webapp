@@ -18,7 +18,7 @@ altcash-webapp/
 
 **IMPORTANT:** All package management uses `bun`. Do **not** use npm or yarn.
 
-```bash
+````bash
 # Install all workspace dependencies
 bun install
 
@@ -43,14 +43,14 @@ bun start:frontend
 bun start:backend
 bun lint           # Lint frontend
 bun clean          # Remove node_modules/.next/dist
-```
+````
 
 ## Environment Configuration
 
 - **Frontend (`packages/frontend/.env.local`):**
 
   ```bash
-  NEXT_PUBLIC_GRAPHQL_SERVER=http://localhost:4000
+
   ```
 
 - **Backend (`packages/backend/.env`):**
@@ -95,7 +95,6 @@ bun clean          # Remove node_modules/.next/dist
 ### Notes & Known Issues
 
 - Development SSR may emit a non-blocking “Element type is invalid…” warning from `tss-react`; it does not affect production builds.
-- Ensure the backend GraphQL endpoint (`NEXT_PUBLIC_GRAPHQL_SERVER`) is reachable before testing data-dependent views.
 
 ## Backend (`packages/backend`)
 
