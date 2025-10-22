@@ -6,7 +6,7 @@ import {
   BUY_TAB_FAVOURITE,
   BUY_TAB_FEATURED
 } from '../../common/constants';
-import RootCenteredStyled from '../../components/atoms/root-centered';
+import RootStyled from '../../components/atoms/root';
 import Loader from '../../components/molecules/loader';
 import useGlobal from '../../hooks/use-global';
 
@@ -29,9 +29,9 @@ const CustomBuyRouter: NextPage = () => {
   }, [router, tab]);
 
   return (
-    <RootCenteredStyled>
+    <RootStyled>
       <Loader text="Loading coins page..." centered />
-    </RootCenteredStyled>
+    </RootStyled>
   );
 };
 

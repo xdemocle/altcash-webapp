@@ -6,7 +6,6 @@ import { strPxRem } from '../common/utils';
 const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     position: 'relative',
-    maxWidth: '64rem',
     paddingTop: theme.typography.pxToRem(strPxRem(theme.spacing(2))),
     marginLeft: theme.typography.pxToRem(strPxRem(theme.spacing(2))),
     paddingBottom: theme.typography.pxToRem(strPxRem(theme.spacing(2))),

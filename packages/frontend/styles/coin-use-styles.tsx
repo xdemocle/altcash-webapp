@@ -17,8 +17,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     }
   },
   inner: {
-    position: 'relative',
-    maxWidth: '64rem'
+    position: 'relative'
   },
   title: {
     lineHeight: '3rem'

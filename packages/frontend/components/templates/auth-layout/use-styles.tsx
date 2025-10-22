@@ -15,8 +15,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     margin: '0 auto',
     [theme.breakpoints.up('xl')]: {
       padding: '3rem 6rem 6rem 6rem',
-      height: 'calc(100vh - 12rem)',
-      maxWidth: '100rem'
+      height: 'calc(100vh - 12rem)'
     }
   },
   inner: {
