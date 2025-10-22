@@ -51,6 +51,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "graphql": "^16.11.0",
+    "graphql-yoga": "^5.16.0",
     "http-proxy-middleware": "^3.0.5",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
