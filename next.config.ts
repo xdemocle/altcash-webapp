@@ -5,11 +5,18 @@ const nextConfig: NextConfig = {
   cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 1000,
-  // webpack: (config, options) => {
-  //   config.dir = 'packages/frontend';
-
-  //   return config;
-  // },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        fs: false,
+        path: false,
+        os: false
+      };
+    }
+    return config;
+  },
   images: {
     remotePatterns: [
       {
