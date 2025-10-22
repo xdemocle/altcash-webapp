@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["./next/*"]
+      "~*": ["./*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "es6", "esnext"],
@@ -25,6 +25,7 @@
     "incremental": true
   },
   "include": [
+    "globals.d.ts",
     "common",
     "components",
     "context",

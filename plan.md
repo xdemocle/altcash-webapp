@@ -20,60 +20,66 @@ This plan outlines the steps to integrate the existing Node.js/Express backend i
 
 ## Steps
 
-1. **Backup and Branch**: Ensure you're on a new branch (as mentioned).
-2. **Copy Backend Code**: Move necessary backend files to `packages/frontend/app/api` directory.
-3. **Update GraphQL Schema**: Adapt GraphQL server to run within Next.js API route.
-4. **Database Connection**: Configure MongoDB connection for serverless environment.
-5. **Implement API Routes**: Create `/api/graphql` route in Next.js.
-6. **Test Locally**: Run Next.js dev server and test API endpoints.
-7. **Update Frontend**: Change GraphQL endpoint in frontend code.
-8. **Deploy and Test**: Deploy to Cloudflare and verify functionality.
+1. ✅ **Backup and Branch**: Completed - changes committed (dcb2376).
+2. ✅ **Copy Backend Code**: Completed - backend files moved to `app/api` directory.
+3. ✅ **Update GraphQL Schema**: Completed - API route created in `app/api/graphql/route.ts`.
+4. ✅ **Dependencies**: Installed required packages (bson, wrangler, etc.).
+5. ⏳ **Database Connection**: In progress - MongoDB connection setup for serverless environment.
+6. ⏳ **Implement API Routes**: In progress - GraphQL endpoint implementation.
+7. ⏳ **Test Locally**: Pending - Run `bun run dev` and test `/api/graphql` endpoint.
+8. ✅ **Update Frontend**: Completed - Change GraphQL endpoint in frontend code.
+9. ⏳ **Deploy and Test**: Pending - Deploy to Cloudflare and verify functionality.
 
 ## Detailed Steps
 
 ### 1. Backup and Branch
 
-- Already done; ensure all changes are committed.
+- ✅ Completed - All changes committed (dcb2376860f097a54a409172f9c0d88b94bd466f).
 
 ### 2. Copy Backend Code
 
-- Copy `resolvers`, `datasources`, `graphql` directories from backend to `packages/frontend/app/api`.
-- Adjust import paths as needed.
+- ✅ Completed - Backend files moved to `app/api` directory.
+- ✅ Import paths adjusted for monorepo structure.
 
 ### 3. Update GraphQL Schema
 
-- Create a new API route in `app/api/graphql/route.ts`.
-- Use `graphql-yoga` or similar to handle GraphQL requests.
+- ✅ Created API route in `app/api/graphql/route.ts`.
+- ✅ Fixed TypeScript errors in `app/api/datasources/binance.ts`.
 
 ### 4. Database Connection
 
-- Use MongoDB driver compatible with Cloudflare Workers (e.g., with `fetch` API).
-- Handle connections with environment variables.
+- ⏳ Configure MongoDB driver for Cloudflare Workers compatibility.
+- ⏳ Set up environment variables for database connection.
+- ⏳ Test connection pooling in serverless environment.
 
 ### 5. Implement API Routes
 
-- Set up the GraphQL endpoint to handle queries and mutations.
-- Ensure error handling and logging are in place.
+- ⏳ Complete GraphQL endpoint implementation in `app/api/graphql/route.ts`.
+- ⏳ Ensure error handling and logging are in place.
+- ⏳ Test all resolvers and datasources.
 
 ### 6. Test Locally
 
-- Run `bun run dev:frontend` and test `/api/graphql` endpoint.
+- Run `bun run dev` and test `/api/graphql` endpoint.
 
 ### 7. Update Frontend
 
-- ~Remove~ `NEXT_PUBLIC_GRAPHQL_SERVER` to `/api/graphql` in .env.local.
-- Update any hard-coded URLs in code.
+- ⏳ Update `NEXT_PUBLIC_GRAPHQL_SERVER` to `/api/graphql` in .env.local.
+- ⏳ Update any hard-coded GraphQL URLs in frontend code.
 
 ### 8. Deploy and Test
 
-- Build and deploy using OpenNext Cloudflare tools.
-- Test on staging environment.
+- ⏳ Build using `bun run build`.
+- ⏳ Deploy using OpenNext Cloudflare tools.
+- ⏳ Test on staging environment.
 
 ## Timeline
 
-- Planning: 1 hour
-- Implementation: 4-6 hours
-- Testing: 2-3 hours
+- Planning: ✅ 1 hour (completed)
+- Backend Migration: ✅ 2 hours (completed)
+- Database & API Implementation: ⏳ 2-3 hours (in progress)
+- Testing: ⏳ 2-3 hours (pending)
+- Deployment: ⏳ 1 hour (pending)
 
 ## Resources
 
