@@ -4,12 +4,12 @@ import { ApolloServer } from '@apollo/server';
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
 // import responseCachePlugin from 'apollo-server-plugin-response-cache';
-import BinanceAPI from '../datasources/binance';
-import MetadataAPI from '../datasources/metadata';
-import MybitxAPI from '../datasources/mybitx';
-import NamesAPI from '../datasources/names';
-import OrdersAPI from '../datasources/orders';
-import OrderModel from '../models/orders';
+// import BinanceAPI from '../datasources/binance';
+// import MetadataAPI from '../datasources/metadata';
+// import MybitxAPI from '../datasources/mybitx';
+// import NamesAPI from '../datasources/names';
+// import OrdersAPI from '../datasources/orders';
+// import OrderModel from '../models/orders';
 import resolverCount from '../resolvers/resolver-count';
 import resolverMarkets from '../resolvers/resolver-markets';
 import resolverMeta from '../resolvers/resolver-meta';
@@ -19,8 +19,8 @@ import resolverSummaries from '../resolvers/resolver-summaries';
 import resolverTickers from '../resolvers/resolver-tickers';
 // import { REDIS_OPTIONS } from '../config';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import OrdersQueueAPI from '../datasources/orders-queue';
-import OrderQueueModel from '../models/orders-queue';
+// import OrdersQueueAPI from '../datasources/orders-queue';
+// import OrderQueueModel from '../models/orders-queue';
 import resolverOrderQueues from '../resolvers/resolver-order-queues';
 import typeDefs from '../schema';
 
@@ -41,16 +41,16 @@ const apolloServer = new ApolloServer({
     resolverOrderQueues
   ]),
   // context: accountsGraphQL.context,
-  dataSources: () => ({
-    marketsAPI: new BinanceAPI(),
-    metadataAPI: new MetadataAPI(),
-    namesAPI: new NamesAPI(),
-    mybitxAPI: new MybitxAPI(),
-    ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }) as any,
-    ordersQueueAPI: new OrdersQueueAPI({
-      modelOrCollection: OrderQueueModel
-    }) as any
-  }),
+  // dataSources: () => ({
+  //   marketsAPI: new BinanceAPI(),
+  //   metadataAPI: new MetadataAPI(),
+  //   namesAPI: new NamesAPI(),
+  //   mybitxAPI: new MybitxAPI(),
+  //   ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }),
+  //   ordersQueueAPI: new OrdersQueueAPI({
+  //     modelOrCollection: OrderQueueModel
+  //   })
+  // }),
   // cache: new BaseRedisCache({
   //   client: new Redis(
   //     '127.0.0.1',

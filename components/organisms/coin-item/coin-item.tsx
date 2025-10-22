@@ -1,7 +1,3 @@
-import CoinSVG from '@/components/atoms/coin-svg';
-import CoinTicker from '@/components/organisms/coin-ticker';
-import { Market } from '@/graphql/types';
-import useFavourites from '@/hooks/use-favourites';
 import { ShoppingBasket, Star, StarBorder } from '@mui/icons-material';
 import {
   Box,
@@ -14,6 +10,10 @@ import {
   useMediaQuery
 } from '@mui/material';
 import clsx from 'clsx';
+import CoinSVG from 'components/atoms/coin-svg';
+import CoinTicker from 'components/organisms/coin-ticker';
+import { Market } from 'graphql/types';
+import useFavourites from 'hooks/use-favourites';
 import { useRouter } from 'next/router';
 import { Fragment, SyntheticEvent, memo } from 'react';
 import useStyles from './use-styles';
@@ -65,9 +65,7 @@ const CoinItem = memo(({ coin }: Props) => {
         placement="bottom"
       >
         <Button
-          aria-label={`${
-            isStarred ? 'Remove from' : 'Add to'
-          } your favourites`}
+          aria-label={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
           onClick={iconButtonHandler}
         >
           {isStarred ? <Star /> : <StarBorder />}
@@ -82,10 +80,7 @@ const CoinItem = memo(({ coin }: Props) => {
 
   return (
     <Fragment>
-      <ListItemButton
-        className={classes.listItem}
-        onClick={handleRowClick}
-      >
+      <ListItemButton className={classes.listItem} onClick={handleRowClick}>
         <ListItemIcon>
           <CoinSVG coinSymbol={coin.symbol} />
         </ListItemIcon>
@@ -101,9 +96,7 @@ const CoinItem = memo(({ coin }: Props) => {
           secondary="Live Price"
           className={clsx(classes.column, classes.ticker, coin.status)}
         />
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          {secondaryAction}
-        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>{secondaryAction}</Box>
       </ListItemButton>
       <Divider />
     </Fragment>

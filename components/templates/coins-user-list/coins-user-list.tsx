@@ -1,11 +1,10 @@
-import { isServer } from '@/common/utils';
-import Loader from '@/components/molecules/loader';
-import CoinItem from '@/components/organisms/coin-item';
-import { GET_MARKETS } from '@/graphql/queries';
-import { Market } from '@/graphql/types';
-import useFavourites from '@/hooks/use-favourites';
 import { useQuery } from '@apollo/client/react';
 import { List, Typography } from '@mui/material';
+import Loader from 'components/molecules/loader';
+import CoinItem from 'components/organisms/coin-item';
+import { GET_MARKETS } from 'graphql/queries';
+import { Market } from 'graphql/types';
+import useFavourites from 'hooks/use-favourites';
 import { isUndefined } from 'lodash';
 import { memo } from 'react';
 

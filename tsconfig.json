@@ -3,7 +3,36 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["./packages/frontend/*"]
-    }
-  }
+      "@/*": ["./next/*"]
+    },
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "incremental": true
+  },
+  "include": [
+    "common",
+    "components",
+    "context",
+    "graphql",
+    "hooks",
+    "pages",
+    "styles",
+    "open-next.config.ts"
+  ],
+  "exclude": ["server"]
 }

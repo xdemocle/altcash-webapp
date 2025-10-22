@@ -1,35 +1,35 @@
-import { COINS_PER_PAGE } from '@/common/constants';
-import { isServer } from '@/common/utils';
-import Loader from '@/components/molecules/loader';
-import CoinsListMap from '@/components/organisms/coins-list-map';
-import { GET_COUNT, GET_MARKETS } from '@/graphql/queries';
+import { useQuery } from '@apollo/client/react';
+import { Pagination, Typography } from '@mui/material';
+import { COINS_PER_PAGE } from 'common/constants';
+import Loader from 'components/molecules/loader';
+import CoinsListMap from 'components/organisms/coins-list-map';
+import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
 import {
   CountResponse,
   Market,
   MarketsResponse,
   MarketsVariables
-} from '@/graphql/types';
-import useGlobal from '@/hooks/use-global';
-import { useQuery } from '@apollo/client/react';
-import { Pagination, Typography } from '@mui/material';
+} from 'graphql/types';
+import useGlobal from 'hooks/use-global';
 import { clone, find } from 'lodash';
 import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useMemo } from 'react';
 import useStyles from './use-styles';
 
 const PaginationClient = dynamic(
-  () => Promise.resolve(({ count, page, onChange }: any) => (
-    <Pagination
-      count={count}
-      size="large"
-      color="primary"
-      page={page}
-      defaultPage={1}
-      siblingCount={6}
-      onChange={onChange}
-      className="pagination-coins-list"
-    />
-  )),
+  () =>
+    Promise.resolve(({ count, page, onChange }: any) => (
+      <Pagination
+        count={count}
+        size="large"
+        color="primary"
+        page={page}
+        defaultPage={1}
+        siblingCount={6}
+        onChange={onChange}
+        className="pagination-coins-list"
+      />
+    )),
   { ssr: false }
 );
 

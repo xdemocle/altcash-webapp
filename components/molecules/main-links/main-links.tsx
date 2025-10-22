@@ -1,4 +1,3 @@
-import { theme } from '@/common/theme';
 import {
   ContactSupportOutlined,
   HomeOutlined, // LockOutlined,
@@ -13,6 +12,7 @@ import {
   Tooltip
 } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
+import { theme } from 'common/theme';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 // import useAuth from '../../hooks/use-auth';
