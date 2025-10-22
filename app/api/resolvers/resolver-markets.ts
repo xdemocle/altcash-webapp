@@ -25,7 +25,9 @@ const queryMarkets = async (
   // Filter out markets with undefined baseAsset
   markets = filter(markets, (market) => {
     if (!market.baseAsset || market.baseAsset === 'undefined') {
-      logger.warn(`Filtering out market with undefined baseAsset: ${JSON.stringify(market)}`);
+      logger.warn(
+        `Filtering out market with undefined baseAsset: ${JSON.stringify(market)}`
+      );
       return false;
     }
     return true;
@@ -47,7 +49,9 @@ const queryMarkets = async (
 
     // Defensive check: skip if baseAsset is still undefined
     if (!market.baseAsset || market.baseAsset === 'undefined') {
-      logger.error(`SKIPPING market with undefined baseAsset after filter: ${JSON.stringify(market)}`);
+      logger.error(
+        `SKIPPING market with undefined baseAsset after filter: ${JSON.stringify(market)}`
+      );
       return;
     }
 
@@ -69,7 +73,9 @@ const queryMarkets = async (
   // Final filter: remove any markets with undefined ID
   markets = markets.filter((market) => {
     if (!market.id || market.id === 'undefined') {
-      logger.error(`FINAL FILTER: Removing market with undefined ID: ${JSON.stringify(market)}`);
+      logger.error(
+        `FINAL FILTER: Removing market with undefined ID: ${JSON.stringify(market)}`
+      );
       return false;
     }
     return true;
@@ -192,7 +198,7 @@ const queryCanTrade = (
   __: unknown,
   { dataSources }: { dataSources: DataSources }
 ): AccountStatus => {
-  return dataSources.marketsAPI.getCanTrade();
+  return dataSources.marketsAPI.getCanTrade?.();
 };
 
 // Resolvers define the technique for fetching the types defined in the

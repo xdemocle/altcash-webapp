@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { DataSource as ApolloDataSource } from 'apollo-datasource';
 import { Document } from 'mongoose';
 
 export interface AccountStatus {
@@ -147,7 +148,7 @@ export interface UpdateOrderQueueParams {
   hasErrors?: boolean;
 }
 
-export declare abstract class DataSource {
+export declare abstract class DataSource extends ApolloDataSource {
   getCanTrade(): AccountStatus;
   executeOrders(orders: OrderQueue[]): OrderQueue[];
   getAllMarkets(): Market[];
@@ -163,7 +164,11 @@ export declare abstract class DataSource {
   getQueue(id: string): OrderQueue;
   createOrder(amount: string, total: string, symbol: string): Order;
   updateOrder(id: string, input: OrderParams): Order;
-  createQueue(orderId: string, isExecuted: boolean, isFilled: boolean): OrderQueue;
+  createQueue(
+    orderId: string,
+    isExecuted: boolean,
+    isFilled: boolean
+  ): OrderQueue;
   updateQueue(id: string, input: UpdateOrderQueueParams): OrderQueue;
   getAll(): Metadata[];
   missingData(): Metadata[];
@@ -181,30 +186,30 @@ export interface BinanceOrderResponse {
     // symbol: 'XRPBTC',
     symbol: string;
     // orderId: 196334,
-    orderId: number,
+    orderId: number;
     // orderListId: -1,
-    orderListId: number,
+    orderListId: number;
     // clientOrderId: 'ZiYunMe8S7XEmq8AtcUk7N',
-    clientOrderId: string,
+    clientOrderId: string;
     // transactTime: 1658591808732,
-    transactTime: number,
+    transactTime: number;
     // price: '0.00000000',
-    price: string,
+    price: string;
     // origQty: '20.00000000',
-    origQty: string,
+    origQty: string;
     // executedQty: '0.00000000',
-    executedQty: string,
+    executedQty: string;
     // cummulativeQuoteQty: '0.00000000',
-    cummulativeQuoteQty: string,
+    cummulativeQuoteQty: string;
     // status: 'EXPIRED',
-    status: string,
+    status: string;
     // timeInForce: 'GTC',
-    timeInForce: string,
+    timeInForce: string;
     // type: 'MARKET',
-    type: string,
+    type: string;
     // side: 'BUY',
-    side: string,
+    side: string;
     // fills: []
-    fills: string[]
-  }
+    fills: string[];
+  };
 }
