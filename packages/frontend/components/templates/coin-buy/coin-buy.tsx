@@ -288,22 +288,23 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
                 </ReactPlaceholder>
               }
               variant="outlined"
-              inputProps={{
-                maxLength: '25',
-                min: Number((minTradeAmount || 0).toFixed(2)),
-                inputMode: 'numeric',
-                pattern: '[0-9]*'
-              }}
               type="number"
-              InputProps={{
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                inputComponent: NumberFormatCustom as any,
-                startAdornment: (
-                  <InputAdornment position="start">R</InputAdornment>
-                )
+              slotProps={{
+                input: {
+                  component: NumberFormatCustom as any,
+                  startAdornment: (
+                    <InputAdornment position="start">R</InputAdornment>
+                  )
+                },
+                htmlInput: {
+                  maxLength: 25,
+                  min: Number((minTradeAmount || 0).toFixed(2)),
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*'
+                }
               }}
               value={localCurrency.toFixed(2)}
-              onChange={(e) => setLocalCurrency(Number(e.target.value))}
+              // onChange={(e) => setLocalCurrency(Number(e.target.value))}
               onFocus={onFocusInputHandler}
               disabled={formDisabled}
               onBlur={onBlurLocalCurrencyHandler}
@@ -340,12 +341,14 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
                 </ReactPlaceholder>
               }
               variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    {coin.symbol || ''}
-                  </InputAdornment>
-                )
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      {coin.symbol || ''}
+                    </InputAdornment>
+                  )
+                }
               }}
               value={String(cryptoCurrency)}
               onFocus={onFocusInputHandler}
