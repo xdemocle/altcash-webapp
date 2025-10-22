@@ -15,14 +15,14 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import { Fragment, SyntheticEvent } from 'react';
+import { Fragment, SyntheticEvent, memo } from 'react';
 import useStyles from './use-styles';
 
 type Props = {
   coin: Market;
 };
 
-const CoinItem = ({ coin }: Props) => {
+const CoinItem = memo(({ coin }: Props) => {
   const router = useRouter();
   const { classes } = useStyles();
   const showBuy = useMediaQuery('(min-width:600px)');
@@ -108,6 +108,8 @@ const CoinItem = ({ coin }: Props) => {
       <Divider />
     </Fragment>
   );
-};
+});
+
+CoinItem.displayName = 'CoinItem';
 
 export default CoinItem;

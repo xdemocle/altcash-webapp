@@ -13,35 +13,37 @@ import useGlobal from '@/hooks/use-global';
 import { useQuery } from '@apollo/client/react';
 import { Pagination, Typography } from '@mui/material';
 import { clone, find } from 'lodash';
-import { ChangeEvent, Fragment } from 'react';
+import { ChangeEvent, Fragment, memo, useMemo } from 'react';
 import useStyles from './use-styles';
 
 interface CoinsListProps {
   markets: Market[];
 }
 
-const CoinsList = ({ markets }: CoinsListProps) => {
+const CoinsList = memo(({ markets }: CoinsListProps) => {
   const { classes } = useStyles();
   const { coinListPage, coinPageNeedle, setCoinListPage } = useGlobal();
   const { data: dataCount } = useQuery<CountResponse>(GET_COUNT, {
     fetchPolicy: 'cache-and-network'
   });
+  const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
   const { loading, error, data, networkStatus } = useQuery<
     MarketsResponse,
     MarketsVariables
   >(GET_MARKETS, {
     // We refresh data list at least at reload
     fetchPolicy: 'cache-and-network',
+    skip: !shouldQuerySearch,
     variables: {
-      term: coinPageNeedle
+      term: shouldQuerySearch ? coinPageNeedle : ''
     }
   });
-  const dataCoins = data?.markets ?? markets;
+  const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
 
   const getListSlice = (limit: number) => {
     const list = dataCoins ? clone(dataCoins) : [];
 
-    if (coinPageNeedle && !!coinPageNeedle.length) {
+    if (shouldQuerySearch) {
       return list;
     }
 
@@ -54,13 +56,22 @@ const CoinsList = ({ markets }: CoinsListProps) => {
     setCoinListPage(page);
   };
 
-  const hidePagination = coinPageNeedle && !!coinPageNeedle.length;
-  const coinsList = getListSlice(COINS_PER_PAGE);
-  const coinsTotal =
-    dataCount && dataCount.count
-      ? (find(dataCount.count, { name: 'markets' })?.count ?? 0)
-      : 0;
-  const paginationPages = Math.floor(coinsTotal / COINS_PER_PAGE);
+  const hidePagination = shouldQuerySearch;
+  const coinsList = useMemo(
+    () => getListSlice(COINS_PER_PAGE),
+    [dataCoins, coinPageNeedle, coinListPage]
+  );
+  const coinsTotal = useMemo(
+    () =>
+      dataCount && dataCount.count
+        ? (find(dataCount.count, { name: 'markets' })?.count ?? 0)
+        : 0,
+    [dataCount]
+  );
+  const paginationPages = useMemo(
+    () => Math.floor(coinsTotal / COINS_PER_PAGE),
+    [coinsTotal]
+  );
 
   return (
     <Fragment>
@@ -96,6 +107,8 @@ const CoinsList = ({ markets }: CoinsListProps) => {
       )}
     </Fragment>
   );
-};
+});
+
+CoinsList.displayName = 'CoinsList';
 
 export default CoinsList;

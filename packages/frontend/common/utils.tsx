@@ -6,7 +6,9 @@ export const svgCoinPathHelper = (name: string) => {
   try {
     return require(`cryptocurrency-icons/svg/color/${name}.svg`);
   } catch (err) {
-    console.debug(`SVG not found for coin: ${name}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`SVG not found for coin: ${name}`);
+    }
     return null;
   }
 };

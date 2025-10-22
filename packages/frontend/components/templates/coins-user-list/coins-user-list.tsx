@@ -7,13 +7,14 @@ import useFavourites from '@/hooks/use-favourites';
 import { useQuery } from '@apollo/client/react';
 import { List, Typography } from '@mui/material';
 import { isUndefined } from 'lodash';
+import { memo } from 'react';
 
 interface CoinsUserListProps {
   predefined?: string[];
   markets: Market[];
 }
 
-const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
+const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   const { userCoinFavourites } = useFavourites();
   const { loading, data, networkStatus } = useQuery<{ markets: Market[] }>(
     GET_MARKETS,
@@ -42,8 +43,8 @@ const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
       )}
       {coinsList && coinsList.length > 0 && (
         <List>
-          {coinsList.map((coin: Market, ix: number) => (
-            <CoinItem key={`${coin.name}${ix}`} coin={coin} />
+          {coinsList.map((coin: Market) => (
+            <CoinItem key={coin.id} coin={coin} />
           ))}
         </List>
       )}
@@ -63,6 +64,8 @@ const CoinsUserList = ({ predefined, markets }: CoinsUserListProps) => {
       )}
     </div>
   );
-};
+});
+
+CoinsUserList.displayName = 'CoinsUserList';
 
 export default CoinsUserList;

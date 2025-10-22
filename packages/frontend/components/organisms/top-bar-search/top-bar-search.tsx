@@ -1,27 +1,49 @@
 import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import useGlobal from '../../../hooks/use-global';
 
 const TopBarSearch = () => {
   const router = useRouter();
   const { coinPageNeedle, setCoinPageNeedle, setTab } = useGlobal();
+  const [inputValue, setInputValue] = useState(coinPageNeedle);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateNeedle = (needle: string) => {
     setCoinPageNeedle(needle);
   };
 
   const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    if (!event.target.value.length) {
-      return;
+    const value = event.target.value;
+    setInputValue(value);
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
     }
-    updateNeedle(event.target.value);
+
+    debounceTimerRef.current = setTimeout(() => {
+      if (value.trim().length > 0) {
+        updateNeedle(value);
+      } else if (coinPageNeedle) {
+        updateNeedle('');
+      }
+    }, 300);
   };
 
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
   const onFocusHandler = () => {
-    router.push('/buy/all');
     setTab(1);
+    if (router.pathname !== '/buy/[tab]' || router.query.tab !== 'all') {
+      router.push('/buy/all', undefined, { shallow: true });
+    }
   };
 
   return (
@@ -31,7 +53,7 @@ const TopBarSearch = () => {
         placeholder="Type the coin name"
         fullWidth
         variant="outlined"
-        value={coinPageNeedle}
+        value={inputValue}
         onChange={onChangeHandler}
         onFocus={onFocusHandler}
         InputProps={{
@@ -42,11 +64,14 @@ const TopBarSearch = () => {
           ),
           endAdornment: (
             <InputAdornment position="end">
-              {coinPageNeedle && (
+              {inputValue && (
                 <IconButton
                   color="primary"
                   aria-label="Reset search results"
-                  onClick={() => updateNeedle('')}
+                  onClick={() => {
+                    setInputValue('');
+                    updateNeedle('');
+                  }}
                 >
                   <Close />
                 </IconButton>
