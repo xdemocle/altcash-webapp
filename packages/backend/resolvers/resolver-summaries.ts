@@ -5,6 +5,17 @@ const querySummary = async (
   { id }: { id: string },
   { dataSources }: { dataSources: DataSources }
 ): Promise<Summary> => {
+  if (!id || id === 'undefined' || id === undefined) {
+    return {
+      id: '',
+      symbol: '',
+      high: 0,
+      low: 0,
+      volume: 0,
+      quoteVolume: 0,
+      percentChange: 0
+    } as any;
+  }
   const response = await dataSources.marketsAPI.getSummary(id);
 
   response.symbol = response.symbol.replace('BTC', '');

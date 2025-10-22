@@ -22,6 +22,15 @@ const queryMarkets = async (
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
 
+  // Filter out markets with undefined baseAsset
+  markets = filter(markets, (market) => {
+    if (!market.baseAsset || market.baseAsset === 'undefined') {
+      logger.warn(`Filtering out market with undefined baseAsset: ${JSON.stringify(market)}`);
+      return false;
+    }
+    return true;
+  });
+
   // Add names
   each(markets, async (market) => {
     const nameCoin = find(names, (name) => {
@@ -34,6 +43,12 @@ const queryMarkets = async (
       }
     } else {
       market.name = nameCoin.name;
+    }
+
+    // Defensive check: skip if baseAsset is still undefined
+    if (!market.baseAsset || market.baseAsset === 'undefined') {
+      logger.error(`SKIPPING market with undefined baseAsset after filter: ${JSON.stringify(market)}`);
+      return;
     }
 
     market.id = market.symbol = market.baseAsset;
@@ -49,6 +64,15 @@ const queryMarkets = async (
     market.stepSize = Number(
       find(market.filters, { filterType: 'LOT_SIZE' })?.stepSize
     );
+  });
+
+  // Final filter: remove any markets with undefined ID
+  markets = markets.filter((market) => {
+    if (!market.id || market.id === 'undefined') {
+      logger.error(`FINAL FILTER: Removing market with undefined ID: ${JSON.stringify(market)}`);
+      return false;
+    }
+    return true;
   });
 
   // Order by name
@@ -115,6 +139,21 @@ const queryMarket = async (
   { id }: { id: string },
   { dataSources }: { dataSources: DataSources }
 ): Promise<Market> => {
+  if (!id || id === 'undefined' || id === undefined) {
+    return {
+      id: '',
+      symbol: '',
+      baseAsset: '',
+      quoteAsset: '',
+      quotePrecision: 0,
+      filters: [],
+      minNotional: 0,
+      minTradeSize: 0,
+      stepSize: 0,
+      status: '',
+      name: ''
+    } as any;
+  }
   const market = await dataSources.marketsAPI.getMarket(id);
   let metaCoin = {
     name: ''

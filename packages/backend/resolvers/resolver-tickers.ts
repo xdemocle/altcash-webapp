@@ -23,6 +23,13 @@ const queryTicker = async (
   { id }: { id: string },
   { dataSources }: { dataSources: DataSources }
 ): Promise<Ticker> => {
+  if (!id || id === 'undefined' || id === undefined) {
+    return {
+      id: '',
+      price: '0',
+      symbol: ''
+    } as any;
+  }
   const response = await dataSources.marketsAPI.getTicker(id);
 
   // Add the id for client caching purpouse

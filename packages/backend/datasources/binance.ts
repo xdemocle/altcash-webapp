@@ -40,26 +40,43 @@ class BinanceAPI extends RESTDataSource {
     return await this.get('time');
   }
 
-  async getAllMarkets(): Promise<Record<string, string>> {
+  async getAllMarkets(): Promise<Record<string, string>[]> {
     const response = await this.get('exchangeInfo');
     let symbols = response.symbols;
 
-    // Removing not needed ma.'rkets
+    logger.debug(`Total markets from Binance: ${symbols.length}`);
+
+    // Removing not needed markets
     symbols = filter(symbols, (market) => {
+      if (!market.baseAsset || market.baseAsset === 'undefined') {
+        logger.error(`FILTERING OUT market with undefined baseAsset: ${JSON.stringify(market)}`);
+        return false;
+      }
       return market.quoteAsset === 'BTC';
     });
+
+    logger.debug(`Filtered markets (BTC pairs): ${symbols.length}`);
+    const undefinedMarkets = symbols.filter(m => !m.baseAsset || m.baseAsset === 'undefined');
+    if (undefinedMarkets.length > 0) {
+      logger.error(`STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`);
+    }
 
     return symbols;
   }
 
   async getMarket(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
+      logger.error(`BLOCKING getMarket call with undefined symbol: ${symbol}`);
+      throw new Error(`Invalid symbol provided to getMarket: ${symbol}`);
+    }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
+    logger.debug(`getMarket called with symbol: ${symbol}, marketSymbol: ${marketSymbol}`);
     const response = await this.get(`exchangeInfo?symbol=${marketSymbol}`);
 
     return response.symbols[0];
   }
 
-  async getAllTickers(): Promise<Record<string, string>> {
+  async getAllTickers(): Promise<Record<string, string>[]> {
     let response = await this.get('ticker/price');
 
     // Removing not needed markets
@@ -76,19 +93,23 @@ class BinanceAPI extends RESTDataSource {
   }
 
   async getTicker(symbol: string): Promise<Record<string, string>> {
-    if (!symbol || symbol === 'undefined') {
-      throw new Error('Invalid symbol provided to getTicker');
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
+      logger.error(`BLOCKING getTicker call with undefined symbol: ${symbol}`);
+      throw new Error(`Invalid symbol provided to getTicker: ${symbol}`);
     }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
+    logger.debug(`getTicker called with symbol: ${symbol}`);
 
     return await this.get(`ticker/price?symbol=${marketSymbol}`);
   }
 
   async getSummary(symbol: string): Promise<Record<string, string>> {
-    if (!symbol || symbol === 'undefined') {
-      throw new Error('Invalid symbol provided to getSummary');
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
+      logger.error(`BLOCKING getSummary call with undefined symbol: ${symbol}`);
+      throw new Error(`Invalid symbol provided to getSummary: ${symbol}`);
     }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
+    logger.debug(`getSummary called with symbol: ${symbol}`);
 
     return await this.get(`ticker/24hr?symbol=${marketSymbol}`);
   }

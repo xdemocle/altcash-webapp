@@ -5,6 +5,9 @@ const queryMetaCoin = async (
   { id }: { id: string },
   { dataSources }: { dataSources: DataSources }
 ): Promise<Metadata> => {
+  if (!id || id === 'undefined') {
+    throw new Error('Invalid id provided to queryMetaCoin');
+  }
   const idUppercase = id.toUpperCase();
   const idLowerCase = id.toLowerCase();
   const response: Metadata = await dataSources.metadataAPI.getCoin(idLowerCase);
