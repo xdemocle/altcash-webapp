@@ -16,8 +16,9 @@ type Props = {
 const CoinTicker = memo(({ coin }: Props) => {
   const { data } = useQuery<{ ticker: Ticker }, { id: string }>(GET_TICKER, {
     fetchPolicy: 'cache-first',
+    skip: !coin || !coin.id,
     variables: {
-      id: coin && coin.id
+      id: coin?.id || ''
     }
   });
 
