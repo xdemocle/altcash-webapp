@@ -1,4 +1,3 @@
-import { PaystackProps } from 'react-paystack/dist/types';
 import { PAYSTACK_EMAIL, PAYSTACK_PUBLICK_KEY } from './constants';
 import { PaystackCurrency } from './types';
 
@@ -24,12 +23,12 @@ export const persistFavourites = (coins: string[]) => {
 
 export const getPaystackConfig = (amount: number) => {
   return {
-    reference: new Date().getTime().toString(),
-    email: PAYSTACK_EMAIL,
+    key: PAYSTACK_PUBLICK_KEY as string,
+    email: PAYSTACK_EMAIL as string,
     amount: Number(Number(amount * 100).toFixed(0)),
-    currency: 'ZAR' as PaystackCurrency,
-    publicKey: PAYSTACK_PUBLICK_KEY
-  } as PaystackProps;
+    reference: new Date().getTime().toString(),
+    currency: 'ZAR' as PaystackCurrency
+  };
 };
 
 export const isServer = () => typeof window === 'undefined';

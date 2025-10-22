@@ -39,12 +39,6 @@ import useRound from '../../../hooks/use-round';
 import NumberFormatCustom from '../../atoms/number-format-custom';
 import useStyles from './use-styles';
 
-let usePaystackPayment: any = null;
-if (typeof window !== 'undefined') {
-  const { usePaystackPayment: hook } = require('react-paystack');
-  usePaystackPayment = hook;
-}
-
 interface CoinBuyProps {
   coin: Market;
   ticker: Ticker;
@@ -65,15 +59,17 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [localCurrency, setLocalCurrency] = useState(0);
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
   const { multiplier } = useMultiplier(ticker);
-  const [initializePayment, setInitializePayment] = useState<any>(null);
+  const [paystack, setInitializePayment] = useState<any>(null);
 
   // Only initialize Paystack on client side
   useEffect(() => {
-    if (typeof window !== 'undefined' && usePaystackPayment) {
-      const payment = usePaystackPayment(getPaystackConfig(totalAmount));
-      setInitializePayment(() => payment);
-    }
-  }, [totalAmount]);
+    if (!!paystack) return;
+
+    import('@paystack/inline-js').then((Paystack) => {
+      const paystack = new Paystack.default();
+      setInitializePayment(paystack);
+    });
+  }, []);
 
   const [createOrder, { error: errorCreateOrder }] = useMutation<
     { createOrder: Order },
@@ -212,8 +208,9 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
         coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER +
           MIN_AMOUNT_EXTRA
       ) {
-        initializePayment({
-          onSuccess: onPaymentSuccess as () => void,
+        paystack.newTransaction({
+          ...getPaystackConfig(totalAmount),
+          onSuccess: onPaymentSuccess,
           onClose: onPaymentClose
         });
       }
