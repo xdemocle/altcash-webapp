@@ -1,8 +1,9 @@
 // import Redis from 'ioredis';
-// import { BaseRedisCache } from 'apollo-server-cache-redis';
 import { ApolloServer } from '@apollo/server';
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+// import Keyv from 'keyv';
+// import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 // import responseCachePlugin from 'apollo-server-plugin-response-cache';
 // import BinanceAPI from '../datasources/binance';
 // import MetadataAPI from '../datasources/metadata';
@@ -52,11 +53,9 @@ const apolloServer = new ApolloServer({
   //   })
   // }),
   // cache: new BaseRedisCache({
-  //   client: new Redis(
-  //     '127.0.0.1',
-  //     REDIS_OPTIONS
-  //   ),
   // }),
+  // todo kv
+  // cache: new KeyvAdapter(new Keyv()),
   cache: new InMemoryLRUCache({
     max: 500,
     // ~100MiB
