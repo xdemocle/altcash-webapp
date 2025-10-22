@@ -4,7 +4,7 @@ import { each, filter, find } from 'lodash';
 import {
   BINANCE_API_KEY,
   BINANCE_API_KEY_TESTNET,
-  BINANCE_API_SECRET,ß
+  BINANCE_API_SECRET,
   BINANCE_API_SECRET_TESTNET,
   BINANCE_API_URL
 } from '../config';
@@ -173,7 +173,7 @@ class BinanceAPI extends RESTDataSource {
     };
   }
 
-  async postOrder(order: Order): Promise<BinanceOrderResponse | Error> {
+  async postOrder(order: Order): Promise<BinanceOrderResponse | Error | { data: any }> {
     const accountData = await this.getAccountData();
 
     if (!accountData.canTrade) {
@@ -184,7 +184,7 @@ class BinanceAPI extends RESTDataSource {
     const accountBalance = find(accountData.balances as any, { asset: 'BTC' });
     logger.debug(`accountBalance: ${JSON.stringify(accountBalance)}`);
 
-    let apiResponse = null;
+    let apiResponse: BinanceOrderResponse | { data: any } | null = null;
 
     // Check if account has funds
     if (Number(accountBalance.free) > 0.0006) {
@@ -220,7 +220,7 @@ class BinanceAPI extends RESTDataSource {
       };
     }
 
-    return apiResponse;
+    return apiResponse as BinanceOrderResponse | { data: any };
   }
 }
 
