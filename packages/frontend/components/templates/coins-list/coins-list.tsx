@@ -81,7 +81,7 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
         <Typography variant="subtitle1">No results...</Typography>
       )}
 
-      {!isServer() && loading && !coinsList.length && (
+      {loading && !coinsList.length && (
         <Loader
           text={
             <Typography variant="subtitle1">Loading coins list...</Typography>
@@ -91,8 +91,8 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
 
       {coinsList && <CoinsListMap markets={coinsList} />}
 
-      {!isServer() && !hidePagination && (
-        <div className={classes.pagination}>
+      {!hidePagination && (
+        <div className={classes.pagination} suppressHydrationWarning>
           <Pagination
             count={paginationPages}
             size="large"

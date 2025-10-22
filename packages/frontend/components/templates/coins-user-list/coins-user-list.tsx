@@ -29,7 +29,7 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
 
   const isFeaturedView = !isUndefined(predefined);
   const dataCoins = data?.markets;
-  const coinsList = isServer() ? markets : (dataCoins || []);
+  const coinsList = dataCoins || markets;
 
   return (
     <div>
@@ -48,12 +48,12 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
           ))}
         </List>
       )}
-      {!isServer() && !dataCoins && !loading && (
-        <Typography variant="subtitle1">
+      {!dataCoins && !loading && (
+        <Typography variant="subtitle1" suppressHydrationWarning>
           No coins available
         </Typography>
       )}
-      {!isServer() && loading && (!coinsList || networkStatus === 4) && (
+      {loading && (!coinsList || networkStatus === 4) && (
         <Loader
           text={
             <Typography variant="subtitle1">
