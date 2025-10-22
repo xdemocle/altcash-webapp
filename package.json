@@ -55,6 +55,7 @@
     "@apollo/server": "^5.0.0",
     "@apollo/utils.keyvaluecache": "^4.0.0",
     "@as-integrations/next": "^4.0.0",
+    "@binance/connector-typescript": "^0.3.16",
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",

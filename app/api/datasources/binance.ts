@@ -1,5 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { Spot } from '@binance/connector';
+import { Spot } from '@binance/connector-typescript';
 import { each, filter, find } from 'lodash';
 import {
   BINANCE_API_KEY,
@@ -173,7 +173,9 @@ class BinanceAPI extends RESTDataSource {
     };
   }
 
-  async postOrder(order: Order): Promise<BinanceOrderResponse | Error | { data: any }> {
+  async postOrder(
+    order: Order
+  ): Promise<BinanceOrderResponse | Error | { data: any }> {
     const accountData = await this.getAccountData();
 
     if (!accountData.canTrade) {
