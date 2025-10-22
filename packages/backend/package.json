@@ -4,6 +4,7 @@
   "author": "Rocco R. <im@rocco.me>",
   "main": "index.ts",
   "dependencies": {
+    "bson": "^6.10.0",
     "@binance/connector": "^3.6.1",
     "@graphql-modules/core": "^0.7.17",
     "@graphql-tools/graphql-file-loader": "^8.1.2",
