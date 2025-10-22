@@ -28,18 +28,15 @@ type DataSourcesFn = () => DataSources;
 
 interface ContextWithDataSources extends BaseContext {
   dataSources?: DataSources;
-  resolvers?: any;
 }
 
 export const runtime = 'edge';
 
 export const ApolloDataSources = (options: {
   dataSources: DataSourcesFn;
-  resolvers: any;
 }): ApolloServerPlugin<ContextWithDataSources> => ({
   requestDidStart: async (requestContext) => {
     const dataSources = options.dataSources();
-    const resolvers = options.resolvers;
     const initializers = Object.values(dataSources).map(async (dataSource) => {
       if (dataSource.initialize)
         dataSource.initialize({
@@ -51,7 +48,6 @@ export const ApolloDataSources = (options: {
     await Promise.all(initializers);
 
     requestContext.contextValue.dataSources = dataSources;
-    requestContext.contextValue.resolvers = resolvers;
   }
 });
 
@@ -61,7 +57,9 @@ const dataSources: DataSourcesFn = () => ({
   namesAPI: new NamesAPI() as any,
   mybitxAPI: new MybitxAPI() as any,
   ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }) as any,
-  ordersQueueAPI: new OrdersQueueAPI({ modelOrCollection: OrderQueueModel }) as any
+  ordersQueueAPI: new OrdersQueueAPI({
+    modelOrCollection: OrderQueueModel
+  }) as any
 });
 
 const resolvers = mergeResolvers([
@@ -73,12 +71,13 @@ const resolvers = mergeResolvers([
   resolverTickers,
   resolverOrders,
   resolverOrderQueues
-]) as any;
+]);
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const apolloServer = new ApolloServer({
   typeDefs: mergeTypeDefs([typeDefs]),
+  resolvers,
   // todo kv
   cache: new InMemoryLRUCache({
     max: 500,
@@ -89,7 +88,7 @@ const apolloServer = new ApolloServer({
   }),
   csrfPrevention: true,
   introspection: true,
-  plugins: [ApolloDataSources({ dataSources, resolvers })]
+  plugins: [ApolloDataSources({ dataSources })]
 });
 
 export default startServerAndCreateNextHandler(apolloServer);
