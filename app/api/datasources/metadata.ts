@@ -1,4 +1,8 @@
-import { RESTDataSource } from 'apollo-datasource-rest';
+import {
+  AugmentedRequest,
+  CacheOptions,
+  RESTDataSource
+} from '@apollo/datasource-rest';
 import { each } from 'lodash';
 import { CMC_PRO_API_KEY } from '../config';
 import { Metadata } from '../types';
@@ -9,10 +13,11 @@ class MetadataAPI extends RESTDataSource {
     this.baseURL = 'https://pro-api.coinmarketcap.com/v2';
   }
 
-  willSendRequest(request: {
-    headers: { set: (arg0: string, arg1: string) => void };
-  }): void {
-    request.headers.set('X-CMC_PRO_API_KEY', CMC_PRO_API_KEY);
+  override willSendRequest(
+    _path: string,
+    requestOpts: AugmentedRequest<CacheOptions>
+  ) {
+    requestOpts.headers['X-CMC_PRO_API_KEY'] = CMC_PRO_API_KEY;
   }
 
   async getCoin(symbol: string): Promise<Metadata> {

@@ -1,4 +1,4 @@
-import { RESTDataSource } from 'apollo-datasource-rest';
+import { RESTDataSource } from '@apollo/datasource-rest';
 import { Pair } from '../types';
 
 class MybitxAPI extends RESTDataSource {

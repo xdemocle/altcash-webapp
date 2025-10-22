@@ -127,7 +127,7 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
         isFilled,
         hasErrors
       });
-    } catch (error) {
+    } catch (error: any) {
       this.markQueueWithError(order);
       this.updateOrderHasErrors(order);
 
@@ -165,7 +165,7 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
 
     // Check if each order are already present
     orders.forEach(async (order) => {
-      const isPresent = queue.find((e) => e.orderId === String(order._id));
+      const isPresent = queue?.find((e) => e.orderId === String(order._id));
 
       if (!isPresent) {
         this.executeExchangeOrder(order);

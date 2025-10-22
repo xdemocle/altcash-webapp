@@ -1,5 +1,4 @@
 import { DataSource } from 'apollo-datasource';
-import { each } from 'lodash';
 import missings from '../data/missings.json';
 import names from '../data/names.json';
 import { Metadata } from '../types';
@@ -19,7 +18,7 @@ class NamesAPI extends DataSource {
       });
     }
 
-    each(missings, (missing: Metadata) => {
+    missings.forEach((missing: any) => {
       arr.push({
         id: missing.symbol,
         symbol: missing.symbol,
