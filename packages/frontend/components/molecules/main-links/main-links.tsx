@@ -30,10 +30,7 @@ const StyledList = styled(List)({
 const StyledListItemIcon = styled(ListItemIcon)({
   marginLeft: '1.3rem',
   marginRight: '0.4rem',
-  color: '#666',
-  '.active &': {
-    color: '#fff'
-  }
+  color: 'inherit'
 });
 
 const StyledListItemText = styled(ListItemText)({
@@ -67,9 +64,9 @@ const StyledListItemButton = ({
         height: '4.75rem',
         width: '100%',
         textDecoration: 'none !important',
-        color: 'inherit',
+        color: theme.palette.text.primary,
         '&:visited': {
-          color: 'inherit'
+          color: theme.palette.text.primary
         },
         '&:hover': {
           backgroundColor: theme.palette.action.hover
@@ -88,20 +85,29 @@ const StyledListItemButton = ({
           zIndex: -1
         },
         '&:hover::after': {
-          opacity: 0.1
+          opacity: 0.1,
+          color: theme.palette.action.hover
         },
         ...(selected && {
-          '&.active::after': {
+          '&': {
+            color: theme.palette.primary.contrastText
+          },
+          '&::after': {
             content: '""',
             position: 'absolute',
             top: '50%',
-            transform: 'translateY(-50%)',
+            transform: 'translateY(-50%) rotate(-8deg)',
             left: '1.5rem',
             width: '3.2rem',
             height: '3.2rem',
             borderRadius: '.6rem',
             backgroundColor: theme.palette.primary.main,
+            opacity: 0.5,
             zIndex: -1
+          },
+          '&:hover::after': {
+            opacity: 1,
+            color: theme.palette.action.hover
           }
         })
       }}
@@ -128,7 +134,11 @@ const MainLinks = ({ isSidebarOpen }: Props) => {
           placement="right"
           enterDelay={isSidebarOpen ? 2000 : 50}
         >
-          <StyledListItemButton href="/" label="Home">
+          <StyledListItemButton
+            href="/"
+            label="Home"
+            selected={router.pathname == '/'}
+          >
             <HomeOutlined />
           </StyledListItemButton>
         </Tooltip>
