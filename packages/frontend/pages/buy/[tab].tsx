@@ -18,7 +18,7 @@ import {
 import TopBarSearch from '../../components/organisms/top-bar-search';
 import CoinsList from '../../components/templates/coins-list';
 import CoinsUserList from '../../components/templates/coins-user-list';
-import { GET_META_COIN_LOGO, GET_MARKETS, GET_PAIR } from '../../graphql/queries';
+import { GET_META_COIN_LOGO, GET_MARKETS, GET_PAIR, GET_TICKER } from '../../graphql/queries';
 import { Market } from '../../graphql/types';
 import useGlobal from '../../hooks/use-global';
 import useStyles from '../../styles/buy-use-styles';
@@ -146,9 +146,20 @@ export async function getServerSideProps(context: any) {
       variables: { pair: 'XBTZAR' }
     });
 
+    const markets = data?.markets || [];
+    
+    await Promise.all(
+      markets.map((market) =>
+        apolloClient.query({
+          query: GET_TICKER,
+          variables: { id: market.id }
+        }).catch(() => null)
+      )
+    );
+
     return {
       props: {
-        markets: data?.markets || []
+        markets
       }
     };
   } catch (error) {
