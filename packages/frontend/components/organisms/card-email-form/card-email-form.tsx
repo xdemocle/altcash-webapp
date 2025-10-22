@@ -68,16 +68,11 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
                     placeholder="Insert your e-mail"
                     fullWidth
                     variant="outlined"
-                    inputProps={{
-                      maxLength: '25'
+                    slotProps={{
+                      htmlInput: {
+                        maxLength: 25
+                      }
                     }}
-                    // InputProps={{
-                    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    //   inputComponent: NumberFormatCustom as any,
-                    //   startAdornment: (
-                    //     <InputAdornment position="start">R</InputAdornment>
-                    //   )
-                    // }}
                     value={emailValue}
                     onChange={(e) => setEmailValue(e.target.value)}
                   />

@@ -36,7 +36,6 @@ import { Market, Order, OrderParams, Ticker } from '../../../graphql/types';
 import useGlobal from '../../../hooks/use-global';
 import useMultiplier from '../../../hooks/use-multiplier';
 import useRound from '../../../hooks/use-round';
-import NumberFormatCustom from '../../atoms/number-format-custom';
 import NumberFormatText from '../../atoms/number-format-text';
 import useStyles from './use-styles';
 
@@ -292,7 +291,6 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               type="number"
               slotProps={{
                 input: {
-                  component: NumberFormatCustom as any,
                   startAdornment: (
                     <InputAdornment position="start">R</InputAdornment>
                   )
@@ -305,7 +303,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
                 }
               }}
               value={localCurrency.toFixed(2)}
-              // onChange={(e) => setLocalCurrency(Number(e.target.value))}
+              onChange={(e) => setLocalCurrency(Number(e.target.value))}
               onFocus={onFocusInputHandler}
               disabled={formDisabled}
               onBlur={onBlurLocalCurrencyHandler}

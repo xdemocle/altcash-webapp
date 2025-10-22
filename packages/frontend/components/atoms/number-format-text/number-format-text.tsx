@@ -1,22 +1,15 @@
-import { NumericFormat } from 'react-number-format';
-
 interface NumberFormatTextProps {
   value: number;
   decimalScale?: number;
 }
 
 const NumberFormatText = ({ value, decimalScale = 2 }: NumberFormatTextProps) => {
-  return (
-    <span>
-      <NumericFormat
-        value={value}
-        displayType="text"
-        decimalScale={decimalScale}
-        thousandSeparator
-        valueIsNumericString
-      />
-    </span>
-  );
+  const formatted = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: decimalScale,
+    maximumFractionDigits: decimalScale
+  }).format(value);
+
+  return <span suppressHydrationWarning>{formatted}</span>;
 };
 
 export default NumberFormatText;

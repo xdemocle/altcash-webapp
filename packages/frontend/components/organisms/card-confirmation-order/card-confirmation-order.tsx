@@ -2,7 +2,7 @@ import { Alert, Box, Card, Snackbar, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import { Market } from '../../../graphql/types';
-import NumberFormatCustom from '../../atoms/number-format-custom';
+import NumberFormatText from '../../atoms/number-format-text';
 import Loader from '../../molecules/loader';
 import useStyles from './use-styles';
 
@@ -98,10 +98,7 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
 
             <Typography>
               You bought:{' '}
-              <NumberFormatCustom
-                displayType="text"
-                name="cryptoCurrency"
-                onChange={() => null}
+              <NumberFormatText
                 decimalScale={6}
                 value={cryptoCurrency}
               />{' '}
@@ -110,10 +107,7 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
 
             <Typography>
               You spent:{' '}
-              <NumberFormatCustom
-                displayType="text"
-                name="totalAmount"
-                onChange={() => null}
+              <NumberFormatText
                 value={Number(totalAmount)}
                 decimalScale={2}
               />{' '}
