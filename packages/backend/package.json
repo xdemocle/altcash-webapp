@@ -46,7 +46,7 @@
   "scripts": {
     "start": "bun run build",
     "build": "tsc -p . && cp schema.graphql dist/",
-    "dev": "ts-node-dev --respawn --files index.ts"
+    "dev": "ts-node-dev --respawn --ignore-watch node_modules --ignore-watch dist --ignore-watch .next index.ts"
   },
   "trustedDependencies": [
     "protobufjs"

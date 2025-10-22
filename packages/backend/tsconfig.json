@@ -6,21 +6,15 @@
     "strict": false,
     "outDir": "dist",
     "sourceMap": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "dist", "**/*.json"],
+  "exclude": ["node_modules", "dist"],
   "include": [
-    "datasources",
-    "models",
-    "resolvers",
-    "utilities",
-    "config.ts",
-    "index.ts",
-    "types.ts",
-    "global.d.ts"
+    "**/*.ts",
+    "**/*.d.ts"
   ]
 }
