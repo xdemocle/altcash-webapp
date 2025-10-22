@@ -5,8 +5,8 @@
   "license": "CC BY-NC 4.0",
   "author": "Rocco R. <im@rocco.me>",
   "scripts": {
-    "dev": "next dev -p 3000",
-    "dev:inspect": "NODE_OPTIONS='--inspect' next dev -p 3000",
+    "dev": "next dev -p 3000 --webpack",
+    "dev:inspect": "NODE_OPTIONS='--inspect' next dev -p 3000 --webpack",
     "build": "next build",
     "start": "next start",
     "export": "next export",
