@@ -69,16 +69,12 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [initializePayment, setInitializePayment] = useState<any>(null);
 
   // Only initialize Paystack on client side
-  const payment =
-    typeof window !== 'undefined' && usePaystackPayment
-      ? usePaystackPayment(getPaystackConfig(totalAmount))
-      : null;
-
   useEffect(() => {
-    if (payment) {
+    if (typeof window !== 'undefined' && usePaystackPayment) {
+      const payment = usePaystackPayment(getPaystackConfig(totalAmount));
       setInitializePayment(() => payment);
     }
-  }, [payment]);
+  }, [totalAmount]);
   const [createOrder, { error: errorCreateOrder }] = useMutation<
     { createOrder: Order },
     OrderParams
@@ -353,7 +349,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
                   </InputAdornment>
                 )
               }}
-              value={cryptoCurrency}
+              value={String(cryptoCurrency)}
               onFocus={onFocusInputHandler}
               disabled
             />
