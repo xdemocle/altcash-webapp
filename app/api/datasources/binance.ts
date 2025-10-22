@@ -63,7 +63,7 @@ class BinanceAPI extends RESTDataSource {
 
     logger.debug(`Filtered markets (BTC pairs): ${symbols.length}`);
     const undefinedMarkets = symbols.filter(
-      (m) => !m.baseAsset || m.baseAsset === 'undefined'
+      (m: any) => !m.baseAsset || m.baseAsset === 'undefined'
     );
     if (undefinedMarkets.length > 0) {
       logger.error(
@@ -202,7 +202,7 @@ class BinanceAPI extends RESTDataSource {
             quantity: order.amount
           }
         );
-      } catch (error) {
+      } catch (error: any) {
         let err = error;
 
         if (error && error.response && error.response.data) {
