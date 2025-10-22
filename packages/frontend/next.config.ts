@@ -11,9 +11,15 @@ const nextConfig: NextConfig = {
   //   return config;
   // },
   images: {
-    domains: [
-      's2.coinmarketcap.com',
-      'bittrexblobstorage.blob.core.windows.net'
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'bittrexblobstorage.blob.core.windows.net'
+      }
     ]
   },
   async rewrites() {

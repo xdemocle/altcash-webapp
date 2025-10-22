@@ -1,6 +1,3 @@
-'use client';
-
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useMutation } from '@apollo/client/react';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import {
@@ -192,7 +189,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   };
 
   const onFocusInputHandler = (e: SyntheticEvent | Event) => {
-    (e?.target as HTMLInputElement).select();
+    // (e?.target as HTMLInputElement).select();
   };
 
   const onBlurLocalCurrencyHandler = () => {
