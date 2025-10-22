@@ -37,6 +37,7 @@ import useGlobal from '../../../hooks/use-global';
 import useMultiplier from '../../../hooks/use-multiplier';
 import useRound from '../../../hooks/use-round';
 import NumberFormatCustom from '../../atoms/number-format-custom';
+import NumberFormatText from '../../atoms/number-format-text';
 import useStyles from './use-styles';
 
 interface CoinBuyProps {
@@ -404,28 +405,16 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
             (Total buy) R {totalAmount.toFixed(2)} =
           </Typography>
           (amount selected) R{' '}
-          <NumberFormatCustom
-            displayType="text"
-            name="localCurrency"
-            onChange={() => null}
-            decimalScale={2}
-            value={Number(localCurrency)}
-          />{' '}
-          +<br />
+          <NumberFormatText decimalScale={2} value={Number(localCurrency)} /> +
+          <br />
           (payment fee) R{' '}
-          <NumberFormatCustom
-            displayType="text"
-            name="percentageFeePayment"
-            onChange={() => null}
+          <NumberFormatText
             decimalScale={2}
             value={(PERCENTAGE_FEE_PAYMENT / 100) * localCurrency + 1}
           />{' '}
           +<br />
           (altcash fee) R{' '}
-          <NumberFormatCustom
-            displayType="text"
-            name="percentageFeeAltcash"
-            onChange={() => null}
+          <NumberFormatText
             decimalScale={2}
             value={(PERCENTAGE_FEE / 100) * localCurrency}
           />{' '}
