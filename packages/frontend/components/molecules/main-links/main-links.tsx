@@ -30,7 +30,7 @@ const StyledList = styled(List)({
 const StyledListItemIcon = styled(ListItemIcon)({
   marginLeft: '1.3rem',
   marginRight: '0.4rem',
-  color: '#A09EA0',
+  color: '#666',
   '.active &': {
     color: '#fff'
   }
@@ -70,6 +70,25 @@ const StyledListItemButton = ({
         color: 'inherit',
         '&:visited': {
           color: 'inherit'
+        },
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '1.55rem',
+          width: '3rem',
+          height: '3rem',
+          borderRadius: '.35rem',
+          backgroundColor: theme.palette.secondary.main,
+          transform: 'translateY(-50%) rotate(-8deg)',
+          opacity: 0.05,
+          zIndex: -1
+        },
+        '&:hover::after': {
+          opacity: 0.1
         },
         ...(selected && {
           '&.active::after': {
