@@ -12,6 +12,11 @@ import * as React from 'react';
 import createEmotionCache from '../common/createEmotionCache';
 import { theme } from '../common/theme';
 
+// if (typeof window !== 'undefined') {
+//   // Disable hydration to see server-rendered HTML
+//   window.__NEXT_DATA__.isPreview = true;
+// }
+
 export default function MyDocument(props: any) {
   return (
     <Html lang="en">
