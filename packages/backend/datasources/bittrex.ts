@@ -26,6 +26,9 @@ class BittrexAPI extends RESTDataSource {
   }
 
   async getMarket(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getMarket');
+    }
     const marketSymbol = `${symbol}-BTC`.toLowerCase();
     const response = await this.get(`markets/${marketSymbol}`);
 
@@ -48,6 +51,9 @@ class BittrexAPI extends RESTDataSource {
   }
 
   async getSummary(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getSummary');
+    }
     const marketSymbol = `${symbol}-BTC`.toLowerCase();
 
     return await this.get(`markets/${marketSymbol}/summary`);
@@ -69,6 +75,9 @@ class BittrexAPI extends RESTDataSource {
   }
 
   async getTicker(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getTicker');
+    }
     const marketSymbol = `${symbol}-BTC`.toLowerCase();
 
     return await this.get(`markets/${marketSymbol}/ticker`);

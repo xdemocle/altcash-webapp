@@ -76,12 +76,18 @@ class BinanceAPI extends RESTDataSource {
   }
 
   async getTicker(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getTicker');
+    }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
 
     return await this.get(`ticker/price?symbol=${marketSymbol}`);
   }
 
   async getSummary(symbol: string): Promise<Record<string, string>> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getSummary');
+    }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
 
     return await this.get(`ticker/24hr?symbol=${marketSymbol}`);

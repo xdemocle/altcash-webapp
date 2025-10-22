@@ -16,6 +16,9 @@ class MetadataAPI extends RESTDataSource {
   }
 
   async getCoin(symbol: string): Promise<Metadata> {
+    if (!symbol || symbol === 'undefined') {
+      throw new Error('Invalid symbol provided to getCoin');
+    }
     const response = await this.get(
       `cryptocurrency/info?symbol=${symbol.toLowerCase()}`
     );
