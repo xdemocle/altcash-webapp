@@ -23,14 +23,7 @@ import {
   useMemo,
   useState
 } from 'react';
-import dynamic from 'next/dynamic';
 import ReactPlaceholder from 'react-placeholder';
-
-let usePaystackPayment: any = null;
-if (typeof window !== 'undefined') {
-  const { usePaystackPayment: hook } = require('react-paystack');
-  usePaystackPayment = hook;
-}
 import {
   MIN_AMOUNT_EXTRA,
   MIN_AMOUNT_MULTIPLIER,
@@ -45,6 +38,12 @@ import useMultiplier from '../../../hooks/use-multiplier';
 import useRound from '../../../hooks/use-round';
 import NumberFormatCustom from '../../atoms/number-format-custom';
 import useStyles from './use-styles';
+
+let usePaystackPayment: any = null;
+if (typeof window !== 'undefined') {
+  const { usePaystackPayment: hook } = require('react-paystack');
+  usePaystackPayment = hook;
+}
 
 interface CoinBuyProps {
   coin: Market;
@@ -75,10 +74,12 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
       setInitializePayment(() => payment);
     }
   }, [totalAmount]);
+
   const [createOrder, { error: errorCreateOrder }] = useMutation<
     { createOrder: Order },
     OrderParams
   >(CREATE_ORDER);
+
   const [updateOrder, { error: errorUpdateOrder }] = useMutation<
     { updateOrder: Order },
     { id: string; input: OrderParams }
