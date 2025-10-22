@@ -7,12 +7,13 @@ import {
   PairVariables,
   Ticker
 } from '../../../graphql/types';
+import { memo } from 'react';
 
 type Props = {
   coin: Market;
 };
 
-const CoinTicker = ({ coin }: Props) => {
+const CoinTicker = memo(({ coin }: Props) => {
   const { data } = useQuery<{ ticker: Ticker }, { id: string }>(GET_TICKER, {
     fetchPolicy: 'cache-first',
     variables: {
@@ -41,13 +42,18 @@ const CoinTicker = ({ coin }: Props) => {
     ? Number(dataPair.pair.last_trade)
     : undefined;
 
+  const priceValue = Number(dataTicker.price);
+  const isValidPrice = priceValue > 0 && bitcoinRandPrice && bitcoinRandPrice > 0;
+
   return (
     <span suppressHydrationWarning>
-      {dataTicker.price && bitcoinRandPrice
-        ? btcToRandPriceWithSymbol(Number(dataTicker.price), bitcoinRandPrice)
+      {isValidPrice
+        ? btcToRandPriceWithSymbol(priceValue, bitcoinRandPrice)
         : 'n/d'}
     </span>
   );
-};
+});
+
+CoinTicker.displayName = 'CoinTicker';
 
 export default CoinTicker;
