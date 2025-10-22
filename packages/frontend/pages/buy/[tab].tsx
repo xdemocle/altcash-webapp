@@ -148,8 +148,11 @@ export async function getServerSideProps(context: any) {
 
     const markets = data?.markets || [];
     
+    // Filter out markets with undefined IDs
+    const validMarkets = markets.filter((market) => market.id && market.id !== 'undefined');
+    
     await Promise.all(
-      markets.map((market) =>
+      validMarkets.map((market) =>
         apolloClient.query({
           query: GET_TICKER,
           variables: { id: market.id }
@@ -159,7 +162,7 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        markets
+        markets: validMarkets
       }
     };
   } catch (error) {
