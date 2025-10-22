@@ -2,15 +2,13 @@
 import { ApolloServer } from '@apollo/server';
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
-// import Keyv from 'keyv';
-// import { KeyvAdapter } from '@apollo/utils.keyvadapter';
-// import responseCachePlugin from 'apollo-server-plugin-response-cache';
 // import BinanceAPI from '../datasources/binance';
 // import MetadataAPI from '../datasources/metadata';
 // import MybitxAPI from '../datasources/mybitx';
 // import NamesAPI from '../datasources/names';
 // import OrdersAPI from '../datasources/orders';
 // import OrderModel from '../models/orders';
+import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import resolverCount from '../resolvers/resolver-count';
 import resolverMarkets from '../resolvers/resolver-markets';
 import resolverMeta from '../resolvers/resolver-meta';
@@ -18,8 +16,6 @@ import resolverOrders from '../resolvers/resolver-orders';
 import resolverPair from '../resolvers/resolver-pair';
 import resolverSummaries from '../resolvers/resolver-summaries';
 import resolverTickers from '../resolvers/resolver-tickers';
-// import { REDIS_OPTIONS } from '../config';
-import { startServerAndCreateNextHandler } from '@as-integrations/next';
 // import OrdersQueueAPI from '../datasources/orders-queue';
 // import OrderQueueModel from '../models/orders-queue';
 import resolverOrderQueues from '../resolvers/resolver-order-queues';
@@ -52,10 +48,7 @@ const apolloServer = new ApolloServer({
   //     modelOrCollection: OrderQueueModel
   //   })
   // }),
-  // cache: new BaseRedisCache({
-  // }),
   // todo kv
-  // cache: new KeyvAdapter(new Keyv()),
   cache: new InMemoryLRUCache({
     max: 500,
     // ~100MiB
@@ -64,11 +57,7 @@ const apolloServer = new ApolloServer({
     ttl: 300_000
   }),
   csrfPrevention: true,
-  introspection: true,
-  plugins: [
-    // responseCachePlugin()
-    // ApolloServerPluginDrainHttpServer({ httpServer })
-  ]
+  introspection: true
 });
 
 export default startServerAndCreateNextHandler(apolloServer);
