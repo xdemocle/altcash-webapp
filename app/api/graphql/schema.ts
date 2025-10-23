@@ -1,10 +1,21 @@
 export const typeDefs = /* GraphQL */ `
+  enum CacheControlScope {
+    PUBLIC
+    PRIVATE
+  }
+
+  directive @cacheControl(
+    maxAge: Int
+    scope: CacheControlScope
+    inheritMaxAge: Boolean
+  ) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
+
   type AccountStatus {
     canTrade: Boolean
     msg: String
   }
 
-  type Market {
+  type Market @cacheControl(maxAge: 3600) {
     id: String
     symbol: String!
     name: String
@@ -17,7 +28,7 @@ export const typeDefs = /* GraphQL */ `
     stepSize: Float
   }
 
-  type Summary {
+  type Summary @cacheControl(maxAge: 3600) {
     id: String!
     symbol: String!
     high: Float
@@ -32,7 +43,7 @@ export const typeDefs = /* GraphQL */ `
     price: String!
   }
 
-  type Metadata {
+  type Metadata @cacheControl(maxAge: 604800) {
     id: String!
     metadataId: Float
     name: String
@@ -40,7 +51,7 @@ export const typeDefs = /* GraphQL */ `
     slug: String
     description: String
     logo: String
-    urls: MetadataUrls
+    urls: MetadataUrls @cacheControl(maxAge: 604800)
   }
 
   type MetadataUrls {
@@ -125,8 +136,8 @@ export const typeDefs = /* GraphQL */ `
   type Query {
     markets(offset: Int, limit: Int, term: String, symbols: String): [Market!]
     market(id: String): Market!
-    metaCoin(id: String): Metadata!
-    metaCoinAll: [Metadata!]
+    metaCoin(id: String): Metadata! @cacheControl(maxAge: 604800)
+    metaCoinAll: [Metadata!] @cacheControl(maxAge: 604800)
     metaExperiment: [Metadata!]
     metaInfo: [Metadata!]
     summary(id: String): Summary!

@@ -1,4 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { NextRequest } from 'next/server';
 import datasources from './datasources';
@@ -12,29 +11,29 @@ export const runtime = 'edge';
 // Create schema
 const schema = createSchema<Context>({
   typeDefs,
-  resolvers: resolvers as any
+  resolvers
 });
 
 // Create yoga instance
 const yoga = createYoga<Context>({
-  schema,
-  context: {
-    KV: (globalThis as any).KV as KVNamespace,
-    dataSources: datasources
-  }
+  schema
 });
 
 /*
  * Named exports for Next.js App Router
  */
+const context: Context = {
+  dataSources: datasources
+};
+
 export async function POST(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url);
+  return yoga.fetch(req.url, context);
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url);
+  return yoga.fetch(req.url, context);
 }
 
 export async function OPTIONS(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url);
+  return yoga.fetch(req.url, context);
 }

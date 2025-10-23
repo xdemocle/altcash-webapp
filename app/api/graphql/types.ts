@@ -215,7 +215,7 @@ export interface BinanceOrderResponse {
 
 // Define context
 export interface Context {
-  kv: KVNamespace;
+  KV?: KVNamespace;
   dataSources: typeof datasources;
 }
 
