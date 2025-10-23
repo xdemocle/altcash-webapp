@@ -1,4 +1,3 @@
-import { KVNamespace } from '@cloudflare/workers-types';
 import datasources from './datasources';
 
 export interface AccountStatus {

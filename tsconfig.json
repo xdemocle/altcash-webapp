@@ -30,7 +30,7 @@
     ]
   },
   "include": [
-    "globals.d.ts",
+    "worker-configuration.d.ts",
     "common",
     "components",
     "context",

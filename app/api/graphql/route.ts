@@ -1,3 +1,4 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { NextRequest } from 'next/server';
 import datasources from './datasources';
@@ -22,18 +23,32 @@ const yoga = createYoga<Context>({
 /*
  * Named exports for Next.js App Router
  */
-const context: Context = {
-  dataSources: datasources
-};
-
 export async function POST(req: NextRequest): Promise<Response> {
+  const { env } = getCloudflareContext();
+  const context: Context = {
+    KV: env.NEXT_INC_CACHE_KV,
+    dataSources: datasources
+  };
+
   return yoga.fetch(req.url, context);
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
+  const { env } = getCloudflareContext();
+  const context: Context = {
+    KV: env.NEXT_INC_CACHE_KV,
+    dataSources: datasources
+  };
+
   return yoga.fetch(req.url, context);
 }
 
 export async function OPTIONS(req: NextRequest): Promise<Response> {
+  const { env } = getCloudflareContext();
+  const context: Context = {
+    KV: env.NEXT_INC_CACHE_KV,
+    dataSources: datasources
+  };
+
   return yoga.fetch(req.url, context);
 }
