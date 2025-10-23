@@ -10,13 +10,13 @@ import {
   MIN_AMOUNT_MULTIPLIER,
   PERCENTAGE_FEE, // PERCENTAGE_FEE_EXCHANGE,
   PERCENTAGE_FEE_PAYMENT,
-} from '../../../common/constants';
-import { getPaystackConfig, isServer } from '../../../common/utils';
-import { CREATE_ORDER, UPDATE_ORDER } from '../../../graphql/mutations';
-import { Market, Order, OrderParams, Ticker } from '../../../graphql/types';
-import useGlobal from '../../../hooks/use-global';
-import useMultiplier from '../../../hooks/use-multiplier';
-import useRound from '../../../hooks/use-round';
+} from '~/common/constants';
+import { getPaystackConfig, isServer } from '~/common/utils';
+import { CREATE_ORDER, UPDATE_ORDER } from '~/graphql/mutations';
+import { Market, Order, OrderParams, Ticker } from '~/graphql/types';
+import useGlobal from '~/hooks/use-global';
+import useMultiplier from '~/hooks/use-multiplier';
+import useRound from '~/hooks/use-round';
 import NumberFormatText from '../../atoms/number-format-text';
 import useStyles from './use-styles';
 

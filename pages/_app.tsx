@@ -1,4 +1,3 @@
-import { ApolloProvider } from '@apollo/client/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -7,8 +6,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import { persistCacheInstance } from '../common/apollo/apollo-cache';
-import { apolloClient } from '../common/apollo/apollo-client';
+import { QueryProvider } from '../common/providers/query-provider';
 import createEmotionCache from '../common/createEmotionCache';
 import * as ga from '../common/ga';
 import { theme } from '../common/theme';
@@ -48,35 +46,14 @@ function MyApp({
   }, [router.events]);
 
   useEffect(() => {
-    const loadCache = async () => {
-      /**
-       * Enabling the snippet of code below we would activate the cache at first
-       * stage of app bootstrap. At moment is deactivated and data is written only
-       * after bootstrap and first relevant action, since i'm trying to temporary
-       * overcome the current limitation of apollo-cache-persist and have fresh
-       * data each reload of the browser.
-       */
-      try {
-        await persistCacheInstance;
-      } catch (error) {
-        console.debug('Error restoring Apollo cache', error);
-      }
-
-      setLoaded(true);
-    };
-
-    if (!isServer()) {
-      loadCache();
-    } else {
-      setLoaded(true);
-    }
+    setLoaded(true);
   }, []);
 
   return (
     <CacheProvider value={emotionCache}>
-      <GlobalProvider>
-        <UserCoinFavouritesProvider>
-          <ApolloProvider client={apolloClient}>
+      <QueryProvider>
+        <GlobalProvider>
+          <UserCoinFavouritesProvider>
             <ThemeProvider theme={theme}>
               {/* <AuthProvider> */}
               <Head>
@@ -114,9 +91,9 @@ function MyApp({
               </div>
               {/* </AuthProvider> */}
             </ThemeProvider>
-          </ApolloProvider>
-        </UserCoinFavouritesProvider>
-      </GlobalProvider>
+          </UserCoinFavouritesProvider>
+        </GlobalProvider>
+      </QueryProvider>
     </CacheProvider>
   );
 }
