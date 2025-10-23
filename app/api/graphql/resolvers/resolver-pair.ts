@@ -1,11 +1,11 @@
-import { DataSources, Pair } from '../types';
+import { Context, Pair } from '../types';
 
 const queryPair = async (
   _: unknown,
   { pair }: { pair: string },
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Pair> => {
-  const response = await dataSources.mybitxAPI.getPair(pair);
+  const response = await context.dataSources.mybitxAPI.getPair(pair);
 
   return response;
 };

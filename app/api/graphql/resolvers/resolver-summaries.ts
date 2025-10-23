@@ -1,9 +1,9 @@
-import { DataSources, Summary } from '../types';
+import { Context, Summary } from '../types';
 
 const querySummary = async (
   _: unknown,
   { id }: { id: string },
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Summary> => {
   if (!id || id === 'undefined' || id === undefined) {
     return {
@@ -16,7 +16,7 @@ const querySummary = async (
       percentChange: 0
     } as any;
   }
-  const response = await dataSources.marketsAPI.getSummary(id);
+  const response = await context.dataSources.marketsAPI.getSummary(id);
 
   response.symbol = response.symbol.replace('BTC', '');
 

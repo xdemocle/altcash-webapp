@@ -1,28 +1,20 @@
 import { each, filter, find, isUndefined } from 'lodash';
-import {
-  AccountStatus,
-  Context,
-  DataSources,
-  Market,
-  MissingMarket
-} from '../types';
+import { AccountStatus, Context, Market, MissingMarket } from '../types';
 import logger from '../utilities/logger';
+
+interface QueryMarketsArgs {
+  limit?: number;
+  offset: number;
+  term: string;
+  symbols: string;
+}
 
 const queryMarkets = async (
   _: unknown,
-  {
-    limit,
-    offset = 0,
-    term,
-    symbols
-  }: {
-    limit?: number;
-    offset: number;
-    term: string;
-    symbols: string;
-  },
+  args: QueryMarketsArgs,
   context: Context
 ): Promise<Market[]> => {
+  let { limit, offset, term, symbols } = args;
   let markets = await context.dataSources.marketsAPI.getAllMarkets();
   const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
@@ -148,10 +140,10 @@ const queryMarkets = async (
 
 const queryMarket = async (
   _: unknown,
-  { id }: { id: string },
-  { dataSources }: { dataSources: DataSources }
+  args: { id: string },
+  context: Context
 ): Promise<Market> => {
-  if (!id || id === 'undefined' || id === undefined) {
+  if (!args.id || args.id === 'undefined' || args.id === undefined) {
     return {
       id: '',
       symbol: '',
@@ -166,13 +158,13 @@ const queryMarket = async (
       name: ''
     } as any;
   }
-  const market = await dataSources.marketsAPI.getMarket(id);
+  const market = await context.dataSources.marketsAPI.getMarket(args.id);
   let metaCoin = {
     name: ''
   };
 
   try {
-    metaCoin = await dataSources.metadataAPI.getCoin(market.baseAsset);
+    metaCoin = await context.dataSources.metadataAPI.getCoin(market.baseAsset);
   } catch (error) {
     logger.debug(`queryMarkets ${error}`);
   }
