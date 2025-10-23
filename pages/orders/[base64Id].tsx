@@ -2,8 +2,8 @@ import { Alert, Box, Snackbar } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { isServer } from '../../common/utils';
 import { urqlClient } from '../../common/graphql-client';
+import { isServer } from '../../common/utils';
 import RootStyled from '../../components/atoms/root';
 import Loader from '../../components/molecules/loader';
 import CardConfirmationOrder from '../../components/organisms/card-confirmation-order';
@@ -42,9 +42,11 @@ const Order: NextPage = () => {
     if (!orderNumber) return;
 
     const onIntervalOrderHandler = async () => {
-      const result = await urqlClient.query(GET_ORDER_IS_PENDING, {
-        id: orderNumber,
-      }).toPromise();
+      const result = await urqlClient
+        .query(GET_ORDER_IS_PENDING, {
+          id: orderNumber,
+        })
+        .toPromise();
 
       if (result.error) {
         setErrorAlert(result.error);
@@ -105,10 +107,10 @@ const Order: NextPage = () => {
   );
 };
 
+export default Order;
+
 export async function getServerSideProps() {
   return {
     props: {},
   };
 }
-
-export default Order;

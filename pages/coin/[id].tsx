@@ -291,24 +291,3 @@ export async function getServerSideProps() {
 }
 
 export default CoinPage;
-
-// export async function getStaticPaths() {
-//     query: GET_META_COIN_LOGO
-//   });
-//   // Get the paths we want to pre-render
-//   const paths = data?.metaCoinAll?.map((coin: Metadata) => ({
-//     params: { id: coin.symbol.toLowerCase() }
-//   }));
-
-//   // We'll pre-render only these paths at build time.
-//   return { paths, fallback: true };
-// }
-// export async function getStaticProps() {
-//     query: GET_META_COIN_LOGO
-//   });
-//   return {
-//     props: {
-//       metaCoinAll: data.metaCoinAll
-//     }
-//   };
-// }
