@@ -16,10 +16,12 @@ const nextConfig: NextConfig = {
       };
     }
     if (nextRuntime === 'edge') {
-      config.externals = [
-        ...(config.externals || []),
-        'undici',
-      ];
+      config.externals = [...(config.externals || []), 'undici'];
+      // Exclude binance.node from edge bundle - it uses Node.js crypto
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        './binance.node': false,
+      };
     }
     return config;
   },

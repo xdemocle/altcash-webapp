@@ -10,10 +10,23 @@ const ERROR = {
 
 class BinanceAPI {
   private baseURL = BINANCE_API_URL + '/api/v3/';
+  private nodeImplementation: any = null;
 
   constructor() {
-    // Edge-compatible: no Binance client initialization
-    // Trading operations are handled by separate Node.js endpoint
+    // Edge-compatible: lazy-load Node.js implementation at runtime
+  }
+
+  private async getNodeImplementation() {
+    // if (!this.nodeImplementation) {
+    //   try {
+    //     const module = await import('./binance.node');
+    //     this.nodeImplementation = new module.default();
+    //   } catch (error) {
+    //     logger.warn('Node.js Binance client not available, trading operations disabled');
+    //     throw new Error('Trading operations not available in this runtime');
+    //   }
+    // }
+    return this.nodeImplementation;
   }
 
   private async fetchJson<T = any>(url: string): Promise<T> {
@@ -106,15 +119,18 @@ class BinanceAPI {
   }
 
   async getAccountData(): Promise<Record<string, string>> {
-    throw new Error('Trading operations not available in edge runtime. Use separate Node.js endpoint.');
+    const impl = await this.getNodeImplementation();
+    return impl.getAccountData();
   }
 
   async getCanTrade(): Promise<AccountStatus> {
-    throw new Error('Trading operations not available in edge runtime. Use separate Node.js endpoint.');
+    const impl = await this.getNodeImplementation();
+    return impl.getCanTrade();
   }
 
   async postOrder(order: Order): Promise<BinanceOrderResponse | Error | { data: any }> {
-    throw new Error('Trading operations not available in edge runtime. Use separate Node.js endpoint.');
+    const impl = await this.getNodeImplementation();
+    return impl.postOrder(order);
   }
 }
 
