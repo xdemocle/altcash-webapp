@@ -11,7 +11,7 @@ interface QueryMarketsArgs {
 
 const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context): Promise<Market[]> => {
   let { limit, offset, term, symbols } = args;
-  let markets = await context.dataSources.marketsAPI.getAllMarkets();
+  let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as any[];
   const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
@@ -36,7 +36,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
         missingNames.push(market.baseAsset);
       }
     } else {
-      market.name = nameCoin.name;
+      (market as any).name = nameCoin.name;
     }
 
     // Defensive check: skip if baseAsset is still undefined
@@ -45,18 +45,19 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
       return;
     }
 
-    market.id = market.symbol = market.baseAsset;
+    (market as any).id = market.symbol = market.baseAsset;
 
-    market.minNotional = Number(find(market.filters, { filterType: 'NOTIONAL' })?.minNotional);
+    const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as any;
+    (market as any).minNotional = Number(notionalFilter?.minNotional);
 
-    market.minTradeSize = Number(find(market.filters, { filterType: 'LOT_SIZE' })?.minQty);
-
-    market.stepSize = Number(find(market.filters, { filterType: 'LOT_SIZE' })?.stepSize);
+    const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as any;
+    (market as any).minTradeSize = Number(lotSizeFilter?.minQty);
+    (market as any).stepSize = Number(lotSizeFilter?.stepSize);
   });
 
   // Final filter: remove any markets with undefined ID
   markets = markets.filter(market => {
-    if (!market.id || market.id === 'undefined') {
+    if (!(market as any).id || (market as any).id === 'undefined') {
       logger.error(`FINAL FILTER: Removing market with undefined ID: ${JSON.stringify(market)}`);
       return false;
     }
@@ -64,7 +65,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   });
 
   // Order by name
-  markets.sort((a: Market, b: Market) => {
+  markets.sort((a: any, b: any) => {
     // ignore upper and lowercase
     const nameA = a.symbol && a.symbol.toUpperCase();
     const nameB = b.symbol && b.symbol.toUpperCase();
@@ -138,7 +139,7 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
       name: '',
     } as any;
   }
-  const market = await context.dataSources.marketsAPI.getMarket(args.id);
+  const market = (await context.dataSources.marketsAPI.getMarket(args.id)) as any;
   let metaCoin = {
     name: '',
   };
@@ -149,6 +150,9 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     logger.debug(`queryMarkets ${error}`);
   }
 
+  const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as any;
+  const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as any;
+
   // Add the id for client caching purpose
   return {
     id: market.baseAsset,
@@ -157,9 +161,9 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     quoteAsset: market.quoteAsset,
     quotePrecision: market.quoteAssetPrecision,
     filters: market.filters,
-    minNotional: Number(find(market.filters, { filterType: 'NOTIONAL' })?.minNotional),
-    minTradeSize: Number(find(market.filters, { filterType: 'LOT_SIZE' })?.minQty),
-    stepSize: Number(find(market.filters, { filterType: 'LOT_SIZE' })?.stepSize),
+    minNotional: Number(notionalFilter?.minNotional),
+    minTradeSize: Number(lotSizeFilter?.minQty),
+    stepSize: Number(lotSizeFilter?.stepSize),
     status: market.status,
     name: metaCoin.name,
   };

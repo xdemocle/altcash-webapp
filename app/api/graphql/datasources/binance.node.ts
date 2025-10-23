@@ -126,8 +126,12 @@ class BinanceAPI {
 
   async getAccountData() {
     const response = await this.client.getAccountInfo();
-    const data = response;
-    return data;
+    // Map binance library response to expected format
+    const accountData = response as any;
+    return {
+      canTrade: accountData.canTrade ?? true,
+      balances: accountData.balances ?? [],
+    };
   }
 
   async getCanTrade() {
@@ -143,7 +147,7 @@ class BinanceAPI {
         asset: 'BTC',
       });
 
-      if (Number(accountBalance.free) > 0.0006) {
+      if (Number(accountBalance?.free ?? 0) > 0.0006) {
         canTrade = true;
       } else {
         msg = `${ERROR.nofunds}, Balance: ${JSON.stringify(accountBalance)}`;
@@ -167,11 +171,10 @@ class BinanceAPI {
     const accountBalance = find(accountData.balances as any, { asset: 'BTC' });
     logger.debug(`accountBalance: ${JSON.stringify(accountBalance)}`);
 
-    // let apiResponse: BinanceOrderResponse | { data: any } | null = null;
-    let apiResponse: OrderResponse | null = null;
+    let apiResponse: any = null;
 
     // Check if account has funds
-    if (Number(accountBalance.free) > 0.0006) {
+    if (Number(accountBalance?.free ?? 0) > 0.0006) {
       // make the order
       try {
         apiResponse = await this.client.submitNewOrder({
@@ -193,7 +196,10 @@ class BinanceAPI {
     } else {
       // return new Error(`Binance.postOrder: ${ERROR.nofunds} ${JSON.stringify(accountBalance)}`);
       apiResponse = {
-        code: -1000,
+        orderId: -1000,
+        clientOrderId: `error-${Date.now()}`,
+        symbol: `${order.symbol.toUpperCase()}BTC`,
+        status: 'REJECTED',
         msg: `${ERROR.nofunds}, Balance: ${JSON.stringify(accountBalance)}`,
       };
     }

@@ -12,7 +12,7 @@ const querySummary = async (_: unknown, { id }: { id: string }, context: Context
       percentChange: 0,
     } as any;
   }
-  const response = await context.dataSources.marketsAPI.getSummary(id);
+  const response = (await context.dataSources.marketsAPI.getSummary(id)) as any;
 
   response.symbol = response.symbol.replace('BTC', '');
 
@@ -22,8 +22,8 @@ const querySummary = async (_: unknown, { id }: { id: string }, context: Context
     symbol: response.symbol,
     high: Number(response.highPrice),
     low: Number(response.lowPrice),
-    volume: response.volume,
-    quoteVolume: response.quoteVolume,
+    volume: Number(response.volume),
+    quoteVolume: Number(response.quoteVolume),
     percentChange: Number(response.priceChange),
   };
 };
