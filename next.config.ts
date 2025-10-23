@@ -1,8 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  distDir: 'dist',
-  cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 300,
   webpack: (config, { isServer, nextRuntime }) => {

@@ -40,7 +40,9 @@
     "styles",
     "open-next.config.ts",
     "dist/types/**/*.ts",
-    "dist/dev/types/**/*.ts"
+    "dist/dev/types/**/*.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["server", "node_modules"]
 }
