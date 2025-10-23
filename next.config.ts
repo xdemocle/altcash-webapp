@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   cleanDistDir: true,
   reactStrictMode: true,
   staticPageGenerationTimeout: 300,
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, nextRuntime }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
         path: false,
         os: false,
       };
+    }
+    if (nextRuntime === 'edge') {
+      config.externals = [
+        ...(config.externals || []),
+        'undici',
+      ];
     }
     return config;
   },
