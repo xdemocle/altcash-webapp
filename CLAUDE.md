@@ -34,8 +34,6 @@ bun run --filter backend <script>
 
 ```bash
 bun dev            # Start frontend + backend together
-bun dev:frontend   # Frontend only (port 3000)
-bun dev:backend    # Backend only (port 4000)
 bun build          # Build backend then frontend
 bun build:frontend
 bun build:backend

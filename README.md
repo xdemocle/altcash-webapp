@@ -58,10 +58,6 @@ PORT=4000
 ```bash
 # Run both frontend and backend
 bun dev
-
-# Or run individually
-bun dev:frontend  # http://localhost:3000
-bun dev:backend   # http://localhost:4000
 ```
 
 ### Building
