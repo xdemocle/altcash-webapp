@@ -42,5 +42,5 @@
     "dist/types/**/*.ts",
     "dist/dev/types/**/*.ts"
   ],
-  "exclude": ["server"]
+  "exclude": ["server", "node_modules"]
 }
