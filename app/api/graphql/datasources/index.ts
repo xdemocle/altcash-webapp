@@ -1,7 +1,7 @@
-import BinanceAPI from '../datasources/binance';
 import MetadataAPI from '../datasources/metadata';
 import MybitxAPI from '../datasources/mybitx';
 import NamesAPI from '../datasources/names';
+import BinanceAPI from './binance.edge';
 // import OrdersAPI from '../datasources/orders';
 // import OrdersQueueAPI from '../datasources/orders-queue';
 
