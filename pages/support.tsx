@@ -5,4 +5,10 @@ const Support: NextPage = () => {
   return <SupportTemplate />;
 };
 
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
+
 export default Support;

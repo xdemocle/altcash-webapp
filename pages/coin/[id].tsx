@@ -284,17 +284,9 @@ const CoinPage: NextPage = () => {
   );
 };
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-}
-
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     props: {},
-    revalidate: false,
   };
 }
 

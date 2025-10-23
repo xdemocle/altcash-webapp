@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
   distDir: 'dist',
   cleanDistDir: true,
   reactStrictMode: true,
-  staticPageGenerationTimeout: 1000,
+  staticPageGenerationTimeout: 0,
+  output: 'standalone',
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -22,10 +23,6 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 's2.coinmarketcap.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'bittrexblobstorage.blob.core.windows.net',
       },
     ],
   },
