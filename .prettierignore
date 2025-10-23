@@ -1,2 +1,13 @@
 setupProxy.js
 serviceWorker.js
+# Worker
+worker-configuration.d.ts
+
+# React-Router
+/.next/
+/build/
+/dist/
+*.png
+.DS_Store
+/**/*/.DS_Store
+_headers

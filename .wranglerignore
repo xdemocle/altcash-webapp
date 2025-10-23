@@ -1,0 +1,17 @@
+/.wrangler
+dist/
+.env
+.dev.vars
+
+.DS_Store
+/node_modules/
+*.tsbuildinfo
+
+# Cloudflare
+.mf
+.wrangler
+.dev.vars*
+
+.cache
+.env
+.windsurfrules*
