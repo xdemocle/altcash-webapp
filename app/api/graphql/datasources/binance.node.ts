@@ -171,7 +171,7 @@ class BinanceAPI {
     const accountBalance = find(accountData.balances as any, { asset: 'BTC' });
     logger.debug(`accountBalance: ${JSON.stringify(accountBalance)}`);
 
-    let apiResponse: any = null;
+    let apiResponse: OrderResponse | Error | { data: any } | null = null;
 
     // Check if account has funds
     if (Number(accountBalance?.free ?? 0) > 0.0006) {
@@ -201,7 +201,7 @@ class BinanceAPI {
         symbol: `${order.symbol.toUpperCase()}BTC`,
         status: 'REJECTED',
         msg: `${ERROR.nofunds}, Balance: ${JSON.stringify(accountBalance)}`,
-      };
+      } as unknown as OrderResponse;
     }
 
     return apiResponse;
