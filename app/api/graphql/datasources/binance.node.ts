@@ -1,12 +1,6 @@
-import { Spot } from '@binance/connector-typescript';
+import { Spot, SPOT_REST_API_PROD_URL, SPOT_REST_API_TESTNET_URL } from '@binance/spot';
 import { each, filter, find } from 'lodash';
-import {
-  BINANCE_API_KEY,
-  BINANCE_API_KEY_TESTNET,
-  BINANCE_API_SECRET,
-  BINANCE_API_SECRET_TESTNET,
-  BINANCE_API_URL,
-} from '../config';
+import { BINANCE_API_KEY, BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET, BINANCE_API_SECRET_TESTNET } from '../config';
 import { AccountStatus, BinanceOrderResponse, Market, Order, Summary, Ticker } from '../types';
 import logger from '../utilities/logger';
 
@@ -16,36 +10,40 @@ const ERROR = {
 };
 
 class BinanceAPI {
-  private baseURL = BINANCE_API_URL + '/api/v3/';
-  client: any;
-  clientTestnet: any;
+  client: Spot;
+  clientTestnet: Spot;
 
   constructor() {
-    this.client = new (Spot as any)(BINANCE_API_KEY, BINANCE_API_SECRET);
+    this.client = new Spot({
+      configurationRestAPI: {
+        apiKey: BINANCE_API_KEY,
+        apiSecret: BINANCE_API_SECRET,
+        basePath: SPOT_REST_API_PROD_URL,
+      },
+    });
 
-    this.clientTestnet = new (Spot as any)(BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET_TESTNET, {
-      baseURL: 'https://testnet.binance.vision',
+    this.clientTestnet = new Spot({
+      configurationRestAPI: {
+        apiKey: BINANCE_API_KEY_TESTNET,
+        apiSecret: BINANCE_API_SECRET_TESTNET,
+        basePath: SPOT_REST_API_TESTNET_URL,
+      },
     });
   }
 
-  private async fetchJson<T = any>(url: string): Promise<T> {
-    const response = await fetch(url);
-    return (await response.json()) as T;
+  async ping() {
+    return await this.client.restAPI.ping();
   }
 
-  async ping(): Promise<Record<string, string>> {
-    return await this.fetchJson(`${this.baseURL}ping`);
-  }
-
-  async time(): Promise<Record<string, string>> {
-    return await this.fetchJson(`${this.baseURL}time`);
+  async time() {
+    return await this.client.restAPI.time();
   }
 
   async getAllMarkets(): Promise<Market[]> {
-    const response = await this.fetchJson(`${this.baseURL}exchangeInfo`);
-    let symbols = response.symbols;
+    const response = await this.client.restAPI.exchangeInfo();
+    let symbols = (await response.data()).symbols;
 
-    logger.debug(`Total markets from Binance: ${symbols.length}`);
+    logger.debug(`Total markets from Binance: ${symbols?.length}`);
 
     // Removing not needed markets
     symbols = filter(symbols, market => {
@@ -64,7 +62,7 @@ class BinanceAPI {
       logger.error(`STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`);
     }
 
-    return symbols;
+    return symbols as Market[];
   }
 
   async getMarket(symbol: string): Promise<Market> {
@@ -74,25 +72,30 @@ class BinanceAPI {
     }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getMarket called with symbol: ${symbol}, marketSymbol: ${marketSymbol}`);
-    const response = await this.fetchJson(`${this.baseURL}exchangeInfo?symbol=${marketSymbol}`);
+    const response = await this.client.restAPI.exchangeInfo({ symbol: marketSymbol });
+    const market = (await response.data()).symbols?.[0];
 
-    return response.symbols[0];
+    if (!market) {
+      throw new Error(`Market not found for symbol: ${marketSymbol}`);
+    }
+    return market as Market;
   }
 
   async getAllTickers(): Promise<Ticker[]> {
-    let response = await this.fetchJson(`${this.baseURL}ticker/price`);
+    const response = await this.client.restAPI.tickerPrice();
+    const data = (await response.data()) as Ticker[];
 
     // Removing not needed markets
-    response = filter(response, coin => {
+    const filteredResponse = filter(data, coin => {
       // This way we detect btcusdt and others ex. CHRBTC
       return coin.symbol.search('BTC') >= 3;
     });
 
-    each(response, coin => {
+    each(filteredResponse, coin => {
       coin.id = coin.symbol = coin.symbol.replace('BTC', '');
     });
 
-    return response;
+    return filteredResponse;
   }
 
   async getTicker(symbol: string): Promise<Ticker> {
@@ -103,7 +106,9 @@ class BinanceAPI {
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getTicker called with symbol: ${symbol}`);
 
-    return await this.fetchJson(`${this.baseURL}ticker/price?symbol=${marketSymbol}`);
+    const response = await this.client.restAPI.tickerPrice({ symbol: marketSymbol });
+
+    return (await response.data()) as Ticker;
   }
 
   async getSummary(symbol: string): Promise<Summary> {
@@ -114,13 +119,19 @@ class BinanceAPI {
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getSummary called with symbol: ${symbol}`);
 
-    return await this.fetchJson(`${this.baseURL}ticker/24hr?symbol=${marketSymbol}`);
+    const response = await this.client.restAPI.ticker24hr({ symbol: marketSymbol });
+    const data = (await response.data()) as Summary[];
+
+    // ticker24hr returns an array, get the first element
+    const summary = Array.isArray(data) ? data[0] : data;
+
+    return summary;
   }
 
-  async getAccountData(): Promise<Record<string, string>> {
-    const response = await this.client.account();
-
-    return response.data;
+  async getAccountData() {
+    const response = await this.client.restAPI.getAccount();
+    const data = await response.data();
+    return data;
   }
 
   async getCanTrade(): Promise<AccountStatus> {

@@ -4,7 +4,7 @@
     "": {
       "name": "altcash-webapp",
       "dependencies": {
-        "@binance/connector-typescript": "^0.3.16",
+        "@binance/spot": "^20.0.1",
         "@emotion/react": "^11.14.0",
         "@emotion/server": "^11.11.0",
         "@emotion/styled": "^11.14.1",
@@ -231,7 +231,9 @@
 
     "@babel/types": ["@babel/types@7.28.4", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.27.1" } }, "sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q=="],
 
-    "@binance/connector-typescript": ["@binance/connector-typescript@0.3.16", "", { "dependencies": { "axios": "^1.7.4", "ws": "^8.17.1" } }, "sha512-KAVxj/BAtLNl+PwniwRBfeespB1vLyp6tfa3y1oXbtIuwNFbPSn5P1A0mu9n5523Vg3lKGk9pfIKugPG+E4eKA=="],
+    "@binance/common": ["@binance/common@1.2.6", "", { "dependencies": { "@types/ws": "^8.5.5", "axios": "^1.7.4", "ws": "^8.17.1" } }, "sha512-1ovKd8aA9AvS799VA8SXzO84VARsiCDZkD73FCEGTSa76BizcpsNzZ4rTYv+dyRZDlqVcDt2IB9GiPgKlpbFkw=="],
+
+    "@binance/spot": ["@binance/spot@20.0.1", "", { "dependencies": { "@binance/common": "1.2.6", "@types/ws": "^8.5.5", "axios": "^1.7.4", "ws": "^8.17.1" } }, "sha512-Ulexz/07ebGG05g/K/oBBWVJYOsMgjMDwArvQrPJ5veNuIPqAabtdscsTTnd7O4a81uxfWMrqKA6g/ZA5kq0sg=="],
 
     "@cloudflare/kv-asset-handler": ["@cloudflare/kv-asset-handler@0.4.0", "", { "dependencies": { "mime": "^3.0.0" } }, "sha512-+tv3z+SPp+gqTIcImN9o0hqE9xyfQjI1XD9pL6NuKjua9B1y7mNYv0S9cP+QEbA4ppVgGZEmKOvHX5G5Ei1CVA=="],
 
@@ -744,6 +746,8 @@
     "@types/react-transition-group": ["@types/react-transition-group@4.4.12", "", { "peerDependencies": { "@types/react": "*" } }, "sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w=="],
 
     "@types/stack-utils": ["@types/stack-utils@2.0.3", "", {}, "sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw=="],
+
+    "@types/ws": ["@types/ws@8.18.1", "", { "dependencies": { "@types/node": "*" } }, "sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg=="],
 
     "@types/yargs": ["@types/yargs@17.0.33", "", { "dependencies": { "@types/yargs-parser": "*" } }, "sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA=="],
 
