@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from 'urql';
 
 export const CREATE_ORDER = gql`
   mutation createOrder($amount: String, $total: String, $symbol: String) {

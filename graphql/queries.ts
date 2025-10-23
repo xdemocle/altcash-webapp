@@ -1,7 +1,4 @@
-import { gql } from '@apollo/client';
-
-// https://www.apollographql.com/docs/react/v2/caching/cache-interaction/#the-connection-directive
-// @connection(key: "feed", filter: ["type"])
+import { gql } from 'urql';
 
 export const GET_MARKETS = gql`
   query Markets($offset: Int, $limit: Int, $term: String, $symbols: String) {
