@@ -1,6 +1,5 @@
 import { Spot } from '@binance/connector-typescript';
 import { each, filter, find } from 'lodash';
-import { fetch } from 'undici';
 import {
   BINANCE_API_KEY,
   BINANCE_API_KEY_TESTNET,
