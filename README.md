@@ -6,8 +6,8 @@ Full-stack cryptocurrency exchange application built with Next.js and GraphQL.
 
 This monorepo is managed with **Bun workspaces** and contains:
 
-- **`packages/frontend`** - Next.js 15 + React 19 + TypeScript + Apollo Client
-- **`packages/backend`** - Express + Apollo GraphQL + MongoDB + Binance API
+- **`packages/frontend`** - Next.js 15 + React 19 + TypeScript + graphql-yoga
+- **`packages/backend`** - Express + graphql-yoga + MongoDB + Binance API
 
 ## Quick Start
 
@@ -88,7 +88,7 @@ bun build
 - Next.js 15 (Pages Router)
 - React 19
 - TypeScript
-- Apollo Client (GraphQL)
+- graphql-yoga Client (GraphQL)
 - Material-UI v7
 - tss-react (styling)
 - Socket.IO client
@@ -96,7 +96,7 @@ bun build
 ### Backend
 
 - Node.js + Express
-- Apollo Server (GraphQL)
+- graphql-yoga Server (GraphQL)
 - MongoDB + Mongoose
 - Binance API integration
 - Automated cron jobs

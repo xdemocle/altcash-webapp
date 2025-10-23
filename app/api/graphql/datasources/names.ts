@@ -1,10 +1,9 @@
-import { DataSource } from 'apollo-datasource';
 import missings from '../data/missings.json';
 import names from '../data/names.json';
-import { Metadata } from '../types';
+import { DataSource, Metadata } from '../types';
 
-class NamesAPI extends DataSource {
-  getAll(): Metadata[] {
+class NamesAPI extends DataSource<Metadata> {
+  getAll() {
     const arr = [];
 
     for (const [key, value] of Object.entries(names)) {

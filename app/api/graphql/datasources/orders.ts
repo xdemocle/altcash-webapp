@@ -1,12 +1,11 @@
-import { MongoDataSource } from 'apollo-datasource-mongodb';
 import { ObjectId } from 'bson';
 import { isUndefined } from 'lodash';
-import { Order, OrderParams, UpdateOrderParams } from '../types';
+import { DataSource, Order, OrderParams, UpdateOrderParams } from '../types';
 import { getNewRandomPin } from '../utilities';
 import logger from '../utilities/logger';
 
-class OrdersAPI extends MongoDataSource<Order> {
-  async getOrders(): Promise<Order[] | null> {
+class OrdersAPI extends DataSource<Order> {
+  async getOrders() {
     const orders = await this.model.find();
 
     orders.map((order) => {

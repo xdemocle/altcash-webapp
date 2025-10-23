@@ -1,12 +1,12 @@
-import { MongoDataSource } from 'apollo-datasource-mongodb';
 import { ObjectId } from 'bson';
 import { clone, each, isUndefined } from 'lodash';
 import {
-  OrderQueueParams,
-  OrderQueue,
-  UpdateOrderQueueParams,
+  BinanceOrderResponse,
+  DataSource,
   Order,
-  BinanceOrderResponse
+  OrderQueue,
+  OrderQueueParams,
+  UpdateOrderQueueParams
 } from '../types';
 import logger from '../utilities/logger';
 
@@ -17,7 +17,7 @@ interface DataSourceContext {
   };
 }
 
-class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
+class OrdersQueueAPI extends DataSource<OrderQueue> {
   context!: DataSourceContext;
   async getQueues(): Promise<OrderQueue[] | null> {
     const orders = await this.model.find();
@@ -119,7 +119,9 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
           this.updateOrderHasErrors(order);
         }
 
-        logger.error(`executeExchangeOrder:\npostBinanceOrder error: ${JSON.stringify(postBinanceOrder)}`);
+        logger.error(
+          `executeExchangeOrder:\npostBinanceOrder error: ${JSON.stringify(postBinanceOrder)}`
+        );
       }
 
       await this.updateQueueByOrderId(String(order._id), {
@@ -146,11 +148,17 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
     );
   }
 
-  async updateOrderReference(order: Order, exchangerOrder: BinanceOrderResponse) {
+  async updateOrderReference(
+    order: Order,
+    exchangerOrder: BinanceOrderResponse
+  ) {
     return await this.context.dataSources.ordersAPI.updateOrder(
       String(order._id),
       {
-        orderReferences: [...order.orderReferences, JSON.stringify(exchangerOrder.data)]
+        orderReferences: [
+          ...order.orderReferences,
+          JSON.stringify(exchangerOrder.data)
+        ]
       }
     );
   }
@@ -187,7 +195,9 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
 
   async executeOrders(ordersQueue: OrderQueue[]): Promise<OrderQueue[] | null> {
     each(ordersQueue, async (queue) => {
-      const order = await this.context.dataSources.ordersAPI.getOrder(queue.orderId);
+      const order = await this.context.dataSources.ordersAPI.getOrder(
+        queue.orderId
+      );
       this.executeExchangeOrder(order, queue);
     });
 
@@ -199,7 +209,7 @@ class OrdersQueueAPI extends MongoDataSource<OrderQueue> {
       hasErrors: true
     });
 
-    return response
+    return response;
   }
 
   getUpdatedQueueOrder(input: UpdateOrderQueueParams) {

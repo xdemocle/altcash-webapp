@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataSource as ApolloDataSource } from 'apollo-datasource';
-import { Document } from 'mongoose';
-
 export interface AccountStatus {
   canTrade: boolean;
   msg: string;
@@ -82,7 +78,7 @@ export interface Pair {
   timestamp: number;
 }
 
-export interface Order extends Document {
+export interface Order {
   amount: string;
   total: string;
   symbol: string;
@@ -126,7 +122,7 @@ export interface UpdateOrderParams {
   orderReferences?: string[];
 }
 
-export interface OrderQueue extends Document {
+export interface OrderQueue {
   orderId: string;
   isExecuted: boolean;
   isFilled: boolean;
@@ -148,32 +144,32 @@ export interface UpdateOrderQueueParams {
   hasErrors?: boolean;
 }
 
-export declare abstract class DataSource extends ApolloDataSource {
-  getCanTrade(): AccountStatus;
-  executeOrders(orders: OrderQueue[]): OrderQueue[];
-  getAllMarkets(): Market[];
-  getMarket(id: string): Market;
-  getTicker(id: string): Ticker;
-  getPair(pair: string): Pair;
-  getAllTickers(): Ticker[];
-  getSummary(id: string): Summary;
-  getCoin(id: string): Metadata;
-  getOrders(): Order[];
-  getOrder(id: string): Order;
-  getQueues(): OrderQueue[];
-  getQueue(id: string): OrderQueue;
-  createOrder(amount: string, total: string, symbol: string): Order;
-  updateOrder(id: string, input: OrderParams): Order;
+export declare abstract class DataSource<T = any> {
+  getCanTrade(): Promise<AccountStatus>;
+  executeOrders(orders: OrderQueue[]): Promise<OrderQueue[] | null>;
+  getAllMarkets(): Promise<Market[]>;
+  getMarket(id: string): Promise<Market>;
+  getTicker(id: string): Promise<Ticker>;
+  getPair(pair: string): Promise<Pair>;
+  getAllTickers(): Promise<Ticker[]>;
+  getSummary(id: string): Promise<Summary>;
+  getCoin(id: string): Promise<Metadata>;
+  getOrders(): Promise<Order[]>;
+  getOrder(id: string): Promise<Order>;
+  getQueues(): Promise<OrderQueue[] | null>;
+  getQueue(id: string): Promise<OrderQueue>;
+  createOrder(amount: string, total: string, symbol: string): Promise<Order>;
+  updateOrder(id: string, input: OrderParams): Promise<Order>;
   createQueue(
     orderId: string,
     isExecuted: boolean,
     isFilled: boolean
-  ): OrderQueue;
-  updateQueue(id: string, input: UpdateOrderQueueParams): OrderQueue;
-  getAll(): Metadata[];
-  missingData(): Metadata[];
-  importAndCheckOrders(orders: Order[]): OrderQueue[];
-  checkPendingPaidOrders(): Order[];
+  ): Promise<OrderQueue>;
+  updateQueue(id: string, input: UpdateOrderQueueParams): Promise<any>;
+  getAll(): Promise<Metadata[]>;
+  missingData(): Promise<Metadata[]>;
+  importAndCheckOrders(orders: Order[]): Promise<any>;
+  checkPendingPaidOrders(): Promise<Order[]>;
 }
 
 export type DataSources = {

@@ -1,94 +1,63 @@
-// import Redis from 'ioredis';
-import { ApolloServer, ApolloServerPlugin, BaseContext } from '@apollo/server';
-import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
-import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
-import BinanceAPI from '../datasources/binance';
-import MetadataAPI from '../datasources/metadata';
-import MybitxAPI from '../datasources/mybitx';
-import NamesAPI from '../datasources/names';
-import OrdersAPI from '../datasources/orders';
-import OrdersQueueAPI from '../datasources/orders-queue';
-import OrderModel from '../models/orders';
-import OrderQueueModel from '../models/orders-queue';
-import resolverCount from '../resolvers/resolver-count';
-import resolverMarkets from '../resolvers/resolver-markets';
-import resolverMeta from '../resolvers/resolver-meta';
-import resolverOrderQueues from '../resolvers/resolver-order-queues';
-import resolverOrders from '../resolvers/resolver-orders';
-import resolverPair from '../resolvers/resolver-pair';
-import resolverSummaries from '../resolvers/resolver-summaries';
-import resolverTickers from '../resolvers/resolver-tickers';
-import typeDefs from '../schema';
-import { DataSource } from '../types';
+import type { KVNamespace } from '@cloudflare/workers-types';
+import { createSchema, createYoga } from 'graphql-yoga';
+import { NextRequest } from 'next/server';
+import datasources from './datasources';
+import resolvers from './resolvers';
+import { typeDefs } from './schema';
 
-type DataSources = Record<string, DataSource>;
-
-type DataSourcesFn = () => DataSources;
-
-interface ContextWithDataSources extends BaseContext {
-  dataSources?: DataSources;
-}
-
+// Define runtime
 export const runtime = 'edge';
 
-export const ApolloDataSources = (options: {
-  dataSources: DataSourcesFn;
-}): ApolloServerPlugin<ContextWithDataSources> => ({
-  requestDidStart: async (requestContext) => {
-    const dataSources = options.dataSources();
-    const initializers = Object.values(dataSources).map(async (dataSource) => {
-      if (dataSource.initialize)
-        dataSource.initialize({
-          cache: requestContext.cache,
-          context: requestContext.contextValue
-        });
-    });
+// Define context
+export interface Context {
+  kv: KVNamespace;
+  dataSources: typeof datasources;
+}
 
-    await Promise.all(initializers);
-
-    requestContext.contextValue.dataSources = dataSources;
-  }
+// Create schema
+const schema = createSchema({
+  typeDefs,
+  resolvers
 });
 
-const dataSources: DataSourcesFn = () => ({
-  marketsAPI: new BinanceAPI() as any,
-  metadataAPI: new MetadataAPI() as any,
-  namesAPI: new NamesAPI() as any,
-  mybitxAPI: new MybitxAPI() as any,
-  ordersAPI: new OrdersAPI({ modelOrCollection: OrderModel }) as any,
-  ordersQueueAPI: new OrdersQueueAPI({
-    modelOrCollection: OrderQueueModel
-  }) as any
+// Create yoga instance
+const yoga = createYoga<Context>({
+  schema
 });
 
-const resolvers = mergeResolvers([
-  resolverMarkets,
-  resolverCount,
-  resolverMeta,
-  resolverPair,
-  resolverSummaries,
-  resolverTickers,
-  resolverOrders,
-  resolverOrderQueues
-]);
+/*
+ * Named exports for Next.js App Router
+ */
+export async function POST(req: NextRequest): Promise<Response> {
+  return yoga.fetch(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+    context: {
+      kv: (globalThis as any).KV as KVNamespace,
+      dataSources: datasources
+    }
+  } as any);
+}
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const apolloServer = new ApolloServer({
-  typeDefs: mergeTypeDefs([typeDefs]),
-  resolvers,
-  // todo kv
-  cache: new InMemoryLRUCache({
-    max: 500,
-    // ~100MiB
-    maxSize: Math.pow(2, 20) * 100,
-    // 5 minutes (in milliseconds)
-    ttl: 300_000
-  }),
-  csrfPrevention: true,
-  introspection: true,
-  plugins: [ApolloDataSources({ dataSources })]
-});
+export async function GET(req: NextRequest): Promise<Response> {
+  return yoga.fetch(req.url, {
+    method: req.method,
+    headers: req.headers,
+    context: {
+      kv: (globalThis as any).KV as KVNamespace,
+      dataSources: datasources
+    }
+  } as any);
+}
 
-export default startServerAndCreateNextHandler(apolloServer);
+export async function OPTIONS(req: NextRequest): Promise<Response> {
+  return yoga.fetch(req.url, {
+    method: req.method,
+    headers: req.headers,
+    context: {
+      kv: (globalThis as any).KV as KVNamespace,
+      dataSources: datasources
+    }
+  } as any);
+}
