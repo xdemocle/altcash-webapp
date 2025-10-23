@@ -6,21 +6,14 @@ import {
   BINANCE_API_KEY_TESTNET,
   BINANCE_API_SECRET,
   BINANCE_API_SECRET_TESTNET,
-  BINANCE_API_URL
+  BINANCE_API_URL,
 } from '../config';
-import {
-  AccountStatus,
-  BinanceOrderResponse,
-  Market,
-  Order,
-  Summary,
-  Ticker
-} from '../types';
+import { AccountStatus, BinanceOrderResponse, Market, Order, Summary, Ticker } from '../types';
 import logger from '../utilities/logger';
 
 const ERROR = {
   notrade: "Your Binance Account can't trade!",
-  nofunds: 'Your Binance Account has not enough funds!'
+  nofunds: 'Your Binance Account has not enough funds!',
 };
 
 class BinanceAPI extends RESTDataSource {
@@ -34,13 +27,9 @@ class BinanceAPI extends RESTDataSource {
 
     this.client = new (Spot as any)(BINANCE_API_KEY, BINANCE_API_SECRET);
 
-    this.clientTestnet = new (Spot as any)(
-      BINANCE_API_KEY_TESTNET,
-      BINANCE_API_SECRET_TESTNET,
-      {
-        baseURL: 'https://testnet.binance.vision'
-      }
-    );
+    this.clientTestnet = new (Spot as any)(BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET_TESTNET, {
+      baseURL: 'https://testnet.binance.vision',
+    });
   }
 
   async ping(): Promise<Record<string, string>> {
@@ -58,11 +47,9 @@ class BinanceAPI extends RESTDataSource {
     logger.debug(`Total markets from Binance: ${symbols.length}`);
 
     // Removing not needed markets
-    symbols = filter(symbols, (market) => {
+    symbols = filter(symbols, market => {
       if (!market.baseAsset || market.baseAsset === 'undefined') {
-        logger.error(
-          `FILTERING OUT market with undefined baseAsset: ${JSON.stringify(market)}`
-        );
+        logger.error(`FILTERING OUT market with undefined baseAsset: ${JSON.stringify(market)}`);
         return false;
       }
       return market.quoteAsset === 'BTC';
@@ -70,33 +57,22 @@ class BinanceAPI extends RESTDataSource {
 
     logger.debug(`Filtered markets (BTC pairs): ${symbols.length}`);
 
-    const undefinedMarkets = symbols.filter(
-      (m: any) => !m.baseAsset || m.baseAsset === 'undefined'
-    );
+    const undefinedMarkets = symbols.filter((m: any) => !m.baseAsset || m.baseAsset === 'undefined');
 
     if (undefinedMarkets.length > 0) {
-      logger.error(
-        `STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`
-      );
+      logger.error(`STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`);
     }
 
     return symbols;
   }
 
   async getMarket(symbol: string): Promise<Market> {
-    if (
-      !symbol ||
-      symbol === 'undefined' ||
-      symbol === 'UNDEFINED' ||
-      symbol === undefined
-    ) {
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
       logger.error(`BLOCKING getMarket call with undefined symbol: ${symbol}`);
       throw new Error(`Invalid symbol provided to getMarket: ${symbol}`);
     }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
-    logger.debug(
-      `getMarket called with symbol: ${symbol}, marketSymbol: ${marketSymbol}`
-    );
+    logger.debug(`getMarket called with symbol: ${symbol}, marketSymbol: ${marketSymbol}`);
     const response = await this.get(`exchangeInfo?symbol=${marketSymbol}`);
 
     return response.symbols[0];
@@ -106,12 +82,12 @@ class BinanceAPI extends RESTDataSource {
     let response = await this.get('ticker/price');
 
     // Removing not needed markets
-    response = filter(response, (coin) => {
+    response = filter(response, coin => {
       // This way we detect btcusdt and others ex. CHRBTC
       return coin.symbol.search('BTC') >= 3;
     });
 
-    each(response, (coin) => {
+    each(response, coin => {
       coin.id = coin.symbol = coin.symbol.replace('BTC', '');
     });
 
@@ -119,12 +95,7 @@ class BinanceAPI extends RESTDataSource {
   }
 
   async getTicker(symbol: string): Promise<Ticker> {
-    if (
-      !symbol ||
-      symbol === 'undefined' ||
-      symbol === 'UNDEFINED' ||
-      symbol === undefined
-    ) {
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
       logger.error(`BLOCKING getTicker call with undefined symbol: ${symbol}`);
       throw new Error(`Invalid symbol provided to getTicker: ${symbol}`);
     }
@@ -135,12 +106,7 @@ class BinanceAPI extends RESTDataSource {
   }
 
   async getSummary(symbol: string): Promise<Summary> {
-    if (
-      !symbol ||
-      symbol === 'undefined' ||
-      symbol === 'UNDEFINED' ||
-      symbol === undefined
-    ) {
+    if (!symbol || symbol === 'undefined' || symbol === 'UNDEFINED' || symbol === undefined) {
       logger.error(`BLOCKING getSummary call with undefined symbol: ${symbol}`);
       throw new Error(`Invalid symbol provided to getSummary: ${symbol}`);
     }
@@ -166,7 +132,7 @@ class BinanceAPI extends RESTDataSource {
       msg = `Binance.postOrder: ${ERROR.notrade}`;
     } else {
       const accountBalance = find(accountData.balances as any, {
-        asset: 'BTC'
+        asset: 'BTC',
       });
 
       if (Number(accountBalance.free) > 0.0006) {
@@ -178,13 +144,11 @@ class BinanceAPI extends RESTDataSource {
 
     return {
       canTrade,
-      msg
+      msg,
     };
   }
 
-  async postOrder(
-    order: Order
-  ): Promise<BinanceOrderResponse | Error | { data: any }> {
+  async postOrder(order: Order): Promise<BinanceOrderResponse | Error | { data: any }> {
     const accountData = await this.getAccountData();
 
     if (!accountData.canTrade) {
@@ -201,16 +165,11 @@ class BinanceAPI extends RESTDataSource {
     if (Number(accountBalance.free) > 0.0006) {
       // make the order
       try {
-        apiResponse = await this.client.newOrder(
-          `${order.symbol.toUpperCase()}BTC`,
-          'BUY',
-          'MARKET',
-          {
-            // price: '0.001',
-            // timeInForce: 'GTC'
-            quantity: order.amount
-          }
-        );
+        apiResponse = await this.client.newOrder(`${order.symbol.toUpperCase()}BTC`, 'BUY', 'MARKET', {
+          // price: '0.001',
+          // timeInForce: 'GTC'
+          quantity: order.amount,
+        });
       } catch (error: any) {
         let err = error;
 
@@ -226,8 +185,8 @@ class BinanceAPI extends RESTDataSource {
       apiResponse = {
         data: {
           code: -1000,
-          msg: `${ERROR.nofunds}, Balance: ${JSON.stringify(accountBalance)}`
-        }
+          msg: `${ERROR.nofunds}, Balance: ${JSON.stringify(accountBalance)}`,
+        },
       };
     }
 
