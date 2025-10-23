@@ -1,4 +1,4 @@
-import BinanceAPI from '../datasources/binance.edge';
+import BinanceAPI from '../datasources/binance.node';
 import MetadataAPI from '../datasources/metadata';
 import MybitxAPI from '../datasources/mybitx';
 import NamesAPI from '../datasources/names';
