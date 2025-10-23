@@ -1,3 +1,6 @@
+import { KVNamespace } from '@cloudflare/workers-types';
+import datasources from './datasources';
+
 export interface AccountStatus {
   canTrade: boolean;
   msg: string;
@@ -208,4 +211,10 @@ export interface BinanceOrderResponse {
     // fills: []
     fills: string[];
   };
+}
+
+// Define context
+export interface Context {
+  kv: KVNamespace;
+  dataSources: typeof datasources;
 }

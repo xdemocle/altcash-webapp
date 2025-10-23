@@ -8,7 +8,7 @@ import {
   BINANCE_API_SECRET_TESTNET,
   BINANCE_API_URL
 } from '../config';
-import { AccountStatus, BinanceOrderResponse, Order } from '../types';
+import { AccountStatus, BinanceOrderResponse, Market, Order } from '../types';
 import logger from '../utilities/logger';
 
 const ERROR = {
@@ -44,7 +44,7 @@ class BinanceAPI extends RESTDataSource {
     return await this.get('time');
   }
 
-  async getAllMarkets(): Promise<Record<string, string>[]> {
+  async getAllMarkets(): Promise<Market[]> {
     const response = await this.get('exchangeInfo');
     let symbols = response.symbols;
 
@@ -62,9 +62,11 @@ class BinanceAPI extends RESTDataSource {
     });
 
     logger.debug(`Filtered markets (BTC pairs): ${symbols.length}`);
+
     const undefinedMarkets = symbols.filter(
       (m: any) => !m.baseAsset || m.baseAsset === 'undefined'
     );
+
     if (undefinedMarkets.length > 0) {
       logger.error(
         `STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`
@@ -74,7 +76,7 @@ class BinanceAPI extends RESTDataSource {
     return symbols;
   }
 
-  async getMarket(symbol: string): Promise<Record<string, string>> {
+  async getMarket(symbol: string): Promise<Market> {
     if (
       !symbol ||
       symbol === 'undefined' ||

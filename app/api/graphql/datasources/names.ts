@@ -3,7 +3,7 @@ import names from '../data/names.json';
 import { DataSource, Metadata } from '../types';
 
 class NamesAPI extends DataSource<Metadata> {
-  getAll() {
+  async getAll() {
     const arr = [];
 
     for (const [key, value] of Object.entries(names)) {
@@ -28,7 +28,7 @@ class NamesAPI extends DataSource<Metadata> {
       });
     });
 
-    return arr;
+    return Promise.resolve(arr);
   }
 }
 

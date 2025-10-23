@@ -1,5 +1,11 @@
 import { each, filter, find, isUndefined } from 'lodash';
-import { AccountStatus, DataSources, Market, MissingMarket } from '../types';
+import {
+  AccountStatus,
+  Context,
+  DataSources,
+  Market,
+  MissingMarket
+} from '../types';
 import logger from '../utilities/logger';
 
 const queryMarkets = async (
@@ -15,10 +21,10 @@ const queryMarkets = async (
     term: string;
     symbols: string;
   },
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Market[]> => {
-  let markets = await dataSources.marketsAPI.getAllMarkets();
-  const names = await dataSources.namesAPI.getAll();
+  let markets = await context.dataSources.marketsAPI.getAllMarkets();
+  const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
 
@@ -196,9 +202,9 @@ const queryMarket = async (
 const queryCanTrade = (
   _: unknown,
   __: unknown,
-  { dataSources }: { dataSources: DataSources }
-): AccountStatus => {
-  return dataSources.marketsAPI.getCanTrade?.();
+  context: Context
+): Promise<AccountStatus> => {
+  return context.dataSources.marketsAPI.getCanTrade();
 };
 
 // Resolvers define the technique for fetching the types defined in the

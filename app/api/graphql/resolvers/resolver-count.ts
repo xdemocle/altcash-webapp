@@ -1,14 +1,13 @@
 import { filter } from 'lodash';
-import { Count, DataSources } from '../types';
+import { Context, Count } from '../types';
 
 const queryCount = async (
   _: unknown,
   { limit }: { limit: number },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Count[]> => {
   const counts = [];
-  const markets = await dataSources.marketsAPI.getAllMarkets();
+  const markets = await context.dataSources.marketsAPI.getAllMarkets();
   const activeMarkets = filter(markets, { status: 'TRADING' });
 
   counts.push({
