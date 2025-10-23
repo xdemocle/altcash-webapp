@@ -1,8 +1,8 @@
 import missingsJson from '../data/missings.json';
 import namesJson from '../data/names.json';
-import { DataSource, Metadata } from '../types';
+import { Metadata } from '../types';
 
-class NamesAPI extends DataSource<Metadata> {
+class NamesAPI {
   async getAll() {
     const arr: Metadata[] = [];
 

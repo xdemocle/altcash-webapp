@@ -146,7 +146,7 @@ export interface UpdateOrderQueueParams {
   hasErrors?: boolean;
 }
 
-export declare abstract class DataSource<T = any> {
+export interface DataSourceInterface<T = any> {
   getCanTrade(): Promise<AccountStatus>;
   executeOrders(orders: OrderQueue[]): Promise<OrderQueue[] | null>;
   getAllMarkets(): Promise<Market[]>;
@@ -168,6 +168,30 @@ export declare abstract class DataSource<T = any> {
   missingData(): Promise<Metadata[]>;
   importAndCheckOrders(orders: Order[]): Promise<any>;
   checkPendingPaidOrders(): Promise<Order[]>;
+}
+
+export abstract class DataSource<T = any> implements DataSourceInterface<T> {
+  abstract getCanTrade(): Promise<AccountStatus>;
+  abstract executeOrders(orders: OrderQueue[]): Promise<OrderQueue[] | null>;
+  abstract getAllMarkets(): Promise<Market[]>;
+  abstract getMarket(id: string): Promise<Market>;
+  abstract getTicker(id: string): Promise<Ticker>;
+  abstract getPair(pair: string): Promise<Pair>;
+  abstract getAllTickers(): Promise<Ticker[]>;
+  abstract getSummary(id: string): Promise<Summary>;
+  abstract getCoin(id: string): Promise<Metadata>;
+  abstract getOrders(): Promise<Order[]>;
+  abstract getOrder(id: string): Promise<Order>;
+  abstract getQueues(): Promise<OrderQueue[] | null>;
+  abstract getQueue(id: string): Promise<OrderQueue>;
+  abstract createOrder(amount: string, total: string, symbol: string): Promise<Order>;
+  abstract updateOrder(id: string, input: OrderParams): Promise<Order>;
+  abstract createQueue(orderId: string, isExecuted: boolean, isFilled: boolean): Promise<OrderQueue>;
+  abstract updateQueue(id: string, input: UpdateOrderQueueParams): Promise<any>;
+  abstract getAll(): Promise<Metadata[]>;
+  abstract missingData(): Promise<Metadata[]>;
+  abstract importAndCheckOrders(orders: Order[]): Promise<any>;
+  abstract checkPendingPaidOrders(): Promise<Order[]>;
 }
 
 export type DataSources = {
