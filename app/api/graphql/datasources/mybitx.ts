@@ -1,16 +1,12 @@
-import { RESTDataSource } from '@apollo/datasource-rest';
+import { fetch } from 'undici';
 import { Pair } from '../types';
 
-class MybitxAPI extends RESTDataSource {
-  constructor() {
-    super();
-    this.baseURL = 'https://api.mybitx.com/api/1';
-  }
+class MybitxAPI {
+  private baseURL = 'https://api.mybitx.com/api/1';
 
   async getPair(pair: string): Promise<Pair> {
-    const response = await this.get(`ticker?pair=${pair}`);
-
-    return response;
+    const response = await fetch(`${this.baseURL}/ticker?pair=${pair}`);
+    return (await response.json()) as Pair;
   }
 }
 

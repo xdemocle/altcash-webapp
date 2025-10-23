@@ -1,6 +1,6 @@
-import { RESTDataSource } from '@apollo/datasource-rest';
 import { Spot } from '@binance/connector-typescript';
 import { each, filter, find } from 'lodash';
+import { fetch } from 'undici';
 import {
   BINANCE_API_KEY,
   BINANCE_API_KEY_TESTNET,
@@ -16,15 +16,12 @@ const ERROR = {
   nofunds: 'Your Binance Account has not enough funds!',
 };
 
-class BinanceAPI extends RESTDataSource {
+class BinanceAPI {
+  private baseURL = BINANCE_API_URL + '/api/v3/';
   client: any;
   clientTestnet: any;
 
   constructor() {
-    super();
-
-    this.baseURL = BINANCE_API_URL + '/api/v3/';
-
     this.client = new (Spot as any)(BINANCE_API_KEY, BINANCE_API_SECRET);
 
     this.clientTestnet = new (Spot as any)(BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET_TESTNET, {
@@ -32,16 +29,21 @@ class BinanceAPI extends RESTDataSource {
     });
   }
 
+  private async fetchJson<T = any>(url: string): Promise<T> {
+    const response = await fetch(url);
+    return (await response.json()) as T;
+  }
+
   async ping(): Promise<Record<string, string>> {
-    return await this.get('ping');
+    return await this.fetchJson(`${this.baseURL}ping`);
   }
 
   async time(): Promise<Record<string, string>> {
-    return await this.get('time');
+    return await this.fetchJson(`${this.baseURL}time`);
   }
 
   async getAllMarkets(): Promise<Market[]> {
-    const response = await this.get('exchangeInfo');
+    const response = await this.fetchJson(`${this.baseURL}exchangeInfo`);
     let symbols = response.symbols;
 
     logger.debug(`Total markets from Binance: ${symbols.length}`);
@@ -73,13 +75,13 @@ class BinanceAPI extends RESTDataSource {
     }
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getMarket called with symbol: ${symbol}, marketSymbol: ${marketSymbol}`);
-    const response = await this.get(`exchangeInfo?symbol=${marketSymbol}`);
+    const response = await this.fetchJson(`${this.baseURL}exchangeInfo?symbol=${marketSymbol}`);
 
     return response.symbols[0];
   }
 
   async getAllTickers(): Promise<Ticker[]> {
-    let response = await this.get('ticker/price');
+    let response = await this.fetchJson(`${this.baseURL}ticker/price`);
 
     // Removing not needed markets
     response = filter(response, coin => {
@@ -102,7 +104,7 @@ class BinanceAPI extends RESTDataSource {
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getTicker called with symbol: ${symbol}`);
 
-    return await this.get(`ticker/price?symbol=${marketSymbol}`);
+    return await this.fetchJson(`${this.baseURL}ticker/price?symbol=${marketSymbol}`);
   }
 
   async getSummary(symbol: string): Promise<Summary> {
@@ -113,7 +115,7 @@ class BinanceAPI extends RESTDataSource {
     const marketSymbol = `${symbol}BTC`.toUpperCase();
     logger.debug(`getSummary called with symbol: ${symbol}`);
 
-    return await this.get(`ticker/24hr?symbol=${marketSymbol}`);
+    return await this.fetchJson(`${this.baseURL}ticker/24hr?symbol=${marketSymbol}`);
   }
 
   async getAccountData(): Promise<Record<string, string>> {

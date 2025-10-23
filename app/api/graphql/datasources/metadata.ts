@@ -1,23 +1,25 @@
-import { AugmentedRequest, CacheOptions, RESTDataSource } from '@apollo/datasource-rest';
+import { fetch } from 'undici';
 import { each } from 'lodash';
 import { CMC_PRO_API_KEY } from '../config';
 import { Metadata } from '../types';
 
-class MetadataAPI extends RESTDataSource {
-  constructor() {
-    super();
-    this.baseURL = 'https://pro-api.coinmarketcap.com/v2';
-  }
+class MetadataAPI {
+  private baseURL = 'https://pro-api.coinmarketcap.com/v2';
 
-  override willSendRequest(_path: string, requestOpts: AugmentedRequest<CacheOptions>) {
-    requestOpts.headers['X-CMC_PRO_API_KEY'] = CMC_PRO_API_KEY;
+  private async fetchJson<T = any>(url: string): Promise<T> {
+    const response = await fetch(url, {
+      headers: {
+        'X-CMC_PRO_API_KEY': CMC_PRO_API_KEY,
+      },
+    });
+    return (await response.json()) as T;
   }
 
   async getCoin(symbol: string): Promise<Metadata> {
     if (!symbol || symbol === 'undefined') {
       throw new Error('Invalid symbol provided to getCoin');
     }
-    const response = await this.get(`cryptocurrency/info?symbol=${symbol.toLowerCase()}`);
+    const response = await this.fetchJson<any>(`${this.baseURL}/cryptocurrency/info?symbol=${symbol.toLowerCase()}`);
 
     return response.data[symbol.toUpperCase()][0];
   }
@@ -25,7 +27,7 @@ class MetadataAPI extends RESTDataSource {
   async missingData(): Promise<Metadata[]> {
     // const symbols = 'AR,ETH,EOS,FCT,GO,NEO,SG,SMBSWAP,TFC'
     const symbols = 'IOTA';
-    const response = await this.get(`cryptocurrency/info?symbol=${symbols}`);
+    const response = await this.fetchJson<any>(`${this.baseURL}/cryptocurrency/info?symbol=${symbols}`);
 
     const arr: Metadata[] = [];
 
