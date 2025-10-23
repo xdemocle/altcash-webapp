@@ -4,8 +4,7 @@ const nextConfig: NextConfig = {
   distDir: 'dist',
   cleanDistDir: true,
   reactStrictMode: true,
-  staticPageGenerationTimeout: 0,
-  output: 'standalone',
+  staticPageGenerationTimeout: 300,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
