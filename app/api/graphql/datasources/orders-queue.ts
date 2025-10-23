@@ -1,4 +1,3 @@
-import { ObjectId } from 'bson';
 import { clone, each, isUndefined } from 'lodash';
 import {
   BinanceOrderResponse,
@@ -10,15 +9,7 @@ import {
 } from '../types';
 import logger from '../utilities/logger';
 
-interface DataSourceContext {
-  dataSources: {
-    marketsAPI: any;
-    ordersAPI: any;
-  };
-}
-
 class OrdersQueueAPI extends DataSource<OrderQueue> {
-  context!: DataSourceContext;
   async getQueues(): Promise<OrderQueue[] | null> {
     const orders = await this.model.find();
 
@@ -57,20 +48,20 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
   }
 
   async updateQueue(id: string, input: UpdateOrderQueueParams) {
-    this.deleteFromCacheById(id);
+    // this.deleteFromCacheById(id);
 
     const updatedQueueOrder = this.getUpdatedQueueOrder(input);
 
     // If there is something for real to update
     if (Object.keys(updatedQueueOrder).length > 0) {
-      return await this.collection.updateOne(
-        {
-          _id: new ObjectId(id) as any
-        },
-        {
-          $set: updatedQueueOrder
-        }
-      );
+      // return await this.collection.updateOne(
+      //   {
+      //     _id: new ObjectId(id) as any
+      //   },
+      //   {
+      //     $set: updatedQueueOrder
+      //   }
+      // );
     }
 
     return {};
@@ -94,18 +85,18 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
     return null;
   }
 
-  async executeExchangeOrder(order: Order, queue?: OrderQueue) {
+  async executeExchangeOrder(order: Order, queue?: OrderQueue, context?: any) {
     let postBinanceOrder;
     let isFilled = false;
     let hasErrors = false;
-    const binanceApi = this.context.dataSources.marketsAPI;
+    const binanceApi = context?.dataSources?.marketsAPI;
 
     try {
       // Make the Binance API call
       postBinanceOrder = await binanceApi.postOrder(order);
 
       // Update order with binance api response
-      await this.updateOrderReference(order, clone(postBinanceOrder));
+      await this.updateOrderReference(order, clone(postBinanceOrder), context);
 
       // Check is status is OK and order went trough
       if (postBinanceOrder.statusText === 'OK') {
@@ -116,7 +107,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
         // and mark it with errors.
         if (queue && queue.isExecuted) {
           this.markQueueWithError(order);
-          this.updateOrderHasErrors(order);
+          this.updateOrderHasErrors(order, context);
         }
 
         logger.error(
@@ -131,7 +122,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
       });
     } catch (error: any) {
       this.markQueueWithError(order);
-      this.updateOrderHasErrors(order);
+      this.updateOrderHasErrors(order, context);
 
       logger.error(`executeExchangeOrder: ${error && error.message}`);
     }
@@ -139,8 +130,8 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
     return postBinanceOrder;
   }
 
-  async updateOrderHasErrors(order: Order) {
-    return await this.context.dataSources.ordersAPI.updateOrder(
+  async updateOrderHasErrors(order: Order, context: any) {
+    return await context.dataSources.ordersAPI.updateOrder(
       String(order._id),
       {
         hasErrors: true
@@ -150,9 +141,10 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
 
   async updateOrderReference(
     order: Order,
-    exchangerOrder: BinanceOrderResponse
+    exchangerOrder: BinanceOrderResponse,
+    context: any
   ) {
-    return await this.context.dataSources.ordersAPI.updateOrder(
+    return await context.dataSources.ordersAPI.updateOrder(
       String(order._id),
       {
         orderReferences: [

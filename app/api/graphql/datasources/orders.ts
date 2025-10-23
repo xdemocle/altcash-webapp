@@ -1,4 +1,3 @@
-import { ObjectId } from 'bson';
 import { isUndefined } from 'lodash';
 import { DataSource, Order, OrderParams, UpdateOrderParams } from '../types';
 import { getNewRandomPin } from '../utilities';
@@ -41,11 +40,11 @@ class OrdersAPI extends DataSource<Order> {
       orderReferences: [] as string[]
     };
 
-    return await this.model.create(newOrder);
+    // return await this.model.create(newOrder);
   }
 
   async updateOrder(id: string, input: OrderParams) {
-    this.deleteFromCacheById(id);
+    // this.deleteFromCacheById(id);
 
     const updatedOrder: UpdateOrderParams = {};
 
@@ -92,14 +91,14 @@ class OrdersAPI extends DataSource<Order> {
 
     // If there is something for real to update
     if (Object.keys(updatedOrder).length > 0) {
-      await this.collection.updateOne(
-        {
-          _id: new ObjectId(id) as any
-        },
-        {
-          $set: updatedOrder
-        }
-      );
+      // await this.collection.updateOne(
+      //   {
+      //     _id: new ObjectId(id) as any
+      //   },
+      //   {
+      //     $set: updatedOrder
+      //   }
+      // );
     }
 
     return await this.getOrder(id);

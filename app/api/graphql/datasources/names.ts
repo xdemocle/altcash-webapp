@@ -1,12 +1,12 @@
-import missings from '../data/missings.json';
-import names from '../data/names.json';
+import missingsJson from '../data/missings.json';
+import namesJson from '../data/names.json';
 import { DataSource, Metadata } from '../types';
 
 class NamesAPI extends DataSource<Metadata> {
   async getAll() {
-    const arr = [];
+    const arr: Metadata[] = [];
 
-    for (const [key, value] of Object.entries(names)) {
+    for (const [key, value] of Object.entries(namesJson)) {
       arr.push({
         id: key,
         symbol: key,
@@ -17,18 +17,18 @@ class NamesAPI extends DataSource<Metadata> {
       });
     }
 
-    missings.forEach((missing: any) => {
+    missingsJson.forEach((missing) => {
       arr.push({
         id: missing.symbol,
         symbol: missing.symbol,
         name: missing.name,
-        slug: missing.slug,
-        description: missing.description,
+        slug: missing.name.toLowerCase(),
+        description: 'n/d',
         logo: missing.logo
       });
     });
 
-    return Promise.resolve(arr);
+    return arr;
   }
 }
 
