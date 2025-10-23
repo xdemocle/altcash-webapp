@@ -435,3 +435,12 @@ declare enum NewOrderPegOffsetTypeEnum {
   PRICE_LEVEL = 'PRICE_LEVEL',
   NON_REPRESENTABLE = 'NON_REPRESENTABLE',
 }
+
+export const SPOT_REST_API_PROD_URL = 'https://api.binance.com';
+export const SPOT_REST_API_TESTNET_URL = 'https://testnet.binance.vision';
+export const SPOT_WS_API_PROD_URL = 'wss://ws-api.binance.com:443/ws-api/v3';
+export const SPOT_WS_API_TESTNET_URL = 'wss://ws-api.testnet.binance.vision/ws-api/v3';
+export const SPOT_WS_STREAMS_PROD_URL = 'wss://stream.binance.com:9443';
+export const SPOT_WS_STREAMS_TESTNET_URL = 'wss://stream.testnet.binance.vision';
+export const SPOT_REST_API_MARKET_URL = 'https://data-api.binance.vision';
+export const SPOT_WS_STREAMS_MARKET_URL = 'wss://data-stream.binance.vision';

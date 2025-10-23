@@ -48,7 +48,6 @@
     "wrangler": "^4.45.0"
   },
   "dependencies": {
-    "@binance/spot": "^20.0.1",
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
@@ -62,6 +61,7 @@
     "@urql/core": "^6.0.1",
     "@urql/exchange-graphcache": "^8.1.0",
     "axios": "^1.12.2",
+    "binance": "^3.1.2",
     "bson": "^6.10.4",
     "clsx": "^2.1.1",
     "crypto-random-string": "^5.0.0",
