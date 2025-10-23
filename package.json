@@ -14,7 +14,7 @@
     "fix-code": "prettier --write '**/*.{jsx,ts,tsx}'",
     "lint": "eslint ./src/ --ext .jsx,.ts,.tsx",
     "opn-build": "opennextjs-cloudflare build",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "preview": "opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types"
