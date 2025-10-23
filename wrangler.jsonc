@@ -27,12 +27,5 @@
       "id": "<YOUR_KV_NAMESPACE_ID>",
       "preview_id": "<YOUR_KV_PREVIEW_ID>"
     }
-  ],
-  "r2_buckets": [
-    // Uncomment and configure to enable incremental cache storage
-    // {
-    //   "binding": "NEXT_INC_CACHE_R2_BUCKET",
-    //   "bucket_name": "<YOUR_BUCKET_NAME>"
-    // }
   ]
 }
