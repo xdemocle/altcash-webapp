@@ -1,28 +1,38 @@
-import { useQuery } from '@apollo/client/react';
 import { btcToRandPriceWithSymbol } from '../../../common/currency';
 import { GET_PAIR, GET_TICKER } from '../../../graphql/queries';
 import { Market, PairResponse, PairVariables, Ticker } from '../../../graphql/types';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
+import { urqlClient } from '../../../common/graphql-client';
 
 type Props = {
   coin: Market;
 };
 
 const CoinTicker = memo(({ coin }: Props) => {
-  const { data } = useQuery<{ ticker: Ticker }, { id: string }>(GET_TICKER, {
-    fetchPolicy: 'cache-first',
-    skip: !coin || !coin.id,
-    variables: {
-      id: coin?.id || '',
-    },
-  });
+  const [data, setData] = useState<{ ticker: Ticker } | null>(null);
+  const [dataPair, setDataPair] = useState<PairResponse | null>(null);
 
-  const { data: dataPair } = useQuery<PairResponse, PairVariables>(GET_PAIR, {
-    fetchPolicy: 'cache-first',
-    variables: {
-      pair: 'XBTZAR',
-    },
-  });
+  useEffect(() => {
+    if (!coin || !coin.id) return;
+
+    const fetchTicker = async () => {
+      const result = await urqlClient.query(GET_TICKER, { id: coin.id }).toPromise();
+      if (!result.error) {
+        setData(result.data as { ticker: Ticker });
+      }
+    };
+    fetchTicker();
+  }, [coin?.id]);
+
+  useEffect(() => {
+    const fetchPair = async () => {
+      const result = await urqlClient.query(GET_PAIR, { pair: 'XBTZAR' }).toPromise();
+      if (!result.error) {
+        setDataPair(result.data as PairResponse);
+      }
+    };
+    fetchPair();
+  }, []);
 
   if (!coin) {
     return null;
@@ -33,7 +43,7 @@ const CoinTicker = memo(({ coin }: Props) => {
     price: '0',
   };
 
-  const dataTicker = data?.ticker ?? fallbackTicker;
+  const dataTicker = data?.ticker || fallbackTicker;
   const bitcoinRandPrice = dataPair?.pair ? Number(dataPair.pair.last_trade) : undefined;
 
   const priceValue = Number(dataTicker.price);

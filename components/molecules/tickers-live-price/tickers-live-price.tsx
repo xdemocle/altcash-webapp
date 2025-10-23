@@ -1,14 +1,21 @@
-import { useQuery } from '@apollo/client/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { GET_TICKERS } from '../../../graphql/queries';
+import { urqlClient } from '../../../common/graphql-client';
+import { isServer } from '../../../common/utils';
 
 const TickersLivePrice = () => {
-  // const { data, networkStatus, refetch } =
-  useQuery(GET_TICKERS, {
-    pollInterval: 30000,
-  });
+  useEffect(() => {
+    if (isServer()) return;
 
-  // console.log('TickersLivePrice', data);
+    const fetchTickers = async () => {
+      await urqlClient.query(GET_TICKERS, {}).toPromise();
+    };
+
+    fetchTickers();
+    const intervalId = setInterval(fetchTickers, 30000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return <Fragment />;
 };

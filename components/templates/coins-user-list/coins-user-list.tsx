@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client/react';
 import { List, Typography } from '@mui/material';
 import Loader from 'components/molecules/loader';
 import CoinItem from 'components/organisms/coin-item';
@@ -6,7 +5,8 @@ import { GET_MARKETS } from 'graphql/queries';
 import { Market } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
 import { isUndefined } from 'lodash';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
+import { urqlClient } from 'common/graphql-client';
 
 interface CoinsUserListProps {
   predefined?: string[];
@@ -15,11 +15,23 @@ interface CoinsUserListProps {
 
 const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   const { userCoinFavourites } = useFavourites();
-  const { loading, data, networkStatus } = useQuery<{ markets: Market[] }>(GET_MARKETS, {
-    variables: {
-      symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
-    },
-  });
+  const [data, setData] = useState<{ markets: Market[] } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const networkStatus = data ? 7 : 4;
+
+  useEffect(() => {
+    const fetchMarkets = async () => {
+      setLoading(true);
+      const result = await urqlClient.query(GET_MARKETS, {
+        symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
+      }).toPromise();
+      if (!result.error) {
+        setData(result.data as { markets: Market[] });
+      }
+      setLoading(false);
+    };
+    fetchMarkets();
+  }, [predefined, userCoinFavourites]);
 
   const isFeaturedView = !isUndefined(predefined);
   const dataCoins = data?.markets;

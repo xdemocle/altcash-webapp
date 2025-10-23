@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client/react';
 import { Pagination, Typography } from '@mui/material';
 import { COINS_PER_PAGE } from 'common/constants';
 import Loader from 'components/molecules/loader';
@@ -8,7 +7,8 @@ import { CountResponse, Market, MarketsResponse, MarketsVariables } from 'graphq
 import useGlobal from 'hooks/use-global';
 import { clone, find } from 'lodash';
 import dynamic from 'next/dynamic';
-import { ChangeEvent, Fragment, memo, useMemo } from 'react';
+import { ChangeEvent, Fragment, memo, useMemo, useEffect, useState } from 'react';
+import { urqlClient } from 'common/graphql-client';
 import useStyles from './use-styles';
 
 const PaginationClient = dynamic(
@@ -35,18 +35,45 @@ interface CoinsListProps {
 const CoinsList = memo(({ markets }: CoinsListProps) => {
   const { classes } = useStyles();
   const { coinListPage, coinPageNeedle, setCoinListPage } = useGlobal();
-  const { data: dataCount } = useQuery<CountResponse>(GET_COUNT, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const [dataCount, setDataCount] = useState<CountResponse | null>(null);
+  const [data, setData] = useState<MarketsResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<any>(null);
+  const networkStatus = data ? 7 : 4;
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const result = await urqlClient.query(GET_COUNT, {}).toPromise();
+      if (!result.error) {
+        setDataCount(result.data as CountResponse);
+      }
+    };
+    fetchCount();
+  }, []);
+
   const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
-  const { loading, error, data, networkStatus } = useQuery<MarketsResponse, MarketsVariables>(GET_MARKETS, {
-    // We refresh data list at least at reload
-    fetchPolicy: 'cache-and-network',
-    skip: !shouldQuerySearch,
-    variables: {
-      term: shouldQuerySearch ? coinPageNeedle : '',
-    },
-  });
+
+  useEffect(() => {
+    if (!shouldQuerySearch) {
+      setData(null);
+      return;
+    }
+
+    const fetchMarkets = async () => {
+      setLoading(true);
+      const result = await urqlClient.query(GET_MARKETS, {
+        term: coinPageNeedle,
+      }).toPromise();
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setData(result.data as MarketsResponse);
+      }
+      setLoading(false);
+    };
+    fetchMarkets();
+  }, [coinPageNeedle]);
+
   const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
 
   const getListSlice = (limit: number) => {

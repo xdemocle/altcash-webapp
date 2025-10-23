@@ -1,10 +1,8 @@
-import { useQuery } from '@apollo/client/react';
 import { List as ListIcon, NewReleases as NewReleasesIcon, Star } from '@mui/icons-material';
 import { Paper, Tab, Tabs, Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { apolloClient } from '../../common/apollo/apollo-client';
 import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '../../common/constants';
 import TopBarSearch from '../../components/organisms/top-bar-search';
 import CoinsList from '../../components/templates/coins-list';
@@ -13,6 +11,7 @@ import { GET_META_COIN_LOGO, GET_MARKETS, GET_PAIR, GET_TICKER } from '../../gra
 import { Market } from '../../graphql/types';
 import useGlobal from '../../hooks/use-global';
 import useStyles from '../../styles/buy-use-styles';
+import { urqlClient } from '../../common/graphql-client';
 
 interface BuyTabPageProps {
   markets: Market[];
@@ -25,9 +24,9 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
   const tab = router.query.tab;
   const symbolsFeatured = SYMBOLS_FEATURED.sort();
 
-  useQuery(GET_META_COIN_LOGO, {
-    fetchPolicy: 'cache-first',
-  });
+  useEffect(() => {
+    urqlClient.query(GET_META_COIN_LOGO, {}).toPromise();
+  }, []);
 
   const handleChange = (tabNumber: number) => {
     setTab(tabNumber);
@@ -108,28 +107,26 @@ export async function getServerSideProps(context: any) {
       symbols = SYMBOLS_FEATURED.sort().join('|');
     }
 
-    const { data } = await apolloClient.query<{ markets: Market[] }>({
-      query: GET_MARKETS,
-      variables: symbols ? { symbols } : undefined,
-    });
+    const marketsResult = await urqlClient.query<{ markets: Market[] }>(GET_MARKETS, {
+      ...(symbols ? { symbols } : {}),
+    }).toPromise();
 
-    await apolloClient.query({
-      query: GET_PAIR,
-      variables: { pair: 'XBTZAR' },
-    });
+    await urqlClient.query(GET_PAIR, {
+      pair: 'XBTZAR',
+    }).toPromise();
 
-    const markets = data?.markets || [];
+    const markets = marketsResult.data?.markets || [];
 
     // Filter out markets with undefined IDs
-    const validMarkets = markets.filter(market => market.id && market.id !== 'undefined');
+    const validMarkets = markets.filter((market: Market) => market.id && market.id !== 'undefined');
 
     await Promise.all(
-      validMarkets.map(market =>
-        apolloClient
-          .query({
-            query: GET_TICKER,
-            variables: { id: market.id },
+      validMarkets.map((market: Market) =>
+        urqlClient
+          .query(GET_TICKER, {
+            id: market.id,
           })
+          .toPromise()
           .catch(() => null)
       )
     );

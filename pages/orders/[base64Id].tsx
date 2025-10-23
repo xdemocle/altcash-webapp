@@ -1,9 +1,9 @@
-import { useLazyQuery } from '@apollo/client';
 import { Alert, Box, Snackbar } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { isServer } from '../../common/utils';
+import { urqlClient } from '../../common/graphql-client';
 import RootStyled from '../../components/atoms/root';
 import Loader from '../../components/molecules/loader';
 import CardConfirmationOrder from '../../components/organisms/card-confirmation-order';
@@ -32,31 +32,34 @@ const Order: NextPage = () => {
   const [waitingOrderConfirmation, setOrderConfirmation] = useState(false);
   const [order, setOrder] = useState<OrderType>();
   const [showErrorAlert, setShowErrorAlert] = useState(false);
-  const [getOrderFunc, { error: errorAlert }] = useLazyQuery(GET_ORDER_IS_PENDING, {
-    fetchPolicy: 'network-only',
-    variables: { id: orderNumber },
-  });
+  const [errorAlert, setErrorAlert] = useState<any>(null);
 
   const onCloseErrorAlertHandler = () => {
     setShowErrorAlert(false);
   };
 
   useEffect(() => {
-    const onIntervalOrderHandler = async () => {
-      const {
-        data: { getOrder },
-      } = await getOrderFunc();
+    if (!orderNumber) return;
 
-      setOrderConfirmation(getOrder.isPending !== true);
-      setOrder(getOrder);
+    const onIntervalOrderHandler = async () => {
+      const result = await urqlClient.query(GET_ORDER_IS_PENDING, {
+        id: orderNumber,
+      }).toPromise();
+
+      if (result.error) {
+        setErrorAlert(result.error);
+      } else {
+        const getOrder = result.data?.getOrder;
+        setOrderConfirmation(getOrder?.isPending !== true);
+        setOrder(getOrder);
+      }
     };
 
     onIntervalOrderHandler();
-
     const intervalId = setInterval(onIntervalOrderHandler, 5000);
 
     return () => window.clearInterval(intervalId);
-  }, [getOrderFunc]);
+  }, [orderNumber]);
 
   useEffect(() => {
     if (errorAlert) {

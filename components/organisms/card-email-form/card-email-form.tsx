@@ -1,8 +1,8 @@
-import { useMutation } from '@apollo/client/react';
 import { Alert, Box, Button, Card, Grid, Snackbar, TextField } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import { UPDATE_ORDER } from '../../../graphql/mutations';
 import { OrderParams } from '../../../graphql/types';
+import { useGraphQLMutation } from '../../../hooks/use-graphql-mutation';
 import useStyles from './use-styles';
 
 interface CardEmailFormProps {
@@ -14,28 +14,23 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
   const [formDisabled, setFormDisabled] = useState(false);
   const [emailValue, setEmailValue] = useState('');
   const [showEmailSent, setShowEmailSent] = useState(false);
-  const [updateOrder, { error: errorUpdateOrder }] = useMutation(UPDATE_ORDER);
-
-  // console.debug(errorUpdateOrder);
-
-  const updateOrderHandler = async (input: OrderParams) => {
-    // UPDATE new order to backend with payment reference
-    const { data } = await updateOrder({
-      variables: {
-        id: orderId,
-        input,
-      },
-    });
-
-    return data;
-  };
+  const { mutate: updateOrder, error: errorUpdateOrder } = useGraphQLMutation(UPDATE_ORDER);
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    updateOrderHandler({ email: emailValue });
-
     setFormDisabled(true);
+
+    updateOrder(
+      { id: orderId, input: { email: emailValue } },
+      {
+        onSuccess: () => {
+          setShowEmailSent(true);
+        },
+        onSettled: () => {
+          setFormDisabled(false);
+        },
+      }
+    );
   };
 
   const onCloseAlertHandler = () => {

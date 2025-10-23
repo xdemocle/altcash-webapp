@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client/react';
 import { ArrowBack } from '@mui/icons-material';
 import {
   Button,
@@ -14,10 +13,9 @@ import {
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
-// import Moment from 'react-moment';
-// import { apolloClient } from '../../common/apollo/apollo-client';
+import { Fragment, useEffect, useState } from 'react';
 import { btcToRandPriceWithSymbol } from '../../common/currency';
+import { urqlClient } from '../../common/graphql-client';
 import CoinSVG from '../../components/atoms/coin-svg';
 import LinkExtBlank from '../../components/atoms/link-ext-blank';
 import CoinBuy from '../../components/templates/coin-buy';
@@ -26,17 +24,7 @@ import {
   GET_PAGE_DATA,
   GET_PAIR, // GET_META_COIN_LOGO
 } from '../../graphql/queries';
-// import { Metadata } from '../../graphql/types';
-import type {
-  Market,
-  Metadata,
-  PageDataResponse,
-  PageDataVariables,
-  PairResponse,
-  PairVariables,
-  Summary,
-  Ticker,
-} from '../../graphql/types';
+import type { Market, Metadata, PageDataResponse, PairResponse, Summary, Ticker } from '../../graphql/types';
 import useStyles from '../../styles/coin-use-styles';
 
 const fallbackMarket: Market = {
@@ -69,30 +57,59 @@ const CoinPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const coinId = String(id).toUpperCase();
+  const [data, setData] = useState<PageDataResponse | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const { data, loading } = useQuery<PageDataResponse, PageDataVariables>(GET_PAGE_DATA, {
-    // We refresh data list at least at reload
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: coinId,
-    },
-  });
+  useEffect(() => {
+    if (!coinId || coinId === 'UNDEFINED') return;
 
-  const { data: metadata } = useQuery<{ metaCoin: Metadata }, PageDataVariables>(GET_META_COIN, {
-    // We refresh data list at least at reload
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: coinId,
-    },
-  });
+    const fetchPageData = async () => {
+      setLoading(true);
+      const result = await urqlClient
+        .query(GET_PAGE_DATA, {
+          id: coinId,
+        })
+        .toPromise();
+      if (!result.error) {
+        setData(result.data as PageDataResponse);
+      }
+      setLoading(false);
+    };
+    fetchPageData();
+  }, [coinId]);
 
-  const { data: dataPair } = useQuery<PairResponse, PairVariables>(GET_PAIR, {
-    // We refresh data list at least at reload
-    fetchPolicy: 'cache-first',
-    variables: {
-      pair: 'XBTZAR',
-    },
-  });
+  const [metadata, setMetadata] = useState<{ metaCoin: Metadata } | null>(null);
+  const [dataPair, setDataPair] = useState<PairResponse | null>(null);
+
+  useEffect(() => {
+    if (!coinId || coinId === 'UNDEFINED') return;
+
+    const fetchMetadata = async () => {
+      const result = await urqlClient
+        .query(GET_META_COIN, {
+          id: coinId,
+        })
+        .toPromise();
+      if (!result.error) {
+        setMetadata(result.data as { metaCoin: Metadata });
+      }
+    };
+    fetchMetadata();
+  }, [coinId]);
+
+  useEffect(() => {
+    const fetchPair = async () => {
+      const result = await urqlClient
+        .query(GET_PAIR, {
+          pair: 'XBTZAR',
+        })
+        .toPromise();
+      if (!result.error) {
+        setDataPair(result.data as PairResponse);
+      }
+    };
+    fetchPair();
+  }, []);
 
   const dataCoin = data?.market ?? fallbackMarket;
   const dataSummary = data?.summary ?? fallbackSummary;
@@ -270,10 +287,8 @@ const CoinPage: NextPage = () => {
 export default CoinPage;
 
 // export async function getStaticPaths() {
-//   const { data } = await apolloClient.query({
 //     query: GET_META_COIN_LOGO
 //   });
-
 //   // Get the paths we want to pre-render
 //   const paths = data?.metaCoinAll?.map((coin: Metadata) => ({
 //     params: { id: coin.symbol.toLowerCase() }
@@ -282,12 +297,9 @@ export default CoinPage;
 //   // We'll pre-render only these paths at build time.
 //   return { paths, fallback: true };
 // }
-
 // export async function getStaticProps() {
-//   const { data } = await apolloClient.query({
 //     query: GET_META_COIN_LOGO
 //   });
-
 //   return {
 //     props: {
 //       metaCoinAll: data.metaCoinAll

@@ -1,11 +1,12 @@
-import { useQuery } from '@apollo/client/react';
 import clsx from 'clsx';
 import { find } from 'lodash';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { svgCoinPathHelper } from '../../../common/utils';
 import { GET_META_COIN_LOGO } from '../../../graphql/queries';
 import type { MetaCoinAllItem } from '../../../graphql/types';
+import { urqlClient } from '../../../common/graphql-client';
 import useStyles from './use-styles';
 
 type MetaCoinLogoQuery = {
@@ -19,14 +20,20 @@ type Props = {
 
 const CoinSVG = ({ coinSymbol, size }: Props) => {
   const { classes } = useStyles();
+  const [metadata, setMetadata] = useState<MetaCoinLogoQuery | null>(null);
   let symbol = coinSymbol.toLowerCase();
   let imgCoinPath = '';
   let svgCoinPath = null;
 
-  const { data: metadata } = useQuery<MetaCoinLogoQuery>(GET_META_COIN_LOGO, {
-    // We refresh data list at least at reload
-    fetchPolicy: 'cache-only',
-  });
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      const result = await urqlClient.query(GET_META_COIN_LOGO, {}).toPromise();
+      if (!result.error) {
+        setMetadata(result.data as MetaCoinLogoQuery);
+      }
+    };
+    fetchMetadata();
+  }, []);
 
   const getCoinLogo = (symbol: string) => {
     if (!metadata || !metadata.metaCoinAll) {
@@ -41,6 +48,10 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
 
     return coin.logo;
   };
+
+  if (!metadata) {
+    return null;
+  }
 
   try {
     svgCoinPath = svgCoinPathHelper(symbol);

@@ -1,11 +1,22 @@
-import { useQuery } from '@apollo/client/react';
+import { useEffect, useState } from 'react';
 import { Tooltip, Typography } from '@mui/material';
 import { GET_COUNT } from '../../../graphql/queries';
 import type { CountItem, CountResponse } from '../../../graphql/types';
+import { urqlClient } from '../../../common/graphql-client';
 import { AppBarStyled, LinkStyled } from './styled';
 
 const BottomBar = () => {
-  const { data } = useQuery<CountResponse>(GET_COUNT);
+  const [data, setData] = useState<CountResponse | null>(null);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const result = await urqlClient.query(GET_COUNT, {}).toPromise();
+      if (!result.error) {
+        setData(result.data as CountResponse);
+      }
+    };
+    fetchCount();
+  }, []);
 
   return (
     <AppBarStyled color="secondary">
