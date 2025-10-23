@@ -1,7 +1,16 @@
 import { Spot, SPOT_REST_API_PROD_URL, SPOT_REST_API_TESTNET_URL } from '@binance/spot';
 import { each, filter, find } from 'lodash';
 import { BINANCE_API_KEY, BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET, BINANCE_API_SECRET_TESTNET } from '../config';
-import { AccountStatus, BinanceOrderResponse, Market, Order, Summary, Ticker } from '../types';
+import {
+  AccountStatus,
+  BinanceOrderResponse,
+  Market,
+  NewOrderSideEnum,
+  NewOrderTypeEnum,
+  Order,
+  Summary,
+  Ticker,
+} from '../types';
 import logger from '../utilities/logger';
 
 const ERROR = {
@@ -177,10 +186,11 @@ class BinanceAPI {
     if (Number(accountBalance.free) > 0.0006) {
       // make the order
       try {
-        apiResponse = await this.client.newOrder(`${order.symbol.toUpperCase()}BTC`, 'BUY', 'MARKET', {
-          // price: '0.001',
-          // timeInForce: 'GTC'
-          quantity: order.amount,
+        apiResponse = await this.client.restAPI.newOrder({
+          symbol: `${order.symbol.toUpperCase()}BTC`,
+          side: NewOrderSideEnum.BUY,
+          type: NewOrderTypeEnum.MARKET,
+          quantity: Number(order.amount),
         });
       } catch (error: any) {
         let err = error;
