@@ -218,3 +218,26 @@ export interface Context {
   kv: KVNamespace;
   dataSources: typeof datasources;
 }
+
+export type OrderQueueSchema = {
+  orderId: string;
+  isExecuted: boolean;
+  isFilled: boolean;
+  hasErrors: boolean;
+};
+
+export type OrderSchema = {
+  amount: string;
+  total: string;
+  symbol: string;
+  email: string;
+  pin: string;
+  isPaid: boolean;
+  isPending: boolean;
+  isWithdrawn: boolean;
+  isCancelled: boolean;
+  wallet: string;
+  reference: string;
+  hasErrors: boolean;
+  orderReferences: string[];
+};

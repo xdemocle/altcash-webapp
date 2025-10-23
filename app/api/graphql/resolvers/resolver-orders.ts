@@ -1,32 +1,28 @@
-import { DataSources, OrderParams } from '../types';
+import { Context, OrderParams } from '../types';
 import logger from '../utilities/logger';
 
 // Resolvers define the technique for fetching the types defined in the
 // schema.
 const resolvers = {
   Query: {
-    getOrders: async (
-      _: unknown,
-      __: unknown,
-      { dataSources }: { dataSources: DataSources }
-    ) => {
-      return await dataSources.ordersAPI.getOrders();
+    getOrders: async (_: unknown, __: unknown, context: Context) => {
+      return await context.dataSources.ordersAPI.getOrders();
     },
     getOrder: async (
       _root: unknown,
       { id }: { id: string },
-      { dataSources }: { dataSources: DataSources }
+      context: Context
     ) => {
-      return await dataSources.ordersAPI.getOrder(id);
+      return await context.dataSources.ordersAPI.getOrder(id);
     }
   },
   Mutation: {
     createOrder: async (
       _root: unknown,
       { amount, total, symbol }: OrderParams,
-      { dataSources }: { dataSources: DataSources }
+      context: Context
     ) => {
-      const sendOrder = await dataSources.ordersAPI.createOrder(
+      const sendOrder = await context.dataSources.ordersAPI.createOrder(
         amount,
         total,
         symbol
@@ -37,9 +33,12 @@ const resolvers = {
     updateOrder: async (
       _: unknown,
       { id, input }: { id: string; input: OrderParams },
-      { dataSources }: { dataSources: DataSources }
+      context: Context
     ) => {
-      const updateOrder = await dataSources.ordersAPI.updateOrder(id, input);
+      const updateOrder = await context.dataSources.ordersAPI.updateOrder(
+        id,
+        input
+      );
 
       logger.debug(`updateOrder ${updateOrder}`);
 

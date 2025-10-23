@@ -13,6 +13,7 @@ import {
   BinanceOrderResponse,
   Market,
   Order,
+  Summary,
   Ticker
 } from '../types';
 import logger from '../utilities/logger';
@@ -133,7 +134,7 @@ class BinanceAPI extends RESTDataSource {
     return await this.get(`ticker/price?symbol=${marketSymbol}`);
   }
 
-  async getSummary(symbol: string): Promise<Record<string, string>> {
+  async getSummary(symbol: string): Promise<Summary> {
     if (
       !symbol ||
       symbol === 'undefined' ||
