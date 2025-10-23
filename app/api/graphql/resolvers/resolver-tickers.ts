@@ -1,12 +1,12 @@
 import { filter, isUndefined } from 'lodash';
-import { DataSources, Ticker } from '../types';
+import { Context, Ticker } from '../types';
 
 const queryTickers = async (
   _: unknown,
   { symbols }: { symbols: string },
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Ticker[]> => {
-  let tickers = await dataSources.marketsAPI.getAllTickers();
+  let tickers = await context.dataSources.marketsAPI.getAllTickers();
 
   // Search feature or symbols one
   if (!isUndefined(symbols)) {
@@ -21,7 +21,7 @@ const queryTickers = async (
 const queryTicker = async (
   _: unknown,
   { id }: { id: string },
-  { dataSources }: { dataSources: DataSources }
+  context: Context
 ): Promise<Ticker> => {
   if (!id || id === 'undefined' || id === undefined) {
     return {
@@ -30,7 +30,7 @@ const queryTicker = async (
       symbol: ''
     } as any;
   }
-  const response = await dataSources.marketsAPI.getTicker(id);
+  const response = await context.dataSources.marketsAPI.getTicker(id);
 
   // Add the id for client caching purpouse
   response.id = response.symbol.replace('BTC', '');

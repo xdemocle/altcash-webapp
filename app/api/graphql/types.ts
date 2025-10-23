@@ -99,9 +99,9 @@ export interface Order {
 }
 
 export interface OrderParams {
-  amount?: string;
-  total?: string;
-  symbol?: string;
+  amount: string;
+  total: string;
+  symbol: string;
   email?: string;
   pin?: string;
   isPaid?: boolean;

@@ -8,7 +8,13 @@ import {
   BINANCE_API_SECRET_TESTNET,
   BINANCE_API_URL
 } from '../config';
-import { AccountStatus, BinanceOrderResponse, Market, Order } from '../types';
+import {
+  AccountStatus,
+  BinanceOrderResponse,
+  Market,
+  Order,
+  Ticker
+} from '../types';
 import logger from '../utilities/logger';
 
 const ERROR = {
@@ -95,7 +101,7 @@ class BinanceAPI extends RESTDataSource {
     return response.symbols[0];
   }
 
-  async getAllTickers(): Promise<Record<string, string>[]> {
+  async getAllTickers(): Promise<Ticker[]> {
     let response = await this.get('ticker/price');
 
     // Removing not needed markets
@@ -111,7 +117,7 @@ class BinanceAPI extends RESTDataSource {
     return response;
   }
 
-  async getTicker(symbol: string): Promise<Record<string, string>> {
+  async getTicker(symbol: string): Promise<Ticker> {
     if (
       !symbol ||
       symbol === 'undefined' ||
