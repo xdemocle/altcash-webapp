@@ -23,32 +23,24 @@ const yoga = createYoga<Context>({
 /*
  * Named exports for Next.js App Router
  */
-export async function POST(req: NextRequest): Promise<Response> {
-  const { env } = getCloudflareContext();
-  const context: Context = {
+function createYogaContext(env: Env): Context {
+  return {
     KV: env.NEXT_INC_CACHE_KV,
     dataSources: datasources
   };
+}
 
-  return yoga.fetch(req.url, context);
+export async function POST(req: NextRequest): Promise<Response> {
+  const { env } = getCloudflareContext();
+  return yoga.fetch(req.url, createYogaContext(env as Env));
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
   const { env } = getCloudflareContext();
-  const context: Context = {
-    KV: env.NEXT_INC_CACHE_KV,
-    dataSources: datasources
-  };
-
-  return yoga.fetch(req.url, context);
+  return yoga.fetch(req.url, createYogaContext(env as Env));
 }
 
 export async function OPTIONS(req: NextRequest): Promise<Response> {
   const { env } = getCloudflareContext();
-  const context: Context = {
-    KV: env.NEXT_INC_CACHE_KV,
-    dataSources: datasources
-  };
-
-  return yoga.fetch(req.url, context);
+  return yoga.fetch(req.url, createYogaContext(env as Env));
 }
