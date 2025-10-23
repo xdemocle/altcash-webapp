@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client/react';
+import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { Box, Button, Card, Grid, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
@@ -51,9 +51,9 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     });
   }, []);
 
-  const [createOrder, { error: errorCreateOrder }] = useMutation<{ createOrder: Order }, OrderParams>(CREATE_ORDER);
+  const { mutate: createOrder, isPending: isCreatingOrder, error: errorCreateOrder } = useGraphQLMutation<{ createOrder: Order }, OrderParams>(CREATE_ORDER);
 
-  const [updateOrder, { error: errorUpdateOrder }] = useMutation<
+  const { mutate: updateOrder, isPending: isUpdatingOrder, error: errorUpdateOrder } = useGraphQLMutation<
     { updateOrder: Order },
     { id: string; input: OrderParams }
   >(UPDATE_ORDER);
@@ -71,14 +71,14 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     const id = orderInfo.split('/')[0];
 
     // UPDATE new order to backend with payment reference
-    const { data } = await updateOrder({
-      variables: {
-        id,
-        input,
-      },
+    return new Promise((resolve) => {
+      updateOrder(
+        { id, input },
+        {
+          onSuccess: (data) => resolve(data),
+        }
+      );
     });
-
-    return data;
   };
 
   const updateOrderWithReference = async (reference: string) => {
@@ -108,28 +108,39 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     // POST new order to backend
     if (!orderInfo.length) {
       try {
-        const { data } = await createOrder({
-          variables: {
+        createOrder(
+          {
             amount: String(cryptoCurrency),
             total: String(totalAmount),
             symbol: coin.symbol,
           },
-        });
+          {
+            onSuccess: (data) => {
+              const createdOrder = data?.createOrder;
 
-        const createdOrder = data?.createOrder;
+              if (!createdOrder) {
+                throw new Error('Create order mutation returned no data');
+              }
 
-        if (!createdOrder) {
-          throw new Error('Create order mutation returned no data');
-        }
-
-        setOrderInfo(createdOrder._id + '/' + createdOrder.amount + '/' + createdOrder.total + '/' + createdOrder.pin);
+              setOrderInfo(createdOrder._id + '/' + createdOrder.amount + '/' + createdOrder.total + '/' + createdOrder.pin);
+            },
+            onError: (error) => {
+              setOrderInfo('');
+              console.debug(error);
+            },
+            onSettled: () => {
+              setFormDisabled(false);
+            },
+          }
+        );
       } catch (error) {
         setOrderInfo('');
         console.debug(error);
+        setFormDisabled(false);
       }
+    } else {
+      setFormDisabled(false);
     }
-
-    setFormDisabled(false);
   };
 
   const onPaymentSuccess = (reference: string) => {
