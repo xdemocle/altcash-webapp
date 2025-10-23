@@ -16,27 +16,6 @@ export const BINANCE_API_KEY = process.env.BINANCE_API_KEY || '';
 
 export const BINANCE_API_SECRET = process.env.BINANCE_API_SECRET || '';
 
-export const BINANCE_API_KEY_TESTNET =
-  process.env.BINANCE_API_KEY_TESTNET || '';
+export const BINANCE_API_KEY_TESTNET = process.env.BINANCE_API_KEY_TESTNET || '';
 
-export const BINANCE_API_SECRET_TESTNET =
-  process.env.BINANCE_API_SECRET_TESTNET || '';
-
-const getRedisOptions = () => {
-  const redisOptions: {
-    tls?: { rejectUnauthorized: boolean };
-    connectTimeout: number;
-  } = {
-    connectTimeout: 10000
-  };
-
-  if (process.env.NODE_ENV === 'production') {
-    redisOptions.tls = {
-      rejectUnauthorized: false
-    };
-  }
-
-  return redisOptions;
-};
-
-export const REDIS_OPTIONS = getRedisOptions();
+export const BINANCE_API_SECRET_TESTNET = process.env.BINANCE_API_SECRET_TESTNET || '';
