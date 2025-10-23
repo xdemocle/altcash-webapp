@@ -1,5 +1,4 @@
 import { each } from 'lodash';
-import { fetch } from 'undici';
 import { CMC_PRO_API_KEY } from '../config';
 import { Metadata } from '../types';
 
