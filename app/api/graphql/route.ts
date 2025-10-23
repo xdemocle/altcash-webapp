@@ -1,6 +1,7 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { NextRequest } from 'next/server';
+import { NODE_ENV } from './config';
 import datasources from './datasources';
 import resolvers from './resolvers';
 import { typeDefs } from './schema';
@@ -18,6 +19,7 @@ const schema = createSchema<Context>({
 // Create yoga instance
 const yoga = createYoga<Context>({
   schema,
+  graphiql: NODE_ENV === 'development',
 });
 
 /*
