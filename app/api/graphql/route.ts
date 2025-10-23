@@ -17,14 +17,18 @@ const schema = createSchema<Context>({
 });
 
 // Create yoga instance
-const yoga = createYoga<Context>({
+const { handleRequest } = createYoga<Context>({
   schema,
+
   graphiql: NODE_ENV === 'development',
+
+  // While using Next.js file convention for routing, we need to configure Yoga to use the correct endpoint
+  graphqlEndpoint: '/api/graphql',
+
+  // Yoga needs to know how to create a valid Next response
+  fetchAPI: { Response },
 });
 
-/*
- * Named exports for Next.js App Router
- */
 function createYogaContext(env: Env): Context {
   return {
     KV: env.NEXT_INC_CACHE_KV,
@@ -32,17 +36,23 @@ function createYogaContext(env: Env): Context {
   };
 }
 
+/*
+ * Named exports for Next.js App Router
+ */
 export async function POST(req: NextRequest): Promise<Response> {
   const { env } = getCloudflareContext();
-  return yoga.fetch(req.url, createYogaContext(env as Env));
+
+  return handleRequest(req, createYogaContext(env as Env));
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
   const { env } = getCloudflareContext();
-  return yoga.fetch(req.url, createYogaContext(env as Env));
+
+  return handleRequest(req, createYogaContext(env as Env));
 }
 
 export async function OPTIONS(req: NextRequest): Promise<Response> {
   const { env } = getCloudflareContext();
-  return yoga.fetch(req.url, createYogaContext(env as Env));
+
+  return handleRequest(req, createYogaContext(env as Env));
 }
