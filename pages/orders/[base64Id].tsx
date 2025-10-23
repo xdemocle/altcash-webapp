@@ -105,4 +105,18 @@ const Order: NextPage = () => {
   );
 };
 
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps() {
+  return {
+    props: {},
+    revalidate: false,
+  };
+}
+
 export default Order;

@@ -31,4 +31,10 @@ const CustomBuyRouter: NextPage = () => {
   );
 };
 
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
+
 export default CustomBuyRouter;

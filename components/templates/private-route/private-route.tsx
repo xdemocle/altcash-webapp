@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import useAuth from '../../../hooks/use-auth';
 
 type Props = {
-  children: JSX.Element;
+  children: ReactNode;
 };
 
 const PrivateRoute = ({ children }: Props) => {

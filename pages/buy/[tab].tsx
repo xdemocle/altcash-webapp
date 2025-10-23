@@ -87,17 +87,6 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
   );
 };
 
-// export async function getStaticPaths() {
-//   return {
-//     paths: [
-//       { params: { tab: 'featured' } },
-//       { params: { tab: 'all' } },
-//       { params: { tab: 'favourite' } }
-//     ],
-//     fallback: true
-//   };
-// }
-
 export async function getServerSideProps(context: any) {
   try {
     const { tab } = context.params;
