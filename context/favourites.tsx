@@ -15,18 +15,16 @@ const userCoinFavouritesLocal = () => {
   return '';
 };
 
-export const FavouritesContext = createContext<FavouritesContextProps>(
-  {} as FavouritesContextProps
-);
+export const FavouritesContext = createContext<FavouritesContextProps>({} as FavouritesContextProps);
 
 interface Props {
   children: ReactNode;
 }
 
 const FavouritesProvider = ({ children }: Props) => {
-  const [userCoinFavourites, setFavourites] = useState<
-    FavouritesContextProps['userCoinFavourites']
-  >(userCoinFavouritesLocal() ? JSON.parse(userCoinFavouritesLocal()) : []);
+  const [userCoinFavourites, setFavourites] = useState<FavouritesContextProps['userCoinFavourites']>(
+    userCoinFavouritesLocal() ? JSON.parse(userCoinFavouritesLocal()) : []
+  );
 
   const addFavourites = (symbol: string) => {
     userCoinFavourites.push(symbol as never);
@@ -51,7 +49,7 @@ const FavouritesProvider = ({ children }: Props) => {
       value={{
         userCoinFavourites,
         addFavourites,
-        removeFavourites
+        removeFavourites,
       }}
     >
       {children}

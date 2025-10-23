@@ -5,7 +5,7 @@ import {
   Order,
   OrderQueue,
   OrderQueueParams,
-  UpdateOrderQueueParams
+  UpdateOrderQueueParams,
 } from '../types';
 import logger from '../utilities/logger';
 
@@ -13,7 +13,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
   async getQueues(): Promise<OrderQueue[] | null> {
     const orders = await this.model.find();
 
-    orders.map((order) => {
+    orders.map(order => {
       order.timestamp = (order._id as any).getTimestamp();
       return order;
     });
@@ -43,7 +43,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
     return await this.model.create({
       orderId,
       isExecuted,
-      isFilled
+      isFilled,
     });
   }
 
@@ -74,10 +74,10 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
     if (Object.keys(updatedQueueOrder).length > 0) {
       return await this.collection.updateOne(
         {
-          orderId
+          orderId,
         },
         {
-          $set: updatedQueueOrder
+          $set: updatedQueueOrder,
         }
       );
     }
@@ -110,15 +110,13 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
           this.updateOrderHasErrors(order, context);
         }
 
-        logger.error(
-          `executeExchangeOrder:\npostBinanceOrder error: ${JSON.stringify(postBinanceOrder)}`
-        );
+        logger.error(`executeExchangeOrder:\npostBinanceOrder error: ${JSON.stringify(postBinanceOrder)}`);
       }
 
       await this.updateQueueByOrderId(String(order._id), {
         isExecuted: true,
         isFilled,
-        hasErrors
+        hasErrors,
       });
     } catch (error: any) {
       this.markQueueWithError(order);
@@ -131,28 +129,15 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
   }
 
   async updateOrderHasErrors(order: Order, context: any) {
-    return await context.dataSources.ordersAPI.updateOrder(
-      String(order._id),
-      {
-        hasErrors: true
-      }
-    );
+    return await context.dataSources.ordersAPI.updateOrder(String(order._id), {
+      hasErrors: true,
+    });
   }
 
-  async updateOrderReference(
-    order: Order,
-    exchangerOrder: BinanceOrderResponse,
-    context: any
-  ) {
-    return await context.dataSources.ordersAPI.updateOrder(
-      String(order._id),
-      {
-        orderReferences: [
-          ...order.orderReferences,
-          JSON.stringify(exchangerOrder.data)
-        ]
-      }
-    );
+  async updateOrderReference(order: Order, exchangerOrder: BinanceOrderResponse, context: any) {
+    return await context.dataSources.ordersAPI.updateOrder(String(order._id), {
+      orderReferences: [...order.orderReferences, JSON.stringify(exchangerOrder.data)],
+    });
   }
 
   async importAndCheckOrders(orders: Order[]) {
@@ -164,8 +149,8 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
     const queue = await this.getQueues();
 
     // Check if each order are already present
-    orders.forEach(async (order) => {
-      const isPresent = queue?.find((e) => e.orderId === String(order._id));
+    orders.forEach(async order => {
+      const isPresent = queue?.find(e => e.orderId === String(order._id));
 
       if (!isPresent) {
         this.executeExchangeOrder(order);
@@ -173,7 +158,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
         newOrdersQueue.push({
           orderId: String(order._id),
           isExecuted: false,
-          isFilled: false
+          isFilled: false,
         });
       }
     });
@@ -186,10 +171,8 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
   }
 
   async executeOrders(ordersQueue: OrderQueue[]): Promise<OrderQueue[] | null> {
-    each(ordersQueue, async (queue) => {
-      const order = await this.context.dataSources.ordersAPI.getOrder(
-        queue.orderId
-      );
+    each(ordersQueue, async queue => {
+      const order = await this.context.dataSources.ordersAPI.getOrder(queue.orderId);
       this.executeExchangeOrder(order, queue);
     });
 
@@ -198,7 +181,7 @@ class OrdersQueueAPI extends DataSource<OrderQueue> {
 
   async markQueueWithError(order: Order) {
     const response = await this.updateQueueByOrderId(String(order._id), {
-      hasErrors: true
+      hasErrors: true,
     });
 
     return response;

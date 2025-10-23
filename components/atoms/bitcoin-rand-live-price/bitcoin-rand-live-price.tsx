@@ -8,12 +8,9 @@ import useGlobal from '../../../hooks/use-global';
 
 const BitcoinRandLivePrice = () => {
   const { setBitcoinRandPrice } = useGlobal();
-  const [getLivePrice, { data }] = useLazyQuery<PairResponse, PairVariables>(
-    GET_PAIR,
-    {
-      fetchPolicy: 'cache-and-network'
-    }
-  );
+  const [getLivePrice, { data }] = useLazyQuery<PairResponse, PairVariables>(GET_PAIR, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   useEffect(() => {
     const variables: PairVariables = { pair: 'XBTZAR' };
@@ -21,10 +18,7 @@ const BitcoinRandLivePrice = () => {
 
     const intervalBtcPrice = () => {
       if (!isServer()) {
-        return setInterval(
-          () => getLivePrice({ variables }),
-          REFRESH_BTCZAR_LIVE_PRICE
-        );
+        return setInterval(() => getLivePrice({ variables }), REFRESH_BTCZAR_LIVE_PRICE);
       }
 
       return 0;

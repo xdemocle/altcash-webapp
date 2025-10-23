@@ -5,10 +5,10 @@ import { strPxRem } from '../../../common/utils';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   buttonLoadMore: {
-    margin: '0 auto'
+    margin: '0 auto',
   },
   rightIcon: {
-    marginLeft: strPxRem(theme.spacing(1))
+    marginLeft: strPxRem(theme.spacing(1)),
   },
   buttonProgress: {
     color: green[100],
@@ -16,17 +16,17 @@ const useStyles = makeStyles()((theme: Theme) => ({
     top: '50%',
     left: '50%',
     marginTop: -12,
-    marginLeft: -12
+    marginLeft: -12,
   },
   bottomListWrapper: {
     position: 'relative',
     textAlign: 'center',
-    margin: strPxRem(theme.spacing(1))
+    margin: strPxRem(theme.spacing(1)),
   },
   pagination: {
     textAlign: 'center',
-    margin: '1.7rem 2rem 1.5rem 2rem'
-  }
+    margin: '1.7rem 2rem 1.5rem 2rem',
+  },
 }));
 
 export default useStyles;

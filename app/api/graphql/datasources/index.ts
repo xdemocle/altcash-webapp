@@ -9,7 +9,7 @@ export default {
   marketsAPI: new BinanceAPI(),
   mybitxAPI: new MybitxAPI(),
   metadataAPI: new MetadataAPI(),
-  namesAPI: new NamesAPI()
+  namesAPI: new NamesAPI(),
   // ordersAPI: new OrdersAPI(),
   // ordersQueueAPI: new OrdersQueueAPI()
 };

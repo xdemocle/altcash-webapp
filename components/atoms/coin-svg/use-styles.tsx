@@ -10,25 +10,25 @@ const useStyles = makeStyles()(() => ({
       height: '2rem',
       padding: 0,
       verticalAlign: 'middle',
-      overflow: 'visible'
-    }
+      overflow: 'visible',
+    },
   },
   regular: {
     width: '2rem',
     height: '2rem',
     '& svg': {
       width: '2rem',
-      height: '2rem'
-    }
+      height: '2rem',
+    },
   },
   large: {
     width: '4rem',
     height: '4rem',
     '& svg': {
       width: '4rem',
-      height: '4rem'
-    }
-  }
+      height: '4rem',
+    },
+  },
 }));
 
 export default useStyles;

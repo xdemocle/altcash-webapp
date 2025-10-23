@@ -1,8 +1,5 @@
 import { useContext } from 'react';
-import {
-  FavouritesContext,
-  FavouritesContextProps
-} from '../context/favourites';
+import { FavouritesContext, FavouritesContextProps } from '../context/favourites';
 
 const useFavourites = (): FavouritesContextProps => {
   return useContext(FavouritesContext);

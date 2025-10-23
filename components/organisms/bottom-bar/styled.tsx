@@ -12,12 +12,12 @@ const AppBarStyled = styled(AppBar)(({ theme }) => ({
     position: 'fixed',
     top: 'auto',
     bottom: 0,
-    marginBottom: '0'
-  }
+    marginBottom: '0',
+  },
 }));
 
 const LinkStyled = styled(Link)(() => ({
-  color: '#fff !important'
+  color: '#fff !important',
 }));
 
 export { AppBarStyled, LinkStyled };

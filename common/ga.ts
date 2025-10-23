@@ -8,17 +8,11 @@ declare global {
 // log the pageview with their URL
 export const pageview = (url: string) => {
   window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-    page_path: url
+    page_path: url,
   });
 };
 
 // log specific events happening.
-export const event = ({
-  action,
-  params
-}: {
-  action: string;
-  params: string;
-}) => {
+export const event = ({ action, params }: { action: string; params: string }) => {
   window.gtag('event', action, params);
 };

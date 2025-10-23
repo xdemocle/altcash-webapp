@@ -1,16 +1,12 @@
 import { filter, isUndefined } from 'lodash';
 import { Context, Ticker } from '../types';
 
-const queryTickers = async (
-  _: unknown,
-  { symbols }: { symbols: string },
-  context: Context
-): Promise<Ticker[]> => {
+const queryTickers = async (_: unknown, { symbols }: { symbols: string }, context: Context): Promise<Ticker[]> => {
   let tickers = await context.dataSources.marketsAPI.getAllTickers();
 
   // Search feature or symbols one
   if (!isUndefined(symbols)) {
-    tickers = filter(tickers, (coin) => {
+    tickers = filter(tickers, coin => {
       return symbols.split('|').includes(coin.id);
     });
   }
@@ -18,16 +14,12 @@ const queryTickers = async (
   return tickers;
 };
 
-const queryTicker = async (
-  _: unknown,
-  { id }: { id: string },
-  context: Context
-): Promise<Ticker> => {
+const queryTicker = async (_: unknown, { id }: { id: string }, context: Context): Promise<Ticker> => {
   if (!id || id === 'undefined' || id === undefined) {
     return {
       id: '',
       price: '0',
-      symbol: ''
+      symbol: '',
     } as any;
   }
   const response = await context.dataSources.marketsAPI.getTicker(id);
@@ -43,8 +35,8 @@ const queryTicker = async (
 const resolvers = {
   Query: {
     tickers: queryTickers,
-    ticker: queryTicker
-  }
+    ticker: queryTicker,
+  },
 };
 
 export default resolvers;

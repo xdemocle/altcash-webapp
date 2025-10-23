@@ -8,7 +8,7 @@ type WorkerEnv = Record<string, unknown>;
 const worker: ExportedHandler<WorkerEnv> = {
   fetch(request, env, context) {
     return handler.fetch(request, env, context);
-  }
+  },
 };
 
 export default worker;

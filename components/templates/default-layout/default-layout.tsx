@@ -11,15 +11,15 @@ const AppFrame = styled('div')(() => ({
   position: 'relative',
   width: '100%',
   minHeight: '100vh',
-  margin: '0 auto'
+  margin: '0 auto',
 }));
 
 const Inner = styled('div')(({ theme }) => ({
   display: 'flex',
   paddingTop: '4rem',
   [theme.breakpoints.up('sm')]: {
-    paddingTop: '0'
-  }
+    paddingTop: '0',
+  },
 }));
 
 const Content = styled('main')(({ theme }) => ({
@@ -30,8 +30,8 @@ const Content = styled('main')(({ theme }) => ({
   backgroundColor: '#f4f5f4',
   [theme.breakpoints.only('xs')]: {
     minHeight: 'calc(100vh - 56px)',
-    paddingBottom: theme.typography.pxToRem(56)
-  }
+    paddingBottom: theme.typography.pxToRem(56),
+  },
 }));
 
 interface DefaultLayoutProps {

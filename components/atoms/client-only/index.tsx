@@ -4,10 +4,7 @@ interface ClientOnlyProps {
   children: ReactNode;
 }
 
-export default function ClientOnly({
-  children,
-  ...delegated
-}: ClientOnlyProps) {
+export default function ClientOnly({ children, ...delegated }: ClientOnlyProps) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {

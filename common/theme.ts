@@ -7,12 +7,12 @@ export const theme = createTheme({
     // type: 'dark',
     primary: {
       // main: '#28a745'
-      main: green[600]
+      main: green[600],
     },
     secondary: {
       // main: '#5A7684'
-      main: blueGrey[500]
-    }
+      main: blueGrey[500],
+    },
   },
   // spacing: {
   //   unit: 8
@@ -22,8 +22,8 @@ export const theme = createTheme({
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 500,
-    fontWeightMedium: 700
-  }
+    fontWeightMedium: 700,
+  },
   // overrides: {
   //   // Style sheet name ⚛️
   //   MuiTouchRipple: {

@@ -9,42 +9,23 @@ const Homepage = () => {
 
   return (
     <div className={classes.root}>
-      <Parallax
-        bgImage="/assets/hero.jpg"
-        strength={300}
-        bgStyle={{ top: '-5%' }}
-      >
-        <div
-          style={{ minHeight: '65vh', display: 'flex', alignItems: 'center' }}
-        >
+      <Parallax bgImage="/assets/hero.jpg" strength={300} bgStyle={{ top: '-5%' }}>
+        <div style={{ minHeight: '65vh', display: 'flex', alignItems: 'center' }}>
           <div className={classes.parallaxContent}>
             <Typography
               variant="h2"
               gutterBottom
               color="inherit"
-              className={clsx(
-                classes.typographyShadow,
-                classes.typographyMainTitle
-              )}
+              className={clsx(classes.typographyShadow, classes.typographyMainTitle)}
             >
               Altcash
             </Typography>
-            <Typography
-              variant="h4"
-              gutterBottom
-              color="inherit"
-              className={classes.typographyShadow}
-            >
+            <Typography variant="h4" gutterBottom color="inherit" className={classes.typographyShadow}>
               Buy crypto coins fast and easy in South Africa!
             </Typography>
             <hr className={classes.heroDivider} />
             <Link href="/buy">
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={classes.ctoButton}
-              >
+              <Button variant="contained" color="primary" size="large" className={classes.ctoButton}>
                 Buy Altcoins now
               </Button>
             </Link>
@@ -52,94 +33,46 @@ const Homepage = () => {
         </div>
       </Parallax>
 
-      <Grid
-        className={classes.gridContainer}
-        container
-        alignContent="center"
-        justifyContent="center"
-      >
+      <Grid className={classes.gridContainer} container alignContent="center" justifyContent="center">
         <Grid size={12}>
           <Typography variant="h4" gutterBottom color="primary" align="center">
             The best way to start investing in crypto currencies!
           </Typography>
-          <Typography
-            variant="subtitle1"
-            gutterBottom
-            color="secondary"
-            align="center"
-          >
-            A new service for South Africans to buy crypto coins with credit
-            card, bank transfer, Masterpass, and Snapscan.
+          <Typography variant="subtitle1" gutterBottom color="secondary" align="center">
+            A new service for South Africans to buy crypto coins with credit card, bank transfer, Masterpass, and
+            Snapscan.
           </Typography>
-          <Typography
-            variant="subtitle2"
-            gutterBottom
-            color="secondary"
-            align="center"
-          >
+          <Typography variant="subtitle2" gutterBottom color="secondary" align="center">
             Fast, anonymous and easy instant buying.
           </Typography>
           <Link href="/buy">
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              className={classes.ctoButton}
-            >
+            <Button variant="contained" color="secondary" size="large" className={classes.ctoButton}>
               Buy Altcoins now
             </Button>
           </Link>
         </Grid>
       </Grid>
 
-      <Parallax
-        bgImage="/assets/section.jpg"
-        strength={300}
-        bgStyle={{ top: '-20%' }}
-      >
+      <Parallax bgImage="/assets/section.jpg" strength={300} bgStyle={{ top: '-20%' }}>
         <div style={{ minHeight: '45vh' }}>
           <div className={classes.parallaxContent}>
             <Grid container alignContent="center" justifyContent="center">
-              <Grid
-                size={{ xs: 12, sm: 5, lg: 4 }}
-                className={classes.gridOverlayItem}
-              >
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  color="primary"
-                  align="center"
-                >
+              <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
+                <Typography variant="subtitle1" gutterBottom color="primary" align="center">
                   Company info
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat
-                  tincidunt ornare. Pellentesque habitant morbi tristique
-                  senectus et netus et malesuada fames ac turpis egestas. Nullam
-                  in aliquet odio. Aliquam eu est vitae tellus bibendum
-                  tincidunt. Suspendisse potenti.
+                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare. Pellentesque habitant
+                  morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in aliquet odio.
+                  Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
                 </Typography>
               </Grid>
-              <Grid
-                size={{ xs: 12, sm: 5, lg: 4 }}
-                className={classes.gridOverlayItem}
-              >
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  color="primary"
-                  align="center"
-                >
+              <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
+                <Typography variant="subtitle1" gutterBottom color="primary" align="center">
                   Contact Us
                 </Typography>
-                <Typography
-                  variant="body1"
-                  gutterBottom
-                  color="inherit"
-                  align="left"
-                >
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat
-                  tincidunt ornare.
+                <Typography variant="body1" gutterBottom color="inherit" align="left">
+                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
                   <Tooltip title="ONLY Whatsapp messages" placement="top">
@@ -148,8 +81,7 @@ const Homepage = () => {
                       size="small"
                       href="https://api.whatsapp.com/send?phone=34604367510&text=Hello%20Alts.sale%20Customer%20Care"
                     >
-                      <Icon className={classes.leftIcon}>chat</Icon> Whatsapp: +27 777
-                      867 5309
+                      <Icon className={classes.leftIcon}>chat</Icon> Whatsapp: +27 777 867 5309
                     </Button>
                   </Tooltip>
                   <Tooltip title="Send a message on Telegram" placement="top">

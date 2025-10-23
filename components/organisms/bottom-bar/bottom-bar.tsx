@@ -9,12 +9,7 @@ const BottomBar = () => {
 
   return (
     <AppBarStyled color="secondary">
-      <Typography
-        variant="body1"
-        color="inherit"
-        align="right"
-        sx={{ textTransform: 'capitalize' }}
-      >
+      <Typography variant="body1" color="inherit" align="right" sx={{ textTransform: 'capitalize' }}>
         {data &&
           data.count &&
           data.count.map((count: CountItem, ix: number) => (
@@ -22,11 +17,7 @@ const BottomBar = () => {
               {count.name}: {count.count} -{' '}
             </span>
           ))}{' '}
-        <Tooltip
-          title="Require assistance with customer Support"
-          placement="top"
-          arrow
-        >
+        <Tooltip title="Require assistance with customer Support" placement="top" arrow>
           <LinkStyled href="/support">Support</LinkStyled>
         </Tooltip>
         {' - '} &copy; Altcash {new Date().getFullYear()}

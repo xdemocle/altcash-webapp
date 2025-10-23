@@ -8,7 +8,7 @@ const AppBarStyled = styled(AppBar)(() => ({
   position: 'fixed',
   top: '0',
   marginBottom: '0',
-  background: '#43a047'
+  background: '#43a047',
 }));
 
 export { AppBarStyled };

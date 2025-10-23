@@ -4,7 +4,7 @@ const useRound = () => {
   };
 
   return {
-    getRound
+    getRound,
   };
 };
 

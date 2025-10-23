@@ -9,7 +9,7 @@ import {
   ListItemText,
   Paper,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import type { NextPage } from 'next';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ import CoinBuy from '../../components/templates/coin-buy';
 import {
   GET_META_COIN,
   GET_PAGE_DATA,
-  GET_PAIR // GET_META_COIN_LOGO
+  GET_PAIR, // GET_META_COIN_LOGO
 } from '../../graphql/queries';
 // import { Metadata } from '../../graphql/types';
 import type {
@@ -35,7 +35,7 @@ import type {
   PairResponse,
   PairVariables,
   Summary,
-  Ticker
+  Ticker,
 } from '../../graphql/types';
 import useStyles from '../../styles/coin-use-styles';
 
@@ -47,7 +47,7 @@ const fallbackMarket: Market = {
   quotePrecision: 0,
   minTradeSize: 0,
   minNotional: 0,
-  stepSize: 1
+  stepSize: 1,
 };
 
 const fallbackSummary: Summary = {
@@ -56,12 +56,12 @@ const fallbackSummary: Summary = {
   low: 0,
   volume: 0,
   quoteVolume: 0,
-  percentChange: 0
+  percentChange: 0,
 };
 
 const fallbackTicker: Ticker = {
   id: '',
-  price: '0'
+  price: '0',
 };
 
 const CoinPage: NextPage = () => {
@@ -70,34 +70,28 @@ const CoinPage: NextPage = () => {
   const { id } = router.query;
   const coinId = String(id).toUpperCase();
 
-  const { data, loading } = useQuery<PageDataResponse, PageDataVariables>(
-    GET_PAGE_DATA,
-    {
-      // We refresh data list at least at reload
-      fetchPolicy: 'cache-and-network',
-      variables: {
-        id: coinId
-      }
-    }
-  );
-
-  const { data: metadata } = useQuery<
-    { metaCoin: Metadata },
-    PageDataVariables
-  >(GET_META_COIN, {
+  const { data, loading } = useQuery<PageDataResponse, PageDataVariables>(GET_PAGE_DATA, {
     // We refresh data list at least at reload
     fetchPolicy: 'cache-and-network',
     variables: {
-      id: coinId
-    }
+      id: coinId,
+    },
+  });
+
+  const { data: metadata } = useQuery<{ metaCoin: Metadata }, PageDataVariables>(GET_META_COIN, {
+    // We refresh data list at least at reload
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      id: coinId,
+    },
   });
 
   const { data: dataPair } = useQuery<PairResponse, PairVariables>(GET_PAIR, {
     // We refresh data list at least at reload
     fetchPolicy: 'cache-first',
     variables: {
-      pair: 'XBTZAR'
-    }
+      pair: 'XBTZAR',
+    },
   });
 
   const dataCoin = data?.market ?? fallbackMarket;
@@ -133,30 +127,15 @@ const CoinPage: NextPage = () => {
       </Tooltip>
 
       <div className={classes.inner}>
-        <Typography
-          color="primary"
-          variant="h4"
-          gutterBottom
-          className={classes.title}
-        >
+        <Typography color="primary" variant="h4" gutterBottom className={classes.title}>
           {dataCoin.name || coinId}
         </Typography>
 
         <div className={classes.pageAvatar}>
-          {loading && (
-            <CircularProgress className={classes.progress} size="4rem" />
-          )}
-          {!loading && !metaCoin?.description && (
-            <CoinSVG coinSymbol={coinId || ''} />
-          )}
+          {loading && <CircularProgress className={classes.progress} size="4rem" />}
+          {!loading && !metaCoin?.description && <CoinSVG coinSymbol={coinId || ''} />}
           {!loading && metaCoin?.logo && (
-            <Image
-              src={metaCoin.logo}
-              width="64"
-              height="64"
-              alt={metaCoin.logo}
-              title={metaCoin.name}
-            />
+            <Image src={metaCoin.logo} width="64" height="64" alt={metaCoin.logo} title={metaCoin.name} />
           )}
         </div>
 
@@ -173,20 +152,14 @@ const CoinPage: NextPage = () => {
         </Typography>
         <List className={classes.dataParagraph} aria-label="Coin Data">
           <ListItem divider>
-            <ListItemText
-              primary={<strong>Current Buy Price</strong>}
-              className={classes.column}
-            />
-            {dataTicker.price && bitcoinRandPrice ? (
+            <ListItemText primary={<strong>Current Buy Price</strong>} className={classes.column} />
+            {dataTicker.price && bitcoinRandPrice ?
               <ListItemText
-                primary={btcToRandPriceWithSymbol(
-                  tickerPriceNumber,
-                  bitcoinRandPrice
-                )}
+                primary={btcToRandPriceWithSymbol(tickerPriceNumber, bitcoinRandPrice)}
                 secondary={`${dataTicker.price} BTC`}
                 className={classes.column}
               />
-            ) : null}
+            : null}
           </ListItem>
           <ListItem divider>
             <ListItemText primary="Price Change" className={classes.column} />
@@ -197,36 +170,24 @@ const CoinPage: NextPage = () => {
             />
           </ListItem>
           <ListItem divider>
-            <ListItemText
-              primary="Price at Highest"
-              className={classes.column}
-            />
-            {dataSummary.high && bitcoinRandPrice ? (
+            <ListItemText primary="Price at Highest" className={classes.column} />
+            {dataSummary.high && bitcoinRandPrice ?
               <ListItemText
-                primary={btcToRandPriceWithSymbol(
-                  dataSummary.high,
-                  bitcoinRandPrice
-                )}
+                primary={btcToRandPriceWithSymbol(dataSummary.high, bitcoinRandPrice)}
                 secondary={`${dataSummary.high} BTC`}
                 className={classes.column}
               />
-            ) : null}
+            : null}
           </ListItem>
           <ListItem divider>
-            <ListItemText
-              primary="Price at Lowest"
-              className={classes.column}
-            />
-            {dataSummary.low && bitcoinRandPrice ? (
+            <ListItemText primary="Price at Lowest" className={classes.column} />
+            {dataSummary.low && bitcoinRandPrice ?
               <ListItemText
-                primary={btcToRandPriceWithSymbol(
-                  dataSummary.low,
-                  bitcoinRandPrice
-                )}
+                primary={btcToRandPriceWithSymbol(dataSummary.low, bitcoinRandPrice)}
                 secondary={`${dataSummary.low} BTC`}
                 className={classes.column}
               />
-            ) : null}
+            : null}
           </ListItem>
           <ListItem divider>
             <ListItemText primary="Trading Volume" className={classes.column} />
@@ -239,10 +200,7 @@ const CoinPage: NextPage = () => {
           <ListItem divider>
             <ListItemText primary="Quote Volume" className={classes.column} />
             <ListItemText
-              primary={`${btcToRandPriceWithSymbol(
-                dataSummary.quoteVolume,
-                bitcoinRandPrice
-              )}`}
+              primary={`${btcToRandPriceWithSymbol(dataSummary.quoteVolume, bitcoinRandPrice)}`}
               secondary={`${dataSummary.quoteVolume.toFixed(2)} BTC`}
               className={classes.column}
             />
@@ -251,11 +209,7 @@ const CoinPage: NextPage = () => {
 
         {metaCoin?.description && (
           <Fragment>
-            <Typography
-              variant="h6"
-              gutterBottom
-              className={classes.infoParagraph}
-            >
+            <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
               Description
             </Typography>
             <Paper className={classes.card}>
@@ -266,11 +220,7 @@ const CoinPage: NextPage = () => {
 
         {metaCoin?.urls && (
           <div className={classes.links}>
-            <Typography
-              variant="h6"
-              gutterBottom
-              className={classes.infoParagraph}
-            >
+            <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
               Links
             </Typography>
             <Grid container>

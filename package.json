@@ -11,7 +11,7 @@
     "build": "next build --webpack",
     "start": "next start --webpack",
     "export": "next export --webpack",
-    "fix-code": "prettier --write $PWD/'src/**/*.{jsx,ts,tsx}'",
+    "fix-code": "prettier --write '**/*.{jsx,ts,tsx}'",
     "lint": "eslint ./src/ --ext .jsx,.ts,.tsx",
     "opn-build": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",

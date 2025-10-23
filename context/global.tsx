@@ -1,17 +1,6 @@
 import { useRouter } from 'next/router';
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useState
-} from 'react';
-import {
-  BUY_TABS_DEFAULT,
-  BUY_TAB_ALL,
-  BUY_TAB_FAVOURITE,
-  BUY_TAB_FEATURED
-} from '../common/constants';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { BUY_TABS_DEFAULT, BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED } from '../common/constants';
 
 export interface GlobalContextProps {
   isSidebarOpen: boolean;
@@ -26,9 +15,7 @@ export interface GlobalContextProps {
   setBitcoinRandPrice: Dispatch<SetStateAction<number>>;
 }
 
-export const GlobalContext = createContext<GlobalContextProps>(
-  {} as GlobalContextProps
-);
+export const GlobalContext = createContext<GlobalContextProps>({} as GlobalContextProps);
 
 interface Props {
   children: ReactNode;
@@ -48,14 +35,10 @@ const GlobalProvider = ({ children }: Props) => {
 
   const [tab, setTab] = useState<GlobalContextProps['tab']>(defaultTab);
 
-  const [isSidebarOpen, setSidebarOpen] =
-    useState<GlobalContextProps['isSidebarOpen']>(false);
-  const [coinPageNeedle, setCoinPageNeedle] =
-    useState<GlobalContextProps['coinPageNeedle']>('');
-  const [coinListPage, setCoinListPage] =
-    useState<GlobalContextProps['coinListPage']>(1);
-  const [bitcoinRandPrice, setBitcoinRandPrice] =
-    useState<GlobalContextProps['bitcoinRandPrice']>(0);
+  const [isSidebarOpen, setSidebarOpen] = useState<GlobalContextProps['isSidebarOpen']>(false);
+  const [coinPageNeedle, setCoinPageNeedle] = useState<GlobalContextProps['coinPageNeedle']>('');
+  const [coinListPage, setCoinListPage] = useState<GlobalContextProps['coinListPage']>(1);
+  const [bitcoinRandPrice, setBitcoinRandPrice] = useState<GlobalContextProps['bitcoinRandPrice']>(0);
 
   return (
     <GlobalContext.Provider
@@ -69,7 +52,7 @@ const GlobalProvider = ({ children }: Props) => {
         tab,
         setTab,
         bitcoinRandPrice,
-        setBitcoinRandPrice
+        setBitcoinRandPrice,
       }}
     >
       {children}

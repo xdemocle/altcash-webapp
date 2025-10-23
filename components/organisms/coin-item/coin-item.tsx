@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 import clsx from 'clsx';
 import CoinSVG from 'components/atoms/coin-svg';
@@ -26,8 +26,7 @@ const CoinItem = memo(({ coin }: Props) => {
   const router = useRouter();
   const { classes } = useStyles();
   const showBuy = useMediaQuery('(min-width:600px)');
-  const { addFavourites, removeFavourites, userCoinFavourites } =
-    useFavourites();
+  const { addFavourites, removeFavourites, userCoinFavourites } = useFavourites();
 
   if (!coin) {
     return null;
@@ -51,7 +50,7 @@ const CoinItem = memo(({ coin }: Props) => {
         <Tooltip title="Buy now" placement="bottom">
           <Button
             aria-label="Buy now"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               e.stopPropagation();
             }}
@@ -60,15 +59,11 @@ const CoinItem = memo(({ coin }: Props) => {
           </Button>
         </Tooltip>
       )}
-      <Tooltip
-        title={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
-        placement="bottom"
-      >
-        <Button
-          aria-label={`${isStarred ? 'Remove from' : 'Add to'} your favourites`}
-          onClick={iconButtonHandler}
-        >
-          {isStarred ? <Star /> : <StarBorder />}
+      <Tooltip title={`${isStarred ? 'Remove from' : 'Add to'} your favourites`} placement="bottom">
+        <Button aria-label={`${isStarred ? 'Remove from' : 'Add to'} your favourites`} onClick={iconButtonHandler}>
+          {isStarred ?
+            <Star />
+          : <StarBorder />}
         </Button>
       </Tooltip>
     </>
@@ -86,9 +81,7 @@ const CoinItem = memo(({ coin }: Props) => {
         </ListItemIcon>
         <ListItemText
           primary={coin.name || coin.id}
-          secondary={`${coin.symbol.toUpperCase()} ${
-            coin.status !== 'TRADING' ? ' / ' + coin.status : ''
-          }`}
+          secondary={`${coin.symbol.toUpperCase()} ${coin.status !== 'TRADING' ? ' / ' + coin.status : ''}`}
           className={classes.column}
         />
         <ListItemText

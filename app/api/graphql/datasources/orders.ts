@@ -7,7 +7,7 @@ class OrdersAPI extends DataSource<Order> {
   async getOrders() {
     const orders = await this.model.find();
 
-    orders.map((order) => {
+    orders.map(order => {
       order.timestamp = (order._id as any).getTimestamp();
       return order;
     });
@@ -37,7 +37,7 @@ class OrdersAPI extends DataSource<Order> {
       isCancelled: false,
       wallet: '',
       reference: '',
-      orderReferences: [] as string[]
+      orderReferences: [] as string[],
     };
 
     // return await this.model.create(newOrder);
@@ -83,10 +83,7 @@ class OrdersAPI extends DataSource<Order> {
     if (input.orderReferences) {
       const order = await this.getOrder(id);
       const orderOrderReferences = order.orderReferences || [];
-      updatedOrder.orderReferences = [
-        ...orderOrderReferences,
-        ...input.orderReferences
-      ];
+      updatedOrder.orderReferences = [...orderOrderReferences, ...input.orderReferences];
     }
 
     // If there is something for real to update
@@ -108,7 +105,7 @@ class OrdersAPI extends DataSource<Order> {
     const orders = await this.getOrders();
     const pendingOrders: Order[] = [];
 
-    orders?.forEach((order) => {
+    orders?.forEach(order => {
       if (order.isPending === true && order.isPaid === true) {
         pendingOrders.push(order);
       }

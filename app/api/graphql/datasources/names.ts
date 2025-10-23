@@ -13,18 +13,18 @@ class NamesAPI extends DataSource<Metadata> {
         name: value.name,
         slug: value.slug,
         description: value.description,
-        logo: value.logo
+        logo: value.logo,
       });
     }
 
-    missingsJson.forEach((missing) => {
+    missingsJson.forEach(missing => {
       arr.push({
         id: missing.symbol,
         symbol: missing.symbol,
         name: missing.name,
         slug: missing.name.toLowerCase(),
         description: 'n/d',
-        logo: missing.logo
+        logo: missing.logo,
       });
     });
 

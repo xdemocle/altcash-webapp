@@ -14,7 +14,7 @@ export default mergeResolvers([
   resolverMeta,
   resolverPair,
   resolverSummaries,
-  resolverTickers
+  resolverTickers,
   // resolverOrders,
   // resolverOrderQueues
 ]);

@@ -15,16 +15,11 @@ interface CoinsUserListProps {
 
 const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   const { userCoinFavourites } = useFavourites();
-  const { loading, data, networkStatus } = useQuery<{ markets: Market[] }>(
-    GET_MARKETS,
-    {
-      variables: {
-        symbols: predefined
-          ? predefined.join('|')
-          : userCoinFavourites.join('|')
-      }
-    }
-  );
+  const { loading, data, networkStatus } = useQuery<{ markets: Market[] }>(GET_MARKETS, {
+    variables: {
+      symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
+    },
+  });
 
   const isFeaturedView = !isUndefined(predefined);
   const dataCoins = data?.markets;
@@ -34,10 +29,7 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
     <div>
       {coinsList && !coinsList.length && networkStatus === 7 && (
         <Typography variant="subtitle1">
-          No{' '}
-          {isFeaturedView
-            ? 'featured coins.'
-            : 'starred coins. Add some first.'}
+          No {isFeaturedView ? 'featured coins.' : 'starred coins. Add some first.'}
         </Typography>
       )}
       {coinsList && coinsList.length > 0 && (
@@ -55,9 +47,7 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
       {loading && (!coinsList || networkStatus === 4) && (
         <Loader
           text={
-            <Typography variant="subtitle1">
-              Loading {isFeaturedView ? 'featured' : 'favourite'} list...
-            </Typography>
+            <Typography variant="subtitle1">Loading {isFeaturedView ? 'featured' : 'favourite'} list...</Typography>
           }
         />
       )}

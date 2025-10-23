@@ -32,13 +32,10 @@ const Order: NextPage = () => {
   const [waitingOrderConfirmation, setOrderConfirmation] = useState(false);
   const [order, setOrder] = useState<OrderType>();
   const [showErrorAlert, setShowErrorAlert] = useState(false);
-  const [getOrderFunc, { error: errorAlert }] = useLazyQuery(
-    GET_ORDER_IS_PENDING,
-    {
-      fetchPolicy: 'network-only',
-      variables: { id: orderNumber }
-    }
-  );
+  const [getOrderFunc, { error: errorAlert }] = useLazyQuery(GET_ORDER_IS_PENDING, {
+    fetchPolicy: 'network-only',
+    variables: { id: orderNumber },
+  });
 
   const onCloseErrorAlertHandler = () => {
     setShowErrorAlert(false);
@@ -47,7 +44,7 @@ const Order: NextPage = () => {
   useEffect(() => {
     const onIntervalOrderHandler = async () => {
       const {
-        data: { getOrder }
+        data: { getOrder },
       } = await getOrderFunc();
 
       setOrderConfirmation(getOrder.isPending !== true);
@@ -72,7 +69,7 @@ const Order: NextPage = () => {
       <RootStyled>
         <h1 className="display-3">Order</h1>
 
-        {slug ? (
+        {slug ?
           <CardConfirmationOrder
             cryptoCurrency={cryptoCurrency}
             totalAmount={totalAmount}
@@ -83,9 +80,7 @@ const Order: NextPage = () => {
             orderReferences={order?.orderReferences}
             hasErrors={order?.hasErrors}
           />
-        ) : (
-          <Loader />
-        )}
+        : <Loader />}
 
         {waitingOrderConfirmation && !order?.hasErrors && (
           <Box sx={{ marginTop: '2.5rem' }}>
@@ -98,11 +93,7 @@ const Order: NextPage = () => {
         </Box>
       </RootStyled>
 
-      <Snackbar
-        open={showErrorAlert}
-        autoHideDuration={6000}
-        onClose={onCloseErrorAlertHandler}
-      >
+      <Snackbar open={showErrorAlert} autoHideDuration={6000} onClose={onCloseErrorAlertHandler}>
         <Alert severity="error" sx={{ width: '100%' }}>
           Error from the server or you are offline!
         </Alert>

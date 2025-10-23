@@ -1,8 +1,4 @@
-import {
-  AugmentedRequest,
-  CacheOptions,
-  RESTDataSource
-} from '@apollo/datasource-rest';
+import { AugmentedRequest, CacheOptions, RESTDataSource } from '@apollo/datasource-rest';
 import { each } from 'lodash';
 import { CMC_PRO_API_KEY } from '../config';
 import { Metadata } from '../types';
@@ -13,10 +9,7 @@ class MetadataAPI extends RESTDataSource {
     this.baseURL = 'https://pro-api.coinmarketcap.com/v2';
   }
 
-  override willSendRequest(
-    _path: string,
-    requestOpts: AugmentedRequest<CacheOptions>
-  ) {
+  override willSendRequest(_path: string, requestOpts: AugmentedRequest<CacheOptions>) {
     requestOpts.headers['X-CMC_PRO_API_KEY'] = CMC_PRO_API_KEY;
   }
 
@@ -24,9 +17,7 @@ class MetadataAPI extends RESTDataSource {
     if (!symbol || symbol === 'undefined') {
       throw new Error('Invalid symbol provided to getCoin');
     }
-    const response = await this.get(
-      `cryptocurrency/info?symbol=${symbol.toLowerCase()}`
-    );
+    const response = await this.get(`cryptocurrency/info?symbol=${symbol.toLowerCase()}`);
 
     return response.data[symbol.toUpperCase()][0];
   }
@@ -46,7 +37,7 @@ class MetadataAPI extends RESTDataSource {
         name: value.name,
         slug: value.slug,
         description: value.description,
-        logo: value.logo
+        logo: value.logo,
       });
     });
 

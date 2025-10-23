@@ -25,7 +25,7 @@ export default defineConfig({
     '**/*.test.ts',
     '*/test/**/*',
     '*/setupTests.ts',
-    '*/__tests__/**/*'
+    '*/__tests__/**/*',
   ],
   extends: [
     'next/core-web-vitals',
@@ -34,15 +34,15 @@ export default defineConfig({
     ...tseslint.configs.recommended,
     ...tseslint.configs.stylistic,
     compat.configs['flat/recommended'],
-    'plugin:@next/next/recommended'
+    'plugin:@next/next/recommended',
   ],
   files: ['**/*.{ts,tsx}'],
   languageOptions: {
-    globals: globals.browser
+    globals: globals.browser,
   },
   plugins: {
     'react-hooks': reactHooks,
-    'react-refresh': reactRefresh
+    'react-refresh': reactRefresh,
   },
   rules: {
     ...reactHooks['configs']['recommended-latest'].rules,
@@ -71,9 +71,9 @@ export default defineConfig({
           'loader',
           'meta',
           'middleware',
-          'shouldRevalidate'
-        ]
-      }
-    ]
-  }
+          'shouldRevalidate',
+        ],
+      },
+    ],
+  },
 });

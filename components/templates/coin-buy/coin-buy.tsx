@@ -1,31 +1,15 @@
 import { useMutation } from '@apollo/client/react';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Box, Button, Card, Grid, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import {
-  FC,
-  FormEvent,
-  SyntheticEvent,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import ReactPlaceholder from 'react-placeholder';
 import {
   MIN_AMOUNT_EXTRA,
   MIN_AMOUNT_MULTIPLIER,
   PERCENTAGE_FEE, // PERCENTAGE_FEE_EXCHANGE,
-  PERCENTAGE_FEE_PAYMENT
+  PERCENTAGE_FEE_PAYMENT,
 } from '../../../common/constants';
 import { getPaystackConfig, isServer } from '../../../common/utils';
 import { CREATE_ORDER, UPDATE_ORDER } from '../../../graphql/mutations';
@@ -49,8 +33,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [notional, setNotional] = useState(0);
   const [bulbColor, setBulbColor] = useState('green');
   const [orderInfo, setOrderInfo] = useState('');
-  const [triggerConfirmationOrder, setTriggerConfirmationOrder] =
-    useState(false);
+  const [triggerConfirmationOrder, setTriggerConfirmationOrder] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [localCurrency, setLocalCurrency] = useState(0);
@@ -62,16 +45,13 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   useEffect(() => {
     if (!!paystack) return;
 
-    import('@paystack/inline-js').then((Paystack) => {
+    import('@paystack/inline-js').then(Paystack => {
       const paystack = new Paystack.default();
       setInitializePayment(paystack);
     });
   }, []);
 
-  const [createOrder, { error: errorCreateOrder }] = useMutation<
-    { createOrder: Order },
-    OrderParams
-  >(CREATE_ORDER);
+  const [createOrder, { error: errorCreateOrder }] = useMutation<{ createOrder: Order }, OrderParams>(CREATE_ORDER);
 
   const [updateOrder, { error: errorUpdateOrder }] = useMutation<
     { updateOrder: Order },
@@ -94,8 +74,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     const { data } = await updateOrder({
       variables: {
         id,
-        input
-      }
+        input,
+      },
     });
 
     return data;
@@ -105,7 +85,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     // UPDATE new order to backend with payment reference
     const data = await updateOrderHandler({
       isPaid: true,
-      reference: JSON.stringify(reference)
+      reference: JSON.stringify(reference),
     });
 
     console.debug('updateOrderWithReference', data);
@@ -114,7 +94,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const updateOrderCancelled = async () => {
     // UPDATE new order to backend to cancel it
     const data = await updateOrderHandler({
-      isCancelled: true
+      isCancelled: true,
     });
 
     console.debug('updateOrderCancelled', data);
@@ -132,8 +112,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
           variables: {
             amount: String(cryptoCurrency),
             total: String(totalAmount),
-            symbol: coin.symbol
-          }
+            symbol: coin.symbol,
+          },
         });
 
         const createdOrder = data?.createOrder;
@@ -142,15 +122,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
           throw new Error('Create order mutation returned no data');
         }
 
-        setOrderInfo(
-          createdOrder._id +
-            '/' +
-            createdOrder.amount +
-            '/' +
-            createdOrder.total +
-            '/' +
-            createdOrder.pin
-        );
+        setOrderInfo(createdOrder._id + '/' + createdOrder.amount + '/' + createdOrder.total + '/' + createdOrder.pin);
       } catch (error) {
         setOrderInfo('');
         console.debug(error);
@@ -200,15 +172,11 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
 
   useEffect(() => {
     if (orderInfo.length > 0) {
-      if (
-        localCurrency >
-        coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER +
-          MIN_AMOUNT_EXTRA
-      ) {
+      if (localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA) {
         paystack.newTransaction({
           ...getPaystackConfig(totalAmount),
           onSuccess: onPaymentSuccess,
-          onClose: onPaymentClose
+          onClose: onPaymentClose,
         });
       }
     }
@@ -251,27 +219,15 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   }, [coin, bitcoinRandPrice]);
 
   const minTradeAmount = useMemo(
-    () =>
-      coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER +
-      MIN_AMOUNT_EXTRA +
-      notional,
+    () => coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA + notional,
     [coin.minTradeSize, notional]
   );
 
   return (
-    <form
-      noValidate
-      autoComplete="off"
-      method="POST"
-      onSubmit={onSubmitHandler}
-    >
+    <form noValidate autoComplete="off" method="POST" onSubmit={onSubmitHandler}>
       <Card className={classes.root}>
         <div className={classes.grid}>
-          <Grid
-            size={{ xs: 12, md: 4 }}
-            className={classes.gridItem}
-            sx={{ minWidth: '45%' }}
-          >
+          <Grid size={{ xs: 12, md: 4 }} className={classes.gridItem} sx={{ minWidth: '45%' }}>
             <InputLabel htmlFor="gridLeftInput" className={classes.gridTitle}>
               You pay in <strong>Rand (ZAR)</strong>
             </InputLabel>
@@ -288,19 +244,17 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               type="number"
               slotProps={{
                 input: {
-                  startAdornment: (
-                    <InputAdornment position="start">R</InputAdornment>
-                  )
+                  startAdornment: <InputAdornment position="start">R</InputAdornment>,
                 },
                 htmlInput: {
                   maxLength: 25,
                   min: Number((minTradeAmount || 0).toFixed(2)),
                   inputMode: 'numeric',
-                  pattern: '[0-9]*'
-                }
+                  pattern: '[0-9]*',
+                },
               }}
               value={localCurrency.toFixed(2)}
-              onChange={(e) => setLocalCurrency(Number(e.target.value))}
+              onChange={e => setLocalCurrency(Number(e.target.value))}
               onFocus={onFocusInputHandler}
               disabled={formDisabled}
               onBlur={onBlurLocalCurrencyHandler}
@@ -312,18 +266,11 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               <ArrowForward color="primary" className={classes.arrow} />
             </Box>
             <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-              <ArrowDownward
-                color="primary"
-                className={clsx(classes.arrow, classes.arrowMobile)}
-              />
+              <ArrowDownward color="primary" className={clsx(classes.arrow, classes.arrowMobile)} />
             </Box>
           </div>
 
-          <Grid
-            size={{ xs: 12, md: 4 }}
-            className={classes.gridItem}
-            sx={{ minWidth: '45%' }}
-          >
+          <Grid size={{ xs: 12, md: 4 }} className={classes.gridItem} sx={{ minWidth: '45%' }}>
             <InputLabel htmlFor="gridRightInput" className={classes.gridTitle}>
               You get <strong className={classes.symbol}>{coin.name}</strong>
             </InputLabel>
@@ -339,12 +286,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               variant="outlined"
               slotProps={{
                 input: {
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      {coin.symbol || ''}
-                    </InputAdornment>
-                  )
-                }
+                  endAdornment: <InputAdornment position="start">{coin.symbol || ''}</InputAdornment>,
+                },
               }}
               value={String(cryptoCurrency)}
               onFocus={onFocusInputHandler}
@@ -360,11 +303,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               color="primary"
               type="submit"
               className={classes.buyButton}
-              disabled={
-                localCurrency <= minTradeAmount ||
-                formDisabled ||
-                bulbColor === 'red'
-              }
+              disabled={localCurrency <= minTradeAmount || formDisabled || bulbColor === 'red'}
             >
               Buy Now
             </Button>
@@ -379,9 +318,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
       <Card
         className={clsx(
           classes.innerCard,
-          localCurrency >
-            coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER +
-              MIN_AMOUNT_EXTRA && classes.innerCardOpen
+          localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA &&
+            classes.innerCardOpen
         )}
       >
         <div className={classes.innerCardRoot}>
@@ -393,27 +331,17 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               paddingTop: '0.2rem',
               paddingBottom: '0.2rem',
               marginBottom: '0.5rem',
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}
             color="primary"
           >
             (Total buy) R {totalAmount.toFixed(2)} =
           </Typography>
-          (amount selected) R{' '}
-          <NumberFormatText decimalScale={2} value={Number(localCurrency)} /> +
+          (amount selected) R <NumberFormatText decimalScale={2} value={Number(localCurrency)} /> +
           <br />
           (payment fee) R{' '}
-          <NumberFormatText
-            decimalScale={2}
-            value={(PERCENTAGE_FEE_PAYMENT / 100) * localCurrency + 1}
-          />{' '}
-          +<br />
-          (altcash fee) R{' '}
-          <NumberFormatText
-            decimalScale={2}
-            value={(PERCENTAGE_FEE / 100) * localCurrency}
-          />{' '}
-          +
+          <NumberFormatText decimalScale={2} value={(PERCENTAGE_FEE_PAYMENT / 100) * localCurrency + 1} /> +<br />
+          (altcash fee) R <NumberFormatText decimalScale={2} value={(PERCENTAGE_FEE / 100) * localCurrency} /> +
           <br />
         </div>
       </Card>

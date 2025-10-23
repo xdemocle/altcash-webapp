@@ -1,13 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Snackbar,
-  TextField
-} from '@mui/material';
+import { Alert, Box, Button, Card, Grid, Snackbar, TextField } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import { UPDATE_ORDER } from '../../../graphql/mutations';
 import { OrderParams } from '../../../graphql/types';
@@ -31,8 +23,8 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
     const { data } = await updateOrder({
       variables: {
         id: orderId,
-        input
-      }
+        input,
+      },
     });
 
     return data;
@@ -70,11 +62,11 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
                     variant="outlined"
                     slotProps={{
                       htmlInput: {
-                        maxLength: 25
-                      }
+                        maxLength: 25,
+                      },
                     }}
                     value={emailValue}
-                    onChange={(e) => setEmailValue(e.target.value)}
+                    onChange={e => setEmailValue(e.target.value)}
                   />
                 </Grid>
 
@@ -97,21 +89,13 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
         </Box>
       </Card>
 
-      <Snackbar
-        open={showEmailSent}
-        autoHideDuration={6000}
-        onClose={onCloseAlertHandler}
-      >
+      <Snackbar open={showEmailSent} autoHideDuration={6000} onClose={onCloseAlertHandler}>
         <Alert severity="success" sx={{ width: '100%' }}>
           Email sent correctly
         </Alert>
       </Snackbar>
 
-      <Snackbar
-        open={!!errorUpdateOrder}
-        autoHideDuration={6000}
-        onClose={onCloseAlertHandler}
-      >
+      <Snackbar open={!!errorUpdateOrder} autoHideDuration={6000} onClose={onCloseAlertHandler}>
         <Alert severity="error" sx={{ width: '100%' }}>
           Error updating order!
         </Alert>

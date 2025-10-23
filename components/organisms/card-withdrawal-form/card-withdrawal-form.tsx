@@ -1,13 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Snackbar,
-  TextField
-} from '@mui/material';
+import { Alert, Box, Button, Card, Grid, Snackbar, TextField } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import { UPDATE_ORDER } from '../../../graphql/mutations';
 import { OrderParams } from '../../../graphql/types';
@@ -18,10 +10,7 @@ interface CardWithdrawalFormProps {
   symbol: string;
 }
 
-const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
-  orderId,
-  symbol
-}) => {
+const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({ orderId, symbol }) => {
   const { classes } = useStyles();
   const [formDisabled, setFormDisabled] = useState(false);
   const [addressValue, setAddressValue] = useState('');
@@ -33,8 +22,8 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
     const { data } = await updateOrder({
       variables: {
         id: orderId,
-        input
-      }
+        input,
+      },
     });
 
     return data;
@@ -58,9 +47,7 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
       <Card className={classes.root}>
         <Box className={classes.confirmationGrid}>
           <Box sx={{ width: '100%' }}>
-            <h2 className={classes.confirmationTitle}>
-              Withdraw to your {symbol} Wallet
-            </h2>
+            <h2 className={classes.confirmationTitle}>Withdraw to your {symbol} Wallet</h2>
 
             <form noValidate method="POST" onSubmit={onSubmitHandler}>
               <Grid container gap={2}>
@@ -73,7 +60,7 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
                     fullWidth
                     variant="outlined"
                     value={addressValue}
-                    onChange={(e) => setAddressValue(e.target.value)}
+                    onChange={e => setAddressValue(e.target.value)}
                   />
                 </Grid>
 
@@ -94,21 +81,13 @@ const CardWithdrawalForm: FC<CardWithdrawalFormProps> = ({
         </Box>
       </Card>
 
-      <Snackbar
-        open={showAddressSent}
-        autoHideDuration={6000}
-        onClose={onCloseAlertHandler}
-      >
+      <Snackbar open={showAddressSent} autoHideDuration={6000} onClose={onCloseAlertHandler}>
         <Alert severity="success" sx={{ width: '100%' }}>
           Address sent correctly
         </Alert>
       </Snackbar>
 
-      <Snackbar
-        open={!!errorUpdateOrder}
-        autoHideDuration={6000}
-        onClose={onCloseAlertHandler}
-      >
+      <Snackbar open={!!errorUpdateOrder} autoHideDuration={6000} onClose={onCloseAlertHandler}>
         <Alert severity="error" sx={{ width: '100%' }}>
           Withdrawal problems, try again...
         </Alert>

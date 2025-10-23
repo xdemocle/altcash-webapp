@@ -6,7 +6,7 @@ const RootCenteredStyled = styled(RootStyled)(() => ({
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 }));
 
 export default RootCenteredStyled;

@@ -12,12 +12,12 @@ export const runtime = 'edge';
 // Create schema
 const schema = createSchema<Context>({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 // Create yoga instance
 const yoga = createYoga<Context>({
-  schema
+  schema,
 });
 
 /*
@@ -26,7 +26,7 @@ const yoga = createYoga<Context>({
 function createYogaContext(env: Env): Context {
   return {
     KV: env.NEXT_INC_CACHE_KV,
-    dataSources: datasources
+    dataSources: datasources,
   };
 }
 

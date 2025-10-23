@@ -8,23 +8,24 @@ const normalize = (level: Level, args: LogInput[]) => {
 
   // If first arg is a plain object, treat it as the base payload
   const first = args[0];
-  const isPlainObject =
-    typeof first === 'object' && first !== null && !Array.isArray(first);
+  const isPlainObject = typeof first === 'object' && first !== null && !Array.isArray(first);
 
   if (isPlainObject && !(first instanceof Error)) {
     payload = { ...(first as Record<string, unknown>) };
   } else {
     // Concatenate args into a message string
     const message = args
-      .map((a) =>
-        typeof a === 'string' ? a : a instanceof Error ? a.message : JSON.stringify(a)
+      .map(a =>
+        typeof a === 'string' ? a
+        : a instanceof Error ? a.message
+        : JSON.stringify(a)
       )
       .join(' ');
     payload = { message };
   }
 
   // Attach error stack if present in args
-  const errorArg = args.find((a) => a instanceof Error) as Error | undefined;
+  const errorArg = args.find(a => a instanceof Error) as Error | undefined;
   if (errorArg && !('stack' in payload)) {
     payload.stack = errorArg.stack;
   }
@@ -60,7 +61,7 @@ const logger = {
   debug: (...args: LogInput[]) => log('debug', ...args),
   info: (...args: LogInput[]) => log('info', ...args),
   warn: (...args: LogInput[]) => log('warn', ...args),
-  error: (...args: LogInput[]) => log('error', ...args)
+  error: (...args: LogInput[]) => log('error', ...args),
 };
 
 export default logger;

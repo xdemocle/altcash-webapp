@@ -25,7 +25,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
 
   const { data: metadata } = useQuery<MetaCoinLogoQuery>(GET_META_COIN_LOGO, {
     // We refresh data list at least at reload
-    fetchPolicy: 'cache-only'
+    fetchPolicy: 'cache-only',
   });
 
   const getCoinLogo = (symbol: string) => {
@@ -47,30 +47,25 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
   } catch (err) {
     symbol = 'cc-default';
     imgCoinPath =
-      getCoinLogo(coinSymbol.toUpperCase()) ||
-      'https://s2.coinmarketcap.com/static/img/coins/64x64/1831.png';
+      getCoinLogo(coinSymbol.toUpperCase()) || 'https://s2.coinmarketcap.com/static/img/coins/64x64/1831.png';
   }
 
-  return svgCoinPath ? (
-    <ReactSVG
-      src={svgCoinPath.default.src}
-      className={clsx(
-        classes.avatar,
-        symbol,
-        classes.regular,
-        size === 'avatar' && classes[size],
-        size === 'large' && classes[size]
-      )}
-    />
-  ) : imgCoinPath ? (
-    <Image
-      src={imgCoinPath}
-      alt={`Logo ${coinSymbol}`}
-      width="32"
-      height="32"
-      title={`Logo ${coinSymbol}`}
-    />
-  ) : null;
+  return (
+    svgCoinPath ?
+      <ReactSVG
+        src={svgCoinPath.default.src}
+        className={clsx(
+          classes.avatar,
+          symbol,
+          classes.regular,
+          size === 'avatar' && classes[size],
+          size === 'large' && classes[size]
+        )}
+      />
+    : imgCoinPath ?
+      <Image src={imgCoinPath} alt={`Logo ${coinSymbol}`} width="32" height="32" title={`Logo ${coinSymbol}`} />
+    : null
+  );
 };
 
 export default CoinSVG;

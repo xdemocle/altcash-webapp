@@ -2,15 +2,9 @@ import {
   ContactSupportOutlined,
   HomeOutlined, // LockOutlined,
   MonetizationOnOutlined,
-  PeopleAltOutlined
+  PeopleAltOutlined,
 } from '@mui/icons-material';
-import {
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Tooltip
-} from '@mui/material';
+import { List, ListItemButton, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import { theme } from 'common/theme';
 import Link from 'next/link';
@@ -24,18 +18,18 @@ const StyledList = styled(List)({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: 0
+  padding: 0,
 });
 
 const StyledListItemIcon = styled(ListItemIcon)({
   marginLeft: '1.3rem',
   marginRight: '0.4rem',
-  color: 'inherit'
+  color: 'inherit',
 });
 
 const StyledListItemText = styled(ListItemText)({
   paddingLeft: '0rem',
-  marginLeft: '0rem'
+  marginLeft: '0rem',
 });
 
 const StyledListItemButton = ({
@@ -66,10 +60,10 @@ const StyledListItemButton = ({
         textDecoration: 'none !important',
         color: theme.palette.text.primary,
         '&:visited': {
-          color: theme.palette.text.primary
+          color: theme.palette.text.primary,
         },
         '&:hover': {
-          backgroundColor: theme.palette.action.hover
+          backgroundColor: theme.palette.action.hover,
         },
         '&::after': {
           content: '""',
@@ -82,15 +76,15 @@ const StyledListItemButton = ({
           backgroundColor: theme.palette.secondary.main,
           transform: 'translateY(-50%) rotate(-8deg)',
           opacity: 0.05,
-          zIndex: -1
+          zIndex: -1,
         },
         '&:hover::after': {
           opacity: 0.1,
-          color: theme.palette.action.hover
+          color: theme.palette.action.hover,
         },
         ...(selected && {
           '&': {
-            color: theme.palette.primary.contrastText
+            color: theme.palette.primary.contrastText,
           },
           '&::after': {
             content: '""',
@@ -103,13 +97,13 @@ const StyledListItemButton = ({
             borderRadius: '.6rem',
             backgroundColor: theme.palette.primary.main,
             opacity: 0.5,
-            zIndex: -1
+            zIndex: -1,
           },
           '&:hover::after': {
             opacity: 1,
-            color: theme.palette.action.hover
-          }
-        })
+            color: theme.palette.action.hover,
+          },
+        }),
       }}
     >
       <StyledListItemIcon>{children}</StyledListItemIcon>
@@ -129,62 +123,30 @@ const MainLinks = ({ isSidebarOpen }: Props) => {
   return (
     <ThemeProvider theme={theme}>
       <StyledList as="nav">
-        <Tooltip
-          title="Homepage"
-          placement="right"
-          enterDelay={isSidebarOpen ? 2000 : 50}
-        >
-          <StyledListItemButton
-            href="/"
-            label="Home"
-            selected={router.pathname == '/'}
-          >
+        <Tooltip title="Homepage" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
+          <StyledListItemButton href="/" label="Home" selected={router.pathname == '/'}>
             <HomeOutlined />
           </StyledListItemButton>
         </Tooltip>
 
-        <Tooltip
-          title="Buy crypto coins"
-          placement="right"
-          enterDelay={isSidebarOpen ? 2000 : 50}
-        >
+        <Tooltip title="Buy crypto coins" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
           <StyledListItemButton
             href="/buy"
             label="Buy"
-            selected={
-              router.pathname == '/buy' ||
-              router.pathname == '/buy/[tab]' ||
-              router.pathname == '/coin/[id]'
-            }
+            selected={router.pathname == '/buy' || router.pathname == '/buy/[tab]' || router.pathname == '/coin/[id]'}
           >
             <MonetizationOnOutlined />
           </StyledListItemButton>
         </Tooltip>
 
-        <Tooltip
-          title="About Us"
-          placement="right"
-          enterDelay={isSidebarOpen ? 2000 : 50}
-        >
-          <StyledListItemButton
-            href="/about"
-            label="About Us"
-            selected={router.pathname == '/about'}
-          >
+        <Tooltip title="About Us" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
+          <StyledListItemButton href="/about" label="About Us" selected={router.pathname == '/about'}>
             <PeopleAltOutlined />
           </StyledListItemButton>
         </Tooltip>
 
-        <Tooltip
-          title="Support"
-          placement="right"
-          enterDelay={isSidebarOpen ? 2000 : 50}
-        >
-          <StyledListItemButton
-            href="/support"
-            label="Support"
-            selected={router.pathname == '/support'}
-          >
+        <Tooltip title="Support" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
+          <StyledListItemButton href="/support" label="Support" selected={router.pathname == '/support'}>
             <ContactSupportOutlined />
           </StyledListItemButton>
         </Tooltip>

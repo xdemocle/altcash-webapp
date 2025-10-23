@@ -1,10 +1,6 @@
 import { Context, Summary } from '../types';
 
-const querySummary = async (
-  _: unknown,
-  { id }: { id: string },
-  context: Context
-): Promise<Summary> => {
+const querySummary = async (_: unknown, { id }: { id: string }, context: Context): Promise<Summary> => {
   if (!id || id === 'undefined' || id === undefined) {
     return {
       id: '',
@@ -13,7 +9,7 @@ const querySummary = async (
       low: 0,
       volume: 0,
       quoteVolume: 0,
-      percentChange: 0
+      percentChange: 0,
     } as any;
   }
   const response = await context.dataSources.marketsAPI.getSummary(id);
@@ -28,7 +24,7 @@ const querySummary = async (
     low: Number(response.lowPrice),
     volume: response.volume,
     quoteVolume: response.quoteVolume,
-    percentChange: Number(response.priceChange)
+    percentChange: Number(response.priceChange),
   };
 };
 
@@ -36,8 +32,8 @@ const querySummary = async (
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    summary: querySummary
-  }
+    summary: querySummary,
+  },
 };
 
 export default resolvers;

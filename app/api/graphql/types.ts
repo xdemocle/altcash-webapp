@@ -162,11 +162,7 @@ export declare abstract class DataSource<T = any> {
   getQueue(id: string): Promise<OrderQueue>;
   createOrder(amount: string, total: string, symbol: string): Promise<Order>;
   updateOrder(id: string, input: OrderParams): Promise<Order>;
-  createQueue(
-    orderId: string,
-    isExecuted: boolean,
-    isFilled: boolean
-  ): Promise<OrderQueue>;
+  createQueue(orderId: string, isExecuted: boolean, isFilled: boolean): Promise<OrderQueue>;
   updateQueue(id: string, input: UpdateOrderQueueParams): Promise<any>;
   getAll(): Promise<Metadata[]>;
   missingData(): Promise<Metadata[]>;

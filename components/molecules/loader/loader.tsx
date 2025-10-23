@@ -12,7 +12,7 @@ const Loader = ({ centered = false, text = '' }: Props) => {
     display: 'flex',
     alignItems: 'center',
     gap: 2,
-    flexDirection: centered ? 'column' : 'row'
+    flexDirection: centered ? 'column' : 'row',
   };
 
   return (

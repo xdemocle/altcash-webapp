@@ -4,12 +4,7 @@ import { COINS_PER_PAGE } from 'common/constants';
 import Loader from 'components/molecules/loader';
 import CoinsListMap from 'components/organisms/coins-list-map';
 import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
-import {
-  CountResponse,
-  Market,
-  MarketsResponse,
-  MarketsVariables
-} from 'graphql/types';
+import { CountResponse, Market, MarketsResponse, MarketsVariables } from 'graphql/types';
 import useGlobal from 'hooks/use-global';
 import { clone, find } from 'lodash';
 import dynamic from 'next/dynamic';
@@ -41,19 +36,16 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   const { classes } = useStyles();
   const { coinListPage, coinPageNeedle, setCoinListPage } = useGlobal();
   const { data: dataCount } = useQuery<CountResponse>(GET_COUNT, {
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   });
   const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
-  const { loading, error, data, networkStatus } = useQuery<
-    MarketsResponse,
-    MarketsVariables
-  >(GET_MARKETS, {
+  const { loading, error, data, networkStatus } = useQuery<MarketsResponse, MarketsVariables>(GET_MARKETS, {
     // We refresh data list at least at reload
     fetchPolicy: 'cache-and-network',
     skip: !shouldQuerySearch,
     variables: {
-      term: shouldQuerySearch ? coinPageNeedle : ''
-    }
+      term: shouldQuerySearch ? coinPageNeedle : '',
+    },
   });
   const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
 
@@ -74,21 +66,12 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   };
 
   const hidePagination = shouldQuerySearch;
-  const coinsList = useMemo(
-    () => getListSlice(COINS_PER_PAGE),
-    [dataCoins, coinPageNeedle, coinListPage]
-  );
+  const coinsList = useMemo(() => getListSlice(COINS_PER_PAGE), [dataCoins, coinPageNeedle, coinListPage]);
   const coinsTotal = useMemo(
-    () =>
-      dataCount && dataCount.count
-        ? (find(dataCount.count, { name: 'markets' })?.count ?? 0)
-        : 0,
+    () => (dataCount && dataCount.count ? (find(dataCount.count, { name: 'markets' })?.count ?? 0) : 0),
     [dataCount]
   );
-  const paginationPages = useMemo(
-    () => Math.floor(coinsTotal / COINS_PER_PAGE),
-    [coinsTotal]
-  );
+  const paginationPages = useMemo(() => Math.floor(coinsTotal / COINS_PER_PAGE), [coinsTotal]);
 
   return (
     <Fragment>
@@ -99,22 +82,14 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
       )}
 
       {loading && !coinsList.length && (
-        <Loader
-          text={
-            <Typography variant="subtitle1">Loading coins list...</Typography>
-          }
-        />
+        <Loader text={<Typography variant="subtitle1">Loading coins list...</Typography>} />
       )}
 
       {coinsList && <CoinsListMap markets={coinsList} />}
 
       {!hidePagination && (
         <div className={classes.pagination}>
-          <PaginationClient
-            count={paginationPages}
-            page={coinListPage}
-            onChange={handleChange}
-          />
+          <PaginationClient count={paginationPages} page={coinListPage} onChange={handleChange} />
         </div>
       )}
     </Fragment>

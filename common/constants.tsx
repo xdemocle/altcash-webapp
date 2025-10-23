@@ -25,16 +25,14 @@ export const SYMBOLS_FEATURED = [
   'DOGE',
   'USDC',
   'UNI',
-  'WBTC'
+  'WBTC',
 ];
 
-export const GOOGLE_CAPTCHA_SITEKEY =
-  '6LchYHUaAAAAAOFX3hvJfIKirgL7465qTK-_9y3B';
+export const GOOGLE_CAPTCHA_SITEKEY = '6LchYHUaAAAAAOFX3hvJfIKirgL7465qTK-_9y3B';
 
 export const PAYSTACK_EMAIL = process.env.NEXT_PUBLIC_PAYSTACK_EMAIL;
 
-export const PAYSTACK_PUBLICK_KEY =
-  process.env.NEXT_PUBLIC_PAYSTACK_PUBLICK_KEY;
+export const PAYSTACK_PUBLICK_KEY = process.env.NEXT_PUBLIC_PAYSTACK_PUBLICK_KEY;
 
 // eslint-disable-next-line
 export const FORM_EMAIL_VALIDATION_REGEX =
@@ -42,8 +40,7 @@ export const FORM_EMAIL_VALIDATION_REGEX =
 
 export const REQUIRED_EMAIL_TEXT = 'E-Mail field is incorrect';
 
-export const REQUIRED_PASSWORD_TEXT =
-  'Password field must have at least 8 characters';
+export const REQUIRED_PASSWORD_TEXT = 'Password field must have at least 8 characters';
 
 export const BUY_TABS_DEFAULT = 0;
 export const BUY_TAB_FEATURED = 0;

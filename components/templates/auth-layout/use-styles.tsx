@@ -4,7 +4,7 @@ import { makeStyles } from 'tss-react/mui';
 const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: '#e3e4e9'
+    backgroundColor: '#e3e4e9',
   },
   appFrame: {
     zIndex: 1,
@@ -15,8 +15,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
     margin: '0 auto',
     [theme.breakpoints.up('xl')]: {
       padding: '3rem 6rem 6rem 6rem',
-      height: 'calc(100vh - 12rem)'
-    }
+      height: 'calc(100vh - 12rem)',
+    },
   },
   inner: {
     display: 'flex',
@@ -25,8 +25,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
       minHeight: 'calc(100vh - 9rem)',
       maxHeight: 'calc(100vh - 9rem)',
       borderRadius: '1.5rem',
-      boxShadow: '0 0.25rem 1rem rgba(0,0,0,0.15)'
-    }
+      boxShadow: '0 0.25rem 1rem rgba(0,0,0,0.15)',
+    },
   },
   content: {
     position: 'relative',
@@ -37,13 +37,13 @@ const useStyles = makeStyles()((theme: Theme) => ({
     backgroundColor: '#f4f5f4',
     [theme.breakpoints.only('xs')]: {
       minHeight: 'calc(100vh - 56px)',
-      paddingBottom: theme.typography.pxToRem(56)
+      paddingBottom: theme.typography.pxToRem(56),
     },
     [theme.breakpoints.up('xl')]: {
       overflowY: 'auto',
-      minHeight: 'auto'
-    }
-  }
+      minHeight: 'auto',
+    },
+  },
 }));
 
 export default useStyles;

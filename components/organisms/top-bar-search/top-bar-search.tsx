@@ -77,7 +77,7 @@ const TopBarSearch = () => {
                 </IconButton>
               )}
             </InputAdornment>
-          )
+          ),
         }}
       />
     </Stack>

@@ -4,18 +4,13 @@ interface QueryMetaCoinArgs {
   id: string;
 }
 
-const queryMetaCoin = async (
-  _: unknown,
-  args: QueryMetaCoinArgs,
-  context: Context
-): Promise<Metadata> => {
+const queryMetaCoin = async (_: unknown, args: QueryMetaCoinArgs, context: Context): Promise<Metadata> => {
   if (!args.id || args.id === 'undefined') {
     throw new Error('Invalid id provided to queryMetaCoin');
   }
   const idUppercase = args.id.toUpperCase();
   const idLowerCase = args.id.toLowerCase();
-  const response: Metadata =
-    await context.dataSources.metadataAPI.getCoin(idLowerCase);
+  const response: Metadata = await context.dataSources.metadataAPI.getCoin(idLowerCase);
 
   const coin = response;
 
@@ -25,20 +20,12 @@ const queryMetaCoin = async (
   return coin;
 };
 
-const queryMetaAllCoins = async (
-  _: unknown,
-  __: unknown,
-  context: Context
-): Promise<Metadata[]> => {
+const queryMetaAllCoins = async (_: unknown, __: unknown, context: Context): Promise<Metadata[]> => {
   const response = await context.dataSources.namesAPI.getAll();
   return response;
 };
 
-const queryMetaExperiment = async (
-  _: unknown,
-  __: unknown,
-  context: Context
-): Promise<Metadata[]> => {
+const queryMetaExperiment = async (_: unknown, __: unknown, context: Context): Promise<Metadata[]> => {
   const response = await context.dataSources.metadataAPI.missingData();
 
   return response;
@@ -50,8 +37,8 @@ const resolvers = {
   Query: {
     metaCoin: queryMetaCoin,
     metaCoinAll: queryMetaAllCoins,
-    metaExperiment: queryMetaExperiment
-  }
+    metaExperiment: queryMetaExperiment,
+  },
 };
 
 export default resolvers;

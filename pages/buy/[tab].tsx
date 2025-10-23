@@ -1,20 +1,11 @@
 import { useQuery } from '@apollo/client/react';
-import {
-  List as ListIcon,
-  NewReleases as NewReleasesIcon,
-  Star
-} from '@mui/icons-material';
+import { List as ListIcon, NewReleases as NewReleasesIcon, Star } from '@mui/icons-material';
 import { Paper, Tab, Tabs, Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { apolloClient } from '../../common/apollo/apollo-client';
-import {
-  BUY_TAB_ALL,
-  BUY_TAB_FAVOURITE,
-  BUY_TAB_FEATURED,
-  SYMBOLS_FEATURED
-} from '../../common/constants';
+import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '../../common/constants';
 import TopBarSearch from '../../components/organisms/top-bar-search';
 import CoinsList from '../../components/templates/coins-list';
 import CoinsUserList from '../../components/templates/coins-user-list';
@@ -35,7 +26,7 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
   const symbolsFeatured = SYMBOLS_FEATURED.sort();
 
   useQuery(GET_META_COIN_LOGO, {
-    fetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-first',
   });
 
   const handleChange = (tabNumber: number) => {
@@ -71,12 +62,7 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
 
   return (
     <div className={classes.root}>
-      <Typography
-        color="primary"
-        variant="h4"
-        gutterBottom
-        className={classes.title}
-      >
+      <Typography color="primary" variant="h4" gutterBottom className={classes.title}>
         Altcoins
       </Typography>
 
@@ -89,27 +75,13 @@ const BuyTabPage: NextPage<BuyTabPageProps> = ({ markets }) => {
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab
-            label="Featured"
-            icon={<NewReleasesIcon />}
-            classes={{ root: classes.tabRoot }}
-          />
-          <Tab
-            label="All Coins"
-            icon={<ListIcon />}
-            classes={{ root: classes.tabRoot }}
-          />
-          <Tab
-            label="Favourite"
-            icon={<Star />}
-            classes={{ root: classes.tabRoot }}
-          />
+          <Tab label="Featured" icon={<NewReleasesIcon />} classes={{ root: classes.tabRoot }} />
+          <Tab label="All Coins" icon={<ListIcon />} classes={{ root: classes.tabRoot }} />
+          <Tab label="Favourite" icon={<Star />} classes={{ root: classes.tabRoot }} />
         </Tabs>
       </Paper>
 
-      {tab === 'featured' && (
-        <CoinsUserList markets={markets} predefined={symbolsFeatured} />
-      )}
+      {tab === 'featured' && <CoinsUserList markets={markets} predefined={symbolsFeatured} />}
       {tab === 'all' && <CoinsList markets={markets} />}
       {tab === 'favourite' && <CoinsUserList markets={markets} />}
     </div>
@@ -138,39 +110,41 @@ export async function getServerSideProps(context: any) {
 
     const { data } = await apolloClient.query<{ markets: Market[] }>({
       query: GET_MARKETS,
-      variables: symbols ? { symbols } : undefined
+      variables: symbols ? { symbols } : undefined,
     });
 
     await apolloClient.query({
       query: GET_PAIR,
-      variables: { pair: 'XBTZAR' }
+      variables: { pair: 'XBTZAR' },
     });
 
     const markets = data?.markets || [];
-    
+
     // Filter out markets with undefined IDs
-    const validMarkets = markets.filter((market) => market.id && market.id !== 'undefined');
-    
+    const validMarkets = markets.filter(market => market.id && market.id !== 'undefined');
+
     await Promise.all(
-      validMarkets.map((market) =>
-        apolloClient.query({
-          query: GET_TICKER,
-          variables: { id: market.id }
-        }).catch(() => null)
+      validMarkets.map(market =>
+        apolloClient
+          .query({
+            query: GET_TICKER,
+            variables: { id: market.id },
+          })
+          .catch(() => null)
       )
     );
 
     return {
       props: {
-        markets: validMarkets
-      }
+        markets: validMarkets,
+      },
     };
   } catch (error) {
     console.debug('Failed to fetch markets:', error);
     return {
       props: {
-        markets: []
-      }
+        markets: [],
+      },
     };
   }
 }

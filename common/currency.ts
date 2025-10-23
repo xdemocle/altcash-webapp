@@ -1,7 +1,4 @@
-export const btcToRandPrice = (
-  amounBTC: number,
-  bitcoinRandPrice: number
-): number => {
+export const btcToRandPrice = (amounBTC: number, bitcoinRandPrice: number): number => {
   let num = 0;
 
   try {
@@ -13,10 +10,7 @@ export const btcToRandPrice = (
   return Number(num);
 };
 
-export const btcToRandPriceWithSymbol = (
-  amounBTC: number,
-  bitcoinRandPrice: number
-): string => {
+export const btcToRandPriceWithSymbol = (amounBTC: number, bitcoinRandPrice: number): string => {
   let num = 0;
 
   try {

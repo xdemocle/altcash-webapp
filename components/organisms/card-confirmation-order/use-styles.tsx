@@ -7,7 +7,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     position: 'relative',
     padding: theme.typography.pxToRem(strPxRem(theme.spacing(3))),
-    display: 'grid'
+    display: 'grid',
   },
   grid: {
     display: 'flex',
@@ -17,23 +17,23 @@ const useStyles = makeStyles()((theme: Theme) => ({
     [theme.breakpoints.up('md')]: {
       width: '75%',
       paddingRight: '2.5%',
-      flexDirection: 'row'
-    }
+      flexDirection: 'row',
+    },
   },
   gridItem: {
     paddingRight: 0,
     [theme.breakpoints.up('md')]: {
-      padding: 0
-    }
+      padding: 0,
+    },
   },
   gridTitle: {
     display: 'block',
     color: grey[600],
     fontSize: '.9rem',
-    marginBottom: theme.typography.pxToRem(strPxRem(theme.spacing(1)))
+    marginBottom: theme.typography.pxToRem(strPxRem(theme.spacing(1))),
   },
   symbol: {
-    color: green[700]
+    color: green[700],
   },
   boxBuyButtonRoot: {
     display: 'flex',
@@ -43,13 +43,13 @@ const useStyles = makeStyles()((theme: Theme) => ({
       position: 'absolute',
       top: '3.3rem',
       right: '1.5rem',
-      width: '25%'
-    }
+      width: '25%',
+    },
   },
   boxBuyLed: {
     position: 'absolute',
     top: '1.5rem',
-    right: '1.5rem'
+    right: '1.5rem',
   },
   buyButtonContainer: {
     marginLeft: 0,
@@ -58,12 +58,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     [theme.breakpoints.up('md')]: {
       paddingBottom: '1.45rem',
       marginLeft: theme.typography.pxToRem(strPxRem(theme.spacing(2))),
-      marginTop: 0
-    }
+      marginTop: 0,
+    },
   },
   buyButton: {
     minHeight: '3.5rem',
-    width: '100%'
+    width: '100%',
   },
   flex: {
     display: 'flex',
@@ -73,18 +73,18 @@ const useStyles = makeStyles()((theme: Theme) => ({
     height: 'auto',
     [theme.breakpoints.up('md')]: {
       marginTop: '31px',
-      height: '56px'
-    }
+      height: '56px',
+    },
   },
   arrow: {
     cursor: 'pointer',
     width: '2rem !important',
-    height: '2rem !important'
+    height: '2rem !important',
   },
   arrowMobile: {
     margin: '1.5rem 0 1rem 0',
     width: '3rem !important',
-    height: '3rem !important'
+    height: '3rem !important',
   },
   innerCard: {
     transition: 'all 300ms !important',
@@ -93,21 +93,21 @@ const useStyles = makeStyles()((theme: Theme) => ({
     width: '95%',
     margin: '0 auto',
     marginTop: '-0.1rem',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   innerCardOpen: {
-    height: '9rem'
+    height: '9rem',
   },
   innerCardRoot: {
-    padding: '1rem'
+    padding: '1rem',
   },
   confirmationTitle: {
     marginTop: 0,
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
   },
   confirmationTitleRed: {
     marginTop: 0,
-    color: theme.palette.error.main
+    color: theme.palette.error.main,
   },
   confirmationLoader: {
     marginTop: '1rem',
@@ -116,7 +116,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     height: '10rem',
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   confirmationGrid: {
     display: 'flex',
@@ -125,33 +125,33 @@ const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      flexDirection: 'row'
-    }
+      flexDirection: 'row',
+    },
   },
   confirmationGridCol: {
     width: '100%',
     marginTop: '2.5rem',
     '&:first-child': {
-      marginTop: '0'
+      marginTop: '0',
     },
     [theme.breakpoints.up('md')]: {
       marginTop: '0',
-      width: '49%'
-    }
+      width: '49%',
+    },
   },
   confirmationGridCard: {
     padding: '2rem',
-    height: '20rem'
+    height: '20rem',
   },
   confirmationSeparator: {
     height: '0',
     borderWidth: '0 0 0.1rem',
     borderStyle: 'solid',
-    borderColor: theme.palette.primary.main
+    borderColor: theme.palette.primary.main,
   },
   confirmationLoaderText: {
     marginTop: '1rem',
-    marginLeft: '1rem'
+    marginLeft: '1rem',
   },
   logs: {
     padding: '0.1rem 0.5rem',
@@ -159,7 +159,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     fontWeight: '900',
     height: '3.5rem',
     background: '#f9f7f7',
-    overflow: 'auto'
+    overflow: 'auto',
   },
   orderReference: {
     fontWeight: '200',
@@ -167,8 +167,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
     width: '100%',
     maxWidth: '25rem',
     whiteSpace: 'nowrap',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 }));
 
 export default useStyles;

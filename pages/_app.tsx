@@ -26,7 +26,7 @@ const clientSideEmotionCache = createEmotionCache();
 function MyApp({
   Component,
   emotionCache = clientSideEmotionCache,
-  pageProps
+  pageProps,
 }: AppProps & { emotionCache: EmotionCache }) {
   const router = useRouter();
   const [loaded, setLoaded] = useState(isServer() ? true : false);
@@ -80,13 +80,8 @@ function MyApp({
             <ThemeProvider theme={theme}>
               {/* <AuthProvider> */}
               <Head>
-                <title>
-                  Altcash | Buy crypto coins fast and easy in South Africa!
-                </title>
-                <meta
-                  name="viewport"
-                  content="width=device-width, initial-scale=1"
-                />
+                <title>Altcash | Buy crypto coins fast and easy in South Africa!</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
               </Head>
               <div suppressHydrationWarning>
                 <CssBaseline />
@@ -110,7 +105,7 @@ function MyApp({
                     font: 'inherit',
                     textTransform: 'uppercase',
                     fontWeight: '700',
-                    borderRadius: '.25rem'
+                    borderRadius: '.25rem',
                   }}
                   expires={150}
                 >

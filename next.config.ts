@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
         crypto: false,
         fs: false,
         path: false,
-        os: false
+        os: false,
       };
     }
     return config;
@@ -21,14 +21,14 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 's2.coinmarketcap.com'
+        hostname: 's2.coinmarketcap.com',
       },
       {
         protocol: 'https',
-        hostname: 'bittrexblobstorage.blob.core.windows.net'
-      }
-    ]
-  }
+        hostname: 'bittrexblobstorage.blob.core.windows.net',
+      },
+    ],
+  },
 };
 
 if (process.env.NODE_ENV !== 'production') {

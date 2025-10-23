@@ -9,15 +9,15 @@ const useStyles = makeStyles()(({ palette }: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 0
+    padding: 0,
   },
   icons: {
     marginLeft: '1.3rem',
     marginRight: '1.4rem',
     color: '#A09EA0',
     '.active &': {
-      color: '#fff'
-    }
+      color: '#fff',
+    },
   },
   listItem: {
     flexGrow: '0 !important',
@@ -30,7 +30,7 @@ const useStyles = makeStyles()(({ palette }: Theme) => ({
     textDecoration: 'none !important',
     color: 'inherit',
     '&:visited': {
-      color: 'inherit'
+      color: 'inherit',
     },
     '&.active::after': {
       content: '""',
@@ -42,16 +42,16 @@ const useStyles = makeStyles()(({ palette }: Theme) => ({
       height: '3.2rem',
       borderRadius: '.6rem',
       backgroundColor: palette.primary.main,
-      zIndex: -1
-    }
+      zIndex: -1,
+    },
   },
   listItemText: {
-    paddingLeft: '.7rem'
+    paddingLeft: '.7rem',
   },
   listItemLast: {
     position: 'absolute',
-    bottom: '0'
-  }
+    bottom: '0',
+  },
 }));
 
 export default useStyles;

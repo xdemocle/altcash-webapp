@@ -9,9 +9,7 @@ const useMultiplier = (ticker: Ticker) => {
   const [multiplier, setMultiplier] = useState(1);
 
   useEffect(() => {
-    const newMultiplier = Number(
-      btcToRandPrice(Number(ticker.price), bitcoinRandPrice)
-    );
+    const newMultiplier = Number(btcToRandPrice(Number(ticker.price), bitcoinRandPrice));
 
     if (!isNaN(newMultiplier)) {
       setMultiplier(newMultiplier);
@@ -19,7 +17,7 @@ const useMultiplier = (ticker: Ticker) => {
   }, [ticker, bitcoinRandPrice]);
 
   return {
-    multiplier
+    multiplier,
   };
 };
 

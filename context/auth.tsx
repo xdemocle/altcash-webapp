@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 
 export interface AuthContextProps {
   login: () => void;
@@ -13,7 +7,7 @@ export interface AuthContextProps {
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-  isAuthenticated: false
+  isAuthenticated: false,
 } as AuthContextProps);
 
 const IsAuthenticatedKey = 'isAuthenticated';
@@ -23,9 +17,7 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem(IsAuthenticatedKey) === 'true'
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem(IsAuthenticatedKey) === 'true');
 
   const login = useCallback(() => {
     setIsAuthenticated(true);
@@ -44,7 +36,7 @@ const AuthProvider = ({ children }: Props) => {
       value={{
         isAuthenticated,
         login,
-        logout
+        logout,
       }}
     >
       {children}
