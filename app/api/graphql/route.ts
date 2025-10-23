@@ -17,29 +17,24 @@ const schema = createSchema<Context>({
 
 // Create yoga instance
 const yoga = createYoga<Context>({
-  schema
+  schema,
+  context: {
+    KV: (globalThis as any).KV as KVNamespace,
+    dataSources: datasources
+  }
 });
 
 /*
  * Named exports for Next.js App Router
  */
 export async function POST(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url, {
-    kv: (globalThis as any).KV as KVNamespace,
-    dataSources: datasources
-  });
+  return yoga.fetch(req.url);
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url, {
-    kv: (globalThis as any).KV as KVNamespace,
-    dataSources: datasources
-  });
+  return yoga.fetch(req.url);
 }
 
 export async function OPTIONS(req: NextRequest): Promise<Response> {
-  return yoga.fetch(req.url, {
-    kv: (globalThis as any).KV as KVNamespace,
-    dataSources: datasources
-  });
+  return yoga.fetch(req.url);
 }
