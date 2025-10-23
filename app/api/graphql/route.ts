@@ -8,7 +8,13 @@ import { typeDefs } from './schema';
 import { Context } from './types';
 
 // Define runtime
-export const runtime = 'edge';
+// export const runtime = 'edge';
+
+// Cloudflare Workers environment type
+interface Env {
+  NEXT_INC_CACHE_KV?: KVNamespace;
+  [key: string]: any;
+}
 
 // Create schema
 const schema = createSchema<Context>({
