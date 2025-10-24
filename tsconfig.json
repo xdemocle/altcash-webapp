@@ -32,6 +32,7 @@
   "include": [
     ".next/dev/types/**/*.ts",
     ".next/types/**/*.ts",
+    "app",
     "common",
     "components",
     "context",
@@ -40,7 +41,6 @@
     "graphql",
     "hooks",
     "open-next.config.ts",
-    "pages",
     "styles",
     "worker-configuration.d.ts",
     "worker"
