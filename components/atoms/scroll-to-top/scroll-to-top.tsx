@@ -1,15 +1,17 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { isServer } from '~/common/utils';
 
 const ScrollToTop = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isServer()) {
       window.scrollTo(0, 0);
     }
-  }, [router.pathname]);
+  }, [pathname]);
 
   return null;
 };

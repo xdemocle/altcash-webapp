@@ -2,7 +2,7 @@
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, Suspense, useMemo } from 'react';
 import CookieConsent from 'react-cookie-consent';
 import { QueryProvider } from '../common/providers/query-provider';
 import createEmotionCache from '../common/createEmotionCache';
@@ -31,7 +31,9 @@ export function Providers({ children }: ProvidersProps) {
         <GlobalProvider>
           <UserCoinFavouritesProvider>
             <ThemeProvider theme={theme}>
-              <GATracker />
+              <Suspense fallback={null}>
+                <GATracker />
+              </Suspense>
               <div suppressHydrationWarning>
                 <CssBaseline />
                 <ScrollToTop />

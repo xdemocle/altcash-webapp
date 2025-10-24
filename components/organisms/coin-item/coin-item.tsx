@@ -1,3 +1,5 @@
+'use client';
+
 import { ShoppingBasket, Star, StarBorder } from '@mui/icons-material';
 import {
   Box,
@@ -14,7 +16,7 @@ import CoinSVG from 'components/atoms/coin-svg';
 import CoinTicker from 'components/organisms/coin-ticker';
 import { Market } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Fragment, SyntheticEvent, memo } from 'react';
 import useStyles from './use-styles';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Grid, Icon, Tooltip, Typography } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';

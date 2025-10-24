@@ -1,3 +1,5 @@
+'use client';
+
 import {
   ContactSupportOutlined,
   HomeOutlined, // LockOutlined,
@@ -8,7 +10,7 @@ import { List, ListItemButton, ListItemIcon, ListItemText, Tooltip } from '@mui/
 import { styled, ThemeProvider } from '@mui/material/styles';
 import { theme } from 'common/theme';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 // import useAuth from '~/hooks/use-auth';
 
 const StyledList = styled(List)({
@@ -118,13 +120,13 @@ type Props = {
 
 const MainLinks = ({ isSidebarOpen }: Props) => {
   // const auth = useAuth();
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <ThemeProvider theme={theme}>
       <StyledList as="nav">
         <Tooltip title="Homepage" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
-          <StyledListItemButton href="/" label="Home" selected={router.pathname == '/'}>
+          <StyledListItemButton href="/" label="Home" selected={pathname == '/'}>
             <HomeOutlined />
           </StyledListItemButton>
         </Tooltip>
@@ -133,20 +135,20 @@ const MainLinks = ({ isSidebarOpen }: Props) => {
           <StyledListItemButton
             href="/buy"
             label="Buy"
-            selected={router.pathname == '/buy' || router.pathname == '/buy/[tab]' || router.pathname == '/coin/[id]'}
+            selected={pathname == '/buy' || pathname.startsWith('/buy/') || pathname.startsWith('/coin/')}
           >
             <MonetizationOnOutlined />
           </StyledListItemButton>
         </Tooltip>
 
         <Tooltip title="About Us" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
-          <StyledListItemButton href="/about" label="About Us" selected={router.pathname == '/about'}>
+          <StyledListItemButton href="/about" label="About Us" selected={pathname == '/about'}>
             <PeopleAltOutlined />
           </StyledListItemButton>
         </Tooltip>
 
         <Tooltip title="Support" placement="right" enterDelay={isSidebarOpen ? 2000 : 50}>
-          <StyledListItemButton href="/support" label="Support" selected={router.pathname == '/support'}>
+          <StyledListItemButton href="/support" label="Support" selected={pathname == '/support'}>
             <ContactSupportOutlined />
           </StyledListItemButton>
         </Tooltip>

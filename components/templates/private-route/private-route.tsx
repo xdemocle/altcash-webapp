@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 import useAuth from '~/hooks/use-auth';
 
@@ -17,7 +19,8 @@ const PrivateRoute = ({ children }: Props) => {
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
     // return <Navigate to="/login" state={{ from: location }} replace />;
-    return router.push('/login');
+    router.push('/login');
+    return null;
   }
 
   return children;

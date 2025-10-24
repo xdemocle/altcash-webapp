@@ -1,15 +1,16 @@
+'use client';
+
 import { ContactSupport, Home, MonetizationOn, People } from '@mui/icons-material';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useState, ChangeEvent } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { ChangeEvent } from 'react';
 
 const SimpleBottomNavigation = () => {
   const router = useRouter();
-  const [pathname, setPathname] = useState(router.pathname);
+  const pathname = usePathname();
 
   const handleChange = (event: ChangeEvent<unknown>, newValue: string) => {
     router.push(newValue);
-    setPathname(newValue);
   };
 
   return (

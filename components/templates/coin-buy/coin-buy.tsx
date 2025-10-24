@@ -1,8 +1,10 @@
+'use client';
+
 import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { Box, Button, Card, Grid, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import ReactPlaceholder from 'react-placeholder';
 import {

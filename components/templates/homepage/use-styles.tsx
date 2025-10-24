@@ -1,3 +1,5 @@
+'use client';
+
 import { Theme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { strPxRem } from '~/common/utils';

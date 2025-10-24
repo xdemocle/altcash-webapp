@@ -1,11 +1,14 @@
+'use client';
+
 import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import useGlobal from '~/hooks/use-global';
 
 const TopBarSearch = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { coinPageNeedle, setCoinPageNeedle, setTab } = useGlobal();
   const [inputValue, setInputValue] = useState(coinPageNeedle);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -41,8 +44,8 @@ const TopBarSearch = () => {
 
   const onFocusHandler = () => {
     setTab(1);
-    if (router.pathname !== '/buy/[tab]' || router.query.tab !== 'all') {
-      router.push('/buy/all', undefined, { shallow: true });
+    if (!pathname.startsWith('/buy/all')) {
+      router.push('/buy/all');
     }
   };
 
