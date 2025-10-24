@@ -12,17 +12,26 @@ export const viewport: Viewport = {
 };
 
 export const metadata = {
-  title: 'Altcash | Buy crypto coins fast and easy in South Africa!',
-  description: 'Buy crypto coins fast and easy in South Africa!',
-  keywords: 'buy, crypto, coins, fast and easy, bitcoins, altcoins, South Africa',
+  title: 'Altcash Demo | Cryptocurrency Trading Platform (Demo Only)',
+  description: 'Altcash Demo - A demonstration cryptocurrency trading platform showcasing Bitcoin, Ethereum, and altcoin trading features. This is a demo platform for educational purposes only, not a real trading platform.',
+  keywords: 'crypto demo, bitcoin demo, ethereum demo, altcoins, cryptocurrency trading demo, South Africa, educational platform',
+  authors: [{ name: 'Altcash Demo' }],
+  creator: 'Altcash',
   manifest: '/manifest.json',
   icons: {
     icon: '/favicon.ico',
   },
   openGraph: {
-    title: 'Altcash | Buy crypto coins fast and easy in South Africa!',
-    description: 'Buy crypto coins fast and easy in South Africa!',
+    title: 'Altcash Demo | Cryptocurrency Trading Platform (Demo Only)',
+    description: 'Altcash Demo Platform - Educational demonstration of cryptocurrency trading. This is a demo platform for learning purposes, not a real trading platform.',
     type: 'website',
+    url: 'https://altcash.co.za',
+    siteName: 'Altcash Demo',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Altcash Demo | Crypto Trading Platform (Demo)',
+    description: 'Educational demo platform for cryptocurrency trading - Not a real trading platform',
   },
 };
 
@@ -35,8 +44,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,500,700&display=swap" />
-        <meta name="description" content="Buy crypto coins fast and easy in South Africa!" />
-        <meta name="keywords" content="buy, crypto, coins, fast and easy, bitcoins, altcoins, South Africa" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
           async
