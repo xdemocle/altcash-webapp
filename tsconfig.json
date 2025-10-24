@@ -30,19 +30,20 @@
     ]
   },
   "include": [
-    "worker-configuration.d.ts",
+    ".next/dev/types/**/*.ts",
+    ".next/types/**/*.ts",
     "common",
     "components",
     "context",
+    "dist/dev/types/**/*.ts",
+    "dist/types/**/*.ts",
     "graphql",
     "hooks",
+    "open-next.config.ts",
     "pages",
     "styles",
-    "open-next.config.ts",
-    "dist/types/**/*.ts",
-    "dist/dev/types/**/*.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "worker-configuration.d.ts",
+    "worker"
   ],
   "exclude": ["server", "node_modules"]
 }
