@@ -24,8 +24,8 @@
   "kv_namespaces": [
     {
       "binding": "NEXT_INC_CACHE_KV",
-      "id": "<YOUR_KV_NAMESPACE_ID>",
-      "preview_id": "<YOUR_KV_PREVIEW_ID>",
+      "id": "b92898a4c2034831b083c5f2f4e23911",
+      "preview_id": "f1fcc4ffbc21436495122dfb123233ee",
     },
   ],
 }
