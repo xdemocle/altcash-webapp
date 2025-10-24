@@ -10,7 +10,8 @@ interface QueryMarketsArgs {
 }
 
 const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context): Promise<Market[]> => {
-  let { limit, offset, term, symbols } = args;
+  let { limit, offset = 0, term, symbols } = args;
+  logger.debug(`queryMarkets called with args: ${JSON.stringify({ limit, offset, term, symbols })}`);
   let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as any[];
   const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
@@ -94,16 +95,23 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   }
 
   // Search feature or symbols one
-  if (!isUndefined(symbols)) {
+  if (!isUndefined(symbols) && symbols) {
     limit = limit || 20;
 
-    if (!symbols.length) {
+    const symbolList = symbols.split('|').filter(s => s.trim());
+    logger.debug(`Filtering by symbols: ${JSON.stringify(symbolList)}, total markets: ${markets.length}`);
+    if (symbolList.length === 0) {
       markets = [];
     } else {
       markets = filter(markets, coin => {
-        return symbols.split('|').includes(coin.baseAsset);
+        const match = symbolList.includes(coin.baseAsset);
+        if (match) {
+          logger.debug(`Symbol match: ${coin.baseAsset}`);
+        }
+        return match;
       });
     }
+    logger.debug(`After symbol filter: ${markets.length} markets`);
   } else if (term && term.length) {
     limit = limit || 20;
 

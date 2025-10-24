@@ -67,17 +67,6 @@ export default function BuyTabPage({ params }: BuyTabPageProps) {
         // Filter out markets with undefined IDs
         const validMarkets = marketsData.filter((market: Market) => market.id && market.id !== 'undefined');
 
-        await Promise.all(
-          validMarkets.map((market: Market) =>
-            urqlClient
-              .query(GET_TICKER, {
-                id: market.id,
-              })
-              .toPromise()
-              .catch(() => null)
-          )
-        );
-
         setMarkets(validMarkets);
       } catch (error) {
         console.debug('Failed to fetch markets:', error);

@@ -16,8 +16,13 @@ const CoinTicker = memo(({ coin }: Props) => {
     if (!coin || !coin.id) return;
 
     const fetchTicker = async () => {
-      const result = await urqlClient.query(GET_TICKER, { id: coin.id }).toPromise();
-      if (!result.error) {
+      // Add small random delay (0-100ms) to stagger requests and avoid thundering herd
+      // This prevents all 487 coins from requesting simultaneously
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+      
+      // cache-first: use cache if available, otherwise fetch from network
+      const result = await urqlClient.query(GET_TICKER, { id: coin.id }, { requestPolicy: 'cache-first' }).toPromise();
+      if (!result.error && result.data) {
         setData(result.data as { ticker: Ticker });
       }
     };
@@ -26,7 +31,8 @@ const CoinTicker = memo(({ coin }: Props) => {
 
   useEffect(() => {
     const fetchPair = async () => {
-      const result = await urqlClient.query(GET_PAIR, { pair: 'XBTZAR' }).toPromise();
+      // Query from cache first, then network if not cached
+      const result = await urqlClient.query(GET_PAIR, { pair: 'XBTZAR' }, { requestPolicy: 'cache-first' }).toPromise();
       if (!result.error) {
         setDataPair(result.data as PairResponse);
       }
