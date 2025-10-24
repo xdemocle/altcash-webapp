@@ -4,8 +4,8 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ReactNode, Suspense, useMemo } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import { QueryProvider } from '../common/providers/query-provider';
 import createEmotionCache from '../common/createEmotionCache';
+import { QueryProvider } from '../common/providers/query-provider';
 import { theme } from '../common/theme';
 import { isServer } from '../common/utils';
 import BitcoinRandLivePrice from '../components/atoms/bitcoin-rand-live-price';
@@ -27,10 +27,10 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <CacheProvider value={emotionCache}>
-      <QueryProvider>
-        <GlobalProvider>
-          <UserCoinFavouritesProvider>
-            <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <QueryProvider>
+          <GlobalProvider>
+            <UserCoinFavouritesProvider>
               <Suspense fallback={null}>
                 <GATracker />
               </Suspense>
@@ -61,10 +61,10 @@ export function Providers({ children }: ProvidersProps) {
                   This website uses cookies to enhance the user experience.
                 </CookieConsent>
               </div>
-            </ThemeProvider>
-          </UserCoinFavouritesProvider>
-        </GlobalProvider>
-      </QueryProvider>
+            </UserCoinFavouritesProvider>
+          </GlobalProvider>
+        </QueryProvider>
+      </ThemeProvider>
     </CacheProvider>
   );
 }
