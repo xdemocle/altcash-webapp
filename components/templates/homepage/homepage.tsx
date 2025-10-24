@@ -20,10 +20,13 @@ const Homepage = () => {
               color="inherit"
               className={clsx(classes.typographyShadow, classes.typographyMainTitle)}
             >
-              Altcash
+              Altcash Demo
             </Typography>
             <Typography variant="h4" gutterBottom color="inherit" className={classes.typographyShadow}>
-              Buy crypto coins fast and easy in South Africa!
+              Learn Cryptocurrency Trading Risk-Free
+            </Typography>
+            <Typography variant="body1" gutterBottom color="inherit" className={classes.typographyShadow} sx={{ fontSize: '1.1rem', marginTop: '1rem' }}>
+              Educational Demo Platform • No Real Transactions • Live Market Data
             </Typography>
             <hr className={classes.heroDivider} />
             <Link href="/buy">
@@ -38,18 +41,17 @@ const Homepage = () => {
       <Grid className={classes.gridContainer} container alignContent="center" justifyContent="center">
         <Grid size={12}>
           <Typography variant="h4" gutterBottom color="primary" align="center">
-            The best way to start investing in crypto currencies!
+            Explore Cryptocurrency Trading with Confidence
           </Typography>
           <Typography variant="subtitle1" gutterBottom color="secondary" align="center">
-            A new service for South Africans to buy crypto coins with credit card, bank transfer, Masterpass, and
-            Snapscan.
+            Altcash Demo is an educational platform designed to help you understand how cryptocurrency trading works. Explore live market data, learn about Bitcoin, Ethereum, and altcoins—all risk-free.
           </Typography>
           <Typography variant="subtitle2" gutterBottom color="secondary" align="center">
-            Fast, anonymous and easy instant buying.
+            <strong>Important:</strong> This is a demonstration platform only. No real transactions occur here.
           </Typography>
           <Link href="/buy">
             <Button variant="contained" color="secondary" size="large" className={classes.ctoButton}>
-              Buy Altcoins now
+              Explore Cryptocurrencies
             </Button>
           </Link>
         </Grid>
@@ -61,38 +63,28 @@ const Homepage = () => {
             <Grid container alignContent="center" justifyContent="center">
               <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
                 <Typography variant="subtitle1" gutterBottom color="primary" align="center">
-                  Company info
+                  About This Demo
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare. Pellentesque habitant
-                  morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in aliquet odio.
-                  Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
+                  Altcash Demo is an educational platform showcasing modern cryptocurrency trading interfaces. Built with real-time market data, it provides a risk-free environment to learn about Bitcoin, Ethereum, and altcoins. Perfect for beginners and crypto enthusiasts who want to understand how trading platforms work.
                 </Typography>
               </Grid>
               <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
                 <Typography variant="subtitle1" gutterBottom color="primary" align="center">
-                  Contact Us
+                  Learn More
                 </Typography>
                 <Typography variant="body1" gutterBottom color="inherit" align="left">
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                  Explore our comprehensive resources to understand cryptocurrency trading better.
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
-                  <Tooltip title="ONLY Whatsapp messages" placement="top">
-                    <Button
-                      variant="text"
-                      size="small"
-                      href="https://api.whatsapp.com/send?phone=34604367510&text=Hello%20Alts.sale%20Customer%20Care"
-                    >
-                      <Icon className={classes.leftIcon}>chat</Icon> Whatsapp: +27 777 867 5309
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Send a message on Telegram" placement="top">
-                    <Button variant="text" size="small" href="#">
-                      <Icon className={classes.leftIcon}>chat</Icon> Telegram: Altcash
-                    </Button>
-                  </Tooltip>
-                  <Button variant="text" size="small" href="#">
-                    <Icon className={classes.leftIcon}>mail</Icon> Send e-mail
+                  <Button variant="text" size="small" href="/about">
+                    <Icon className={classes.leftIcon}>info</Icon> About Altcash Demo
+                  </Button>
+                  <Button variant="text" size="small" href="/support">
+                    <Icon className={classes.leftIcon}>help</Icon> FAQ & Support
+                  </Button>
+                  <Button variant="text" size="small" href="/buy">
+                    <Icon className={classes.leftIcon}>trending_up</Icon> Explore Markets
                   </Button>
                 </Typography>
               </Grid>
