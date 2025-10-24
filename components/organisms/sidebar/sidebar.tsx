@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import useGlobal from '~/hooks/use-global';
 import MainLinks from '../../molecules/main-links';
-import styles from './sidebar.module.scss';
 import { ButtonLogoStyled, DrawerStyled, ToolbarHeaderStyled, ToolbarStyled, ToolbarTitleStyled } from './styled';
 
 const Sidebar = () => {
@@ -29,9 +28,9 @@ const Sidebar = () => {
       sx={{ display: { xs: 'none', sm: 'block' } }}
       variant="permanent"
       anchor="left"
-      className={clsx(styles['DrawerStyled'], !isSidebarOpen ? styles['DrawerStyled--Close'] : '')}
+      className={clsx('DrawerStyled', !isSidebarOpen ? 'DrawerStyled--Close' : '')}
       classes={{
-        paper: clsx(styles['DrawerStyled-Paper'], !isSidebarOpen ? styles['DrawerStyled-Paper--Close'] : ''),
+        paper: clsx('DrawerStyled-Paper', !isSidebarOpen ? 'DrawerStyled-Paper--Close' : ''),
       }}
       ModalProps={{
         // Better open performance on mobile.
@@ -39,7 +38,7 @@ const Sidebar = () => {
       }}
       open={isSidebarOpen}
     >
-      <ToolbarStyled className={isSidebarOpen ? styles['DrawerStyled-Toolbar--Open'] : ''}>
+      <ToolbarStyled className={isSidebarOpen ? 'DrawerStyled-Toolbar--Open' : ''}>
         <Tooltip title={`${isSidebarOpen ? 'Collapse' : 'Expand'} sidebar`} placement="right">
           <ToolbarHeaderStyled>
             <ButtonLogoStyled disableRipple onClick={handleDrawerToggle} aria-label="toggle drawer">
