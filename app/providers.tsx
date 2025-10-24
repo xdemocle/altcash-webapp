@@ -1,10 +1,7 @@
-'use client';
-
-import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { ReactNode, Suspense, useMemo } from 'react';
+import { ReactNode, Suspense } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import createEmotionCache from '../common/createEmotionCache';
+import { NextAppDirEmotionCacheProvider } from 'tss-react/next/appDir';
 import { QueryProvider } from '../common/providers/query-provider';
 import { theme } from '../common/theme';
 import { isServer } from '../common/utils';
@@ -20,13 +17,9 @@ interface ProvidersProps {
   children: ReactNode;
 }
 
-const clientSideEmotionCache = createEmotionCache();
-
 export function Providers({ children }: ProvidersProps) {
-  const emotionCache: EmotionCache = useMemo(() => clientSideEmotionCache, []);
-
   return (
-    <CacheProvider value={emotionCache}>
+    <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
       <ThemeProvider theme={theme}>
         <QueryProvider>
           <GlobalProvider>
@@ -65,6 +58,6 @@ export function Providers({ children }: ProvidersProps) {
           </GlobalProvider>
         </QueryProvider>
       </ThemeProvider>
-    </CacheProvider>
+    </NextAppDirEmotionCacheProvider>
   );
 }

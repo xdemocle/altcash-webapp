@@ -1,3 +1,5 @@
+'use client';
+
 import { Fragment, useEffect, useState } from 'react';
 import { REFRESH_BTCZAR_LIVE_PRICE } from '~/common/constants';
 import { urqlClient } from '~/common/graphql';

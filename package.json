@@ -47,9 +47,6 @@
     "wrangler": "^4.45.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/server": "^11.11.0",
-    "@emotion/styled": "^11.14.1",
     "@graphql-tools/merge": "^9.1.1",
     "@graphql-yoga/plugin-response-cache": "^3.18.0",
     "@mui/icons-material": "7.3.4",
@@ -77,7 +74,6 @@
     "react-parallax": "^3.5.2",
     "react-placeholder": "^4.1.0",
     "react-svg": "^16.3.0",
-    "sass": "^1.93.2",
     "tss-react": "^4.9.19",
     "typescript": "^5.9.3",
     "urql": "^5.0.1"

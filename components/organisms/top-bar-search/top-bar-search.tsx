@@ -2,8 +2,9 @@
 
 import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { BUY_TAB_ALL } from '~/common/constants';
 import useGlobal from '~/hooks/use-global';
 
 const TopBarSearch = () => {
@@ -44,8 +45,8 @@ const TopBarSearch = () => {
 
   const onFocusHandler = () => {
     // Switch to "All Coins" tab when search is focused
-    setTab(1); // BUY_TAB_ALL = 1
-    
+    setTab(BUY_TAB_ALL);
+
     // Navigate to buy page if not already there
     if (!pathname.startsWith('/buy')) {
       router.push('/buy');

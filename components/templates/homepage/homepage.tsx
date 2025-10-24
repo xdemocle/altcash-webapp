@@ -1,6 +1,4 @@
-'use client';
-
-import { Button, Grid, Icon, Tooltip, Typography } from '@mui/material';
+import { Button, Grid, Icon, Typography } from '@mui/material';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { Parallax } from 'react-parallax';
@@ -25,7 +23,13 @@ const Homepage = () => {
             <Typography variant="h4" gutterBottom color="inherit" className={classes.typographyShadow}>
               Learn Cryptocurrency Trading Risk-Free
             </Typography>
-            <Typography variant="body1" gutterBottom color="inherit" className={classes.typographyShadow} sx={{ fontSize: '1.1rem', marginTop: '1rem' }}>
+            <Typography
+              variant="body1"
+              gutterBottom
+              color="inherit"
+              className={classes.typographyShadow}
+              sx={{ fontSize: '1.1rem', marginTop: '1rem' }}
+            >
               Educational Demo Platform • No Real Transactions • Live Market Data
             </Typography>
             <hr className={classes.heroDivider} />
@@ -44,7 +48,8 @@ const Homepage = () => {
             Explore Cryptocurrency Trading with Confidence
           </Typography>
           <Typography variant="subtitle1" gutterBottom color="secondary" align="center">
-            Altcash Demo is an educational platform designed to help you understand how cryptocurrency trading works. Explore live market data, learn about Bitcoin, Ethereum, and altcoins—all risk-free.
+            Altcash Demo is an educational platform designed to help you understand how cryptocurrency trading works.
+            Explore live market data, learn about Bitcoin, Ethereum, and altcoins—all risk-free.
           </Typography>
           <Typography variant="subtitle2" gutterBottom color="secondary" align="center">
             <strong>Important:</strong> This is a demonstration platform only. No real transactions occur here.
@@ -66,7 +71,10 @@ const Homepage = () => {
                   About This Demo
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
-                  Altcash Demo is an educational platform showcasing modern cryptocurrency trading interfaces. Built with real-time market data, it provides a risk-free environment to learn about Bitcoin, Ethereum, and altcoins. Perfect for beginners and crypto enthusiasts who want to understand how trading platforms work.
+                  Altcash Demo is an educational platform showcasing modern cryptocurrency trading interfaces. Built
+                  with real-time market data, it provides a risk-free environment to learn about Bitcoin, Ethereum, and
+                  altcoins. Perfect for beginners and crypto enthusiasts who want to understand how trading platforms
+                  work.
                 </Typography>
               </Grid>
               <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>

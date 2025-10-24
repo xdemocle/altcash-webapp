@@ -13,8 +13,10 @@ export const viewport: Viewport = {
 
 export const metadata = {
   title: 'Altcash Demo | Cryptocurrency Trading Platform (Demo Only)',
-  description: 'Altcash Demo - A demonstration cryptocurrency trading platform showcasing Bitcoin, Ethereum, and altcoin trading features. This is a demo platform for educational purposes only, not a real trading platform.',
-  keywords: 'crypto demo, bitcoin demo, ethereum demo, altcoins, cryptocurrency trading demo, South Africa, educational platform',
+  description:
+    'Altcash Demo - A demonstration cryptocurrency trading platform showcasing Bitcoin, Ethereum, and altcoin trading features. This is a demo platform for educational purposes only, not a real trading platform.',
+  keywords:
+    'crypto demo, bitcoin demo, ethereum demo, altcoins, cryptocurrency trading demo, South Africa, educational platform',
   authors: [{ name: 'Altcash Demo' }],
   creator: 'Altcash',
   manifest: '/manifest.json',
@@ -23,7 +25,8 @@ export const metadata = {
   },
   openGraph: {
     title: 'Altcash Demo | Cryptocurrency Trading Platform (Demo Only)',
-    description: 'Altcash Demo Platform - Educational demonstration of cryptocurrency trading. This is a demo platform for learning purposes, not a real trading platform.',
+    description:
+      'Altcash Demo Platform - Educational demonstration of cryptocurrency trading. This is a demo platform for learning purposes, not a real trading platform.',
     type: 'website',
     url: 'https://altcash.co.za',
     siteName: 'Altcash Demo',
@@ -35,7 +38,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
