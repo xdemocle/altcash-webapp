@@ -1,11 +1,15 @@
+import { Viewport } from 'next';
 import { ReactNode } from 'react';
-import { theme } from '../common/theme';
-import { Providers } from './providers';
 import '../styles/global.css';
+import { Providers } from './providers';
 
 interface RootLayoutProps {
   children: ReactNode;
 }
+
+export const viewport: Viewport = {
+  themeColor: 'black',
+};
 
 export const metadata = {
   title: 'Altcash | Buy crypto coins fast and easy in South Africa!',
@@ -15,7 +19,6 @@ export const metadata = {
   icons: {
     icon: '/favicon.ico',
   },
-  themeColor: theme.palette.primary.main,
   openGraph: {
     title: 'Altcash | Buy crypto coins fast and easy in South Africa!',
     description: 'Buy crypto coins fast and easy in South Africa!',
@@ -28,19 +31,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
-        <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Montserrat:300,500,700&display=swap"
-        />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,500,700&display=swap" />
         <meta name="description" content="Buy crypto coins fast and easy in South Africa!" />
-        <meta
-          name="keywords"
-          content="buy, crypto, coins, fast and easy, bitcoins, altcoins, South Africa"
-        />
+        <meta name="keywords" content="buy, crypto, coins, fast and easy, bitcoins, altcoins, South Africa" />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
           async
