@@ -1,48 +1,49 @@
-import { Button, Grid, Icon, Typography } from '@mui/material';
-import clsx from 'clsx';
+import { Grid, Icon, Typography } from '@mui/material';
 import Link from 'next/link';
 import { Parallax } from 'react-parallax';
-import useStyles from './use-styles';
+import {
+  CTOButton,
+  GridContainer,
+  GridOverlayItem,
+  HeroDivider,
+  LeftIconButton,
+  ParallaxContainer,
+  ParallaxContent,
+  Root,
+  StyledTypography,
+} from './components';
 
 const Homepage = () => {
-  const { classes } = useStyles();
-
   return (
-    <div className={classes.root}>
+    <Root>
       <Parallax bgImage="/assets/hero.jpg" strength={300} bgStyle={{ top: '-5%' }}>
-        <div style={{ minHeight: '65vh', display: 'flex', alignItems: 'center' }}>
-          <div className={classes.parallaxContent}>
-            <Typography
-              variant="h2"
-              gutterBottom
-              color="inherit"
-              className={clsx(classes.typographyShadow, classes.typographyMainTitle)}
-            >
+        <ParallaxContainer>
+          <ParallaxContent>
+            <StyledTypography variant="h2" gutterBottom color="inherit">
               Altcash Demo
-            </Typography>
-            <Typography variant="h4" gutterBottom color="inherit" className={classes.typographyShadow}>
+            </StyledTypography>
+            <StyledTypography variant="h4" gutterBottom color="inherit">
               Learn Cryptocurrency Trading Risk-Free
-            </Typography>
-            <Typography
+            </StyledTypography>
+            <StyledTypography
               variant="body1"
               gutterBottom
               color="inherit"
-              className={classes.typographyShadow}
               sx={{ fontSize: '1.1rem', marginTop: '1rem' }}
             >
               Educational Demo Platform • No Real Transactions • Live Market Data
-            </Typography>
-            <hr className={classes.heroDivider} />
+            </StyledTypography>
+            <HeroDivider />
             <Link href="/buy">
-              <Button variant="contained" color="primary" size="large" className={classes.ctoButton}>
+              <CTOButton variant="contained" color="primary" size="large">
                 Buy Altcoins now
-              </Button>
+              </CTOButton>
             </Link>
-          </div>
-        </div>
+          </ParallaxContent>
+        </ParallaxContainer>
       </Parallax>
 
-      <Grid className={classes.gridContainer} container alignContent="center" justifyContent="center">
+      <GridContainer container alignContent="center" justifyContent="center">
         <Grid size={12}>
           <Typography variant="h4" gutterBottom color="primary" align="center">
             Explore Cryptocurrency Trading with Confidence
@@ -55,18 +56,18 @@ const Homepage = () => {
             <strong>Important:</strong> This is a demonstration platform only. No real transactions occur here.
           </Typography>
           <Link href="/buy">
-            <Button variant="contained" color="secondary" size="large" className={classes.ctoButton}>
+            <CTOButton variant="contained" color="secondary" size="large">
               Explore Cryptocurrencies
-            </Button>
+            </CTOButton>
           </Link>
         </Grid>
-      </Grid>
+      </GridContainer>
 
       <Parallax bgImage="/assets/section.jpg" strength={300} bgStyle={{ top: '-20%' }}>
         <div style={{ minHeight: '45vh' }}>
-          <div className={classes.parallaxContent}>
+          <ParallaxContent>
             <Grid container alignContent="center" justifyContent="center">
-              <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
+              <GridOverlayItem size={{ xs: 12, sm: 5, lg: 4 }}>
                 <Typography variant="subtitle1" gutterBottom color="primary" align="center">
                   About This Demo
                 </Typography>
@@ -76,8 +77,8 @@ const Homepage = () => {
                   altcoins. Perfect for beginners and crypto enthusiasts who want to understand how trading platforms
                   work.
                 </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 5, lg: 4 }} className={classes.gridOverlayItem}>
+              </GridOverlayItem>
+              <GridOverlayItem size={{ xs: 12, sm: 5, lg: 4 }}>
                 <Typography variant="subtitle1" gutterBottom color="primary" align="center">
                   Learn More
                 </Typography>
@@ -85,22 +86,22 @@ const Homepage = () => {
                   Explore our comprehensive resources to understand cryptocurrency trading better.
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
-                  <Button variant="text" size="small" href="/about">
-                    <Icon className={classes.leftIcon}>info</Icon> About Altcash Demo
-                  </Button>
-                  <Button variant="text" size="small" href="/support">
-                    <Icon className={classes.leftIcon}>help</Icon> FAQ & Support
-                  </Button>
-                  <Button variant="text" size="small" href="/buy">
-                    <Icon className={classes.leftIcon}>trending_up</Icon> Explore Markets
-                  </Button>
+                  <LeftIconButton variant="text" size="small" href="/about">
+                    <Icon>info</Icon> About Altcash Demo
+                  </LeftIconButton>
+                  <LeftIconButton variant="text" size="small" href="/support">
+                    <Icon>help</Icon> FAQ & Support
+                  </LeftIconButton>
+                  <LeftIconButton variant="text" size="small" href="/buy">
+                    <Icon>trending_up</Icon> Explore Markets
+                  </LeftIconButton>
                 </Typography>
-              </Grid>
+              </GridOverlayItem>
             </Grid>
-          </div>
+          </ParallaxContent>
         </div>
       </Parallax>
-    </div>
+    </Root>
   );
 };
 
