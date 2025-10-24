@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { BUY_TABS_DEFAULT, BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED } from '../common/constants';
 
@@ -22,14 +24,14 @@ interface Props {
 }
 
 const GlobalProvider = ({ children }: Props) => {
-  const router = useRouter();
+  const pathname = usePathname();
   let defaultTab = BUY_TABS_DEFAULT;
 
-  if (router.pathname === '/buy/featured') {
+  if (pathname === '/buy/featured') {
     defaultTab = BUY_TAB_FEATURED;
-  } else if (router.pathname === '/buy/all') {
+  } else if (pathname === '/buy/all') {
     defaultTab = BUY_TAB_ALL;
-  } else if (router.pathname === '/buy/favourite') {
+  } else if (pathname === '/buy/favourite') {
     defaultTab = BUY_TAB_FAVOURITE;
   }
 
