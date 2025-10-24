@@ -43,9 +43,12 @@ const TopBarSearch = () => {
   }, []);
 
   const onFocusHandler = () => {
-    setTab(1);
-    if (!pathname.startsWith('/buy/all')) {
-      router.push('/buy/all');
+    // Switch to "All Coins" tab when search is focused
+    setTab(1); // BUY_TAB_ALL = 1
+    
+    // Navigate to buy page if not already there
+    if (!pathname.startsWith('/buy')) {
+      router.push('/buy');
     }
   };
 
