@@ -1,17 +1,7 @@
 'use client';
 
 import { ArrowBack } from '@mui/icons-material';
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Grid, ListItem, Tooltip } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
@@ -22,7 +12,21 @@ import LinkExtBlank from '~/components/atoms/link-ext-blank';
 import CoinBuy from '~/components/templates/coin-buy';
 import { GET_META_COIN, GET_PAGE_DATA, GET_PAIR } from '~/graphql/queries';
 import type { Market, Metadata, PageDataResponse, PairResponse, Summary, Ticker } from '~/graphql/types';
-import useStyles from '~/styles/coin-use-styles';
+import {
+  BackButton,
+  BoxBuy,
+  Card,
+  Column,
+  DataParagraph,
+  InfoParagraph,
+  Inner,
+  Links,
+  PageAvatar,
+  Progress,
+  Root,
+  StyledPaper,
+  Title,
+} from './components';
 
 const fallbackMarket: Market = {
   id: '',
@@ -56,7 +60,6 @@ interface CoinPageProps {
 }
 
 export default function CoinPage({ params }: CoinPageProps) {
-  const { classes } = useStyles();
   const router = useRouter();
   const [coinId, setCoinId] = useState<string>('');
 
@@ -131,157 +134,150 @@ export default function CoinPage({ params }: CoinPageProps) {
   };
 
   return (
-    <div className={classes.root}>
+    <Root>
       <Tooltip title="Go back to coin list">
-        <Button
+        <BackButton
           color="primary"
-          size="large"
+          variant="outlined"
           aria-label="Find a coin"
           onClick={handleBackButton}
           startIcon={<ArrowBack />}
-          className={classes.backButton}
         >
           Back
-        </Button>
+        </BackButton>
       </Tooltip>
 
-      <div className={classes.inner}>
-        <Typography color="primary" variant="h4" gutterBottom className={classes.title}>
+      <Inner>
+        <Title color="primary" variant="h4" gutterBottom>
           {dataCoin.name || coinId}
-        </Typography>
+        </Title>
 
-        <div className={classes.pageAvatar}>
-          {loading && <CircularProgress className={classes.progress} size="4rem" />}
+        <PageAvatar>
+          {loading && <Progress size="4rem" />}
           {!loading && !metaCoin?.description && <CoinSVG coinSymbol={coinId || ''} />}
           {!loading && metaCoin?.logo && (
             <Image src={metaCoin.logo} width="64" height="64" alt={metaCoin.logo} title={metaCoin.name} />
           )}
-        </div>
+        </PageAvatar>
 
-        <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
+        <InfoParagraph variant="h6" gutterBottom>
           Buy now
-        </Typography>
+        </InfoParagraph>
 
-        <div className={classes.boxBuy}>
+        <BoxBuy>
           <CoinBuy coin={dataCoin} ticker={dataTicker} />
-        </div>
+        </BoxBuy>
 
-        <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
+        <InfoParagraph variant="h6" gutterBottom>
           Market Details & Statistics
-        </Typography>
-        <List className={classes.dataParagraph} aria-label="Coin Data">
+        </InfoParagraph>
+        <DataParagraph aria-label="Coin Data">
           <ListItem divider>
-            <ListItemText primary={<strong>Current Buy Price</strong>} className={classes.column} />
+            <Column primary={<strong>Current Buy Price</strong>} />
             {dataTicker.price && bitcoinRandPrice ?
-              <ListItemText
+              <Column
                 primary={btcToRandPriceWithSymbol(tickerPriceNumber, bitcoinRandPrice)}
                 secondary={`${dataTicker.price} BTC`}
-                className={classes.column}
               />
             : null}
           </ListItem>
           <ListItem divider>
-            <ListItemText primary="Price Change" className={classes.column} />
-            <ListItemText
+            <Column primary="Price Change" />
+            <Column
               primary={`${dataSummary.percentChange}%`}
               secondary={'Last 24hrs'}
-              className={classes.column}
             />
           </ListItem>
           <ListItem divider>
-            <ListItemText primary="Price at Highest" className={classes.column} />
+            <Column primary="Price at Highest" />
             {dataSummary.high && bitcoinRandPrice ?
-              <ListItemText
+              <Column
                 primary={btcToRandPriceWithSymbol(dataSummary.high, bitcoinRandPrice)}
                 secondary={`${dataSummary.high} BTC`}
-                className={classes.column}
               />
             : null}
           </ListItem>
           <ListItem divider>
-            <ListItemText primary="Price at Lowest" className={classes.column} />
+            <Column primary="Price at Lowest" />
             {dataSummary.low && bitcoinRandPrice ?
-              <ListItemText
+              <Column
                 primary={btcToRandPriceWithSymbol(dataSummary.low, bitcoinRandPrice)}
                 secondary={`${dataSummary.low} BTC`}
-                className={classes.column}
               />
             : null}
           </ListItem>
           <ListItem divider>
-            <ListItemText primary="Trading Volume" className={classes.column} />
-            <ListItemText
+            <Column primary="Trading Volume" />
+            <Column
               primary={`${dataSummary.volume.toFixed(2)} ${dataCoin.symbol}`}
               secondary={`of ${dataCoin.name}`}
-              className={classes.column}
             />
           </ListItem>
           <ListItem divider>
-            <ListItemText primary="Quote Volume" className={classes.column} />
-            <ListItemText
+            <Column primary="Quote Volume" />
+            <Column
               primary={`${btcToRandPriceWithSymbol(dataSummary.quoteVolume, bitcoinRandPrice)}`}
               secondary={`${dataSummary.quoteVolume.toFixed(2)} BTC`}
-              className={classes.column}
             />
           </ListItem>
-        </List>
+        </DataParagraph>
 
         {metaCoin?.description && (
           <Fragment>
-            <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
+            <InfoParagraph variant="h6" gutterBottom>
               Description
-            </Typography>
-            <Paper className={classes.card}>
-              <Typography variant="body1">{metaCoin.description}</Typography>
-            </Paper>
+            </InfoParagraph>
+            <Card>
+              <InfoParagraph variant="body1">{metaCoin.description}</InfoParagraph>
+            </Card>
           </Fragment>
         )}
 
         {metaCoin?.urls && (
-          <div className={classes.links}>
-            <Typography variant="h6" gutterBottom className={classes.infoParagraph}>
+          <Links>
+            <InfoParagraph variant="h6" gutterBottom>
               Links
-            </Typography>
+            </InfoParagraph>
             <Grid container>
               {!!metaCoin.urls.website?.length && (
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <Paper className={classes.paper}>
+                  <StyledPaper>
                     <strong>Website:</strong>
                     <br />
                     {metaCoin.urls.website.map((url: string) => (
                       <LinkExtBlank key={url} url={url} br />
                     ))}
-                  </Paper>
+                  </StyledPaper>
                 </Grid>
               )}
 
               {!!metaCoin.urls.twitter?.length && (
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <Paper className={classes.paper}>
+                  <StyledPaper>
                     <strong>Social Media:</strong>
                     <br />
                     {metaCoin.urls.twitter.map((url: string) => (
                       <LinkExtBlank key={url} url={url} br />
                     ))}
-                  </Paper>
+                  </StyledPaper>
                 </Grid>
               )}
 
               {!!metaCoin.urls.chat?.length && (
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <Paper className={classes.paper}>
+                  <StyledPaper>
                     <strong>Chat:</strong>
                     <br />
                     {metaCoin.urls.chat.map((url: string) => (
                       <LinkExtBlank key={url} url={url} br />
                     ))}
-                  </Paper>
+                  </StyledPaper>
                 </Grid>
               )}
             </Grid>
-          </div>
+          </Links>
         )}
-      </div>
-    </div>
+      </Inner>
+    </Root>
   );
 }
