@@ -1,6 +1,6 @@
 import { each, isUndefined } from '~/lib/lodash-utils';
+import logger from '~/lib/logger';
 import { BinanceOrderResponse, Order, OrderQueue, OrderQueueParams, UpdateOrderQueueParams } from '../types';
-import logger from '../utilities/logger';
 
 class OrdersQueueAPI {
   async getQueues(): Promise<OrderQueue[] | null> {
