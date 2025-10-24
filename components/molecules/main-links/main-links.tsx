@@ -11,7 +11,6 @@ import { styled, ThemeProvider } from '@mui/material/styles';
 import { theme } from 'common/theme';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import useAuth from '~/hooks/use-auth';
 
 const StyledList = styled(List)({
   position: 'relative',
@@ -119,7 +118,6 @@ type Props = {
 };
 
 const MainLinks = ({ isSidebarOpen }: Props) => {
-  // const auth = useAuth();
   const pathname = usePathname();
 
   return (

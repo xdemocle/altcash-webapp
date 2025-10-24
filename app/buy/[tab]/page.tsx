@@ -9,7 +9,7 @@ import { urqlClient } from '~/common/graphql';
 import TopBarSearch from '~/components/organisms/top-bar-search';
 import CoinsList from '~/components/templates/coins-list';
 import CoinsUserList from '~/components/templates/coins-user-list';
-import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR, GET_TICKER } from '~/graphql/queries';
+import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR } from '~/graphql/queries';
 import { Market } from '~/graphql/types';
 import useGlobal from '~/hooks/use-global';
 import useStyles from '~/styles/buy-use-styles';
@@ -27,7 +27,7 @@ export default function BuyTabPage({ params }: BuyTabPageProps) {
   const [tab, setTabState] = useState<string>('featured');
 
   useEffect(() => {
-    params.then((resolvedParams) => {
+    params.then(resolvedParams => {
       setTabState(resolvedParams.tab);
     });
   }, [params]);
