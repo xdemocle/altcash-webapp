@@ -69,3 +69,4 @@ coverage/
 .cache/
 .temp/
 .open-next/
+.dev.vars
