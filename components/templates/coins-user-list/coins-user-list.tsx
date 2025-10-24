@@ -36,7 +36,6 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   };
 
   useEffect(() => {
-    debugger;
     fetchMarkets();
   }, []);
 

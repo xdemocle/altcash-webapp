@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import nextPlugin from '@next/eslint-plugin-next';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import compat from 'eslint-plugin-compat';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -28,25 +29,23 @@ export default defineConfig({
     '*/__tests__/**/*',
   ],
   extends: [
-    'next/core-web-vitals',
     js.configs.recommended,
     ...tseslint.configs.strict,
     ...tseslint.configs.recommended,
     ...tseslint.configs.stylistic,
     compat.configs['flat/recommended'],
-    'plugin:@next/next/recommended',
+    // Next.js plugin configs for flat config
+    nextPlugin.configs.recommended,
+    nextPlugin.configs['core-web-vitals'],
   ],
   files: ['**/*.{ts,tsx}'],
   languageOptions: {
     globals: globals.browser,
   },
-  plugins: {
-    'react-hooks': reactHooks,
-    'react-refresh': reactRefresh,
-  },
+  // No explicit plugins needed; we apply rules from plugin configs directly above
   rules: {
     ...reactHooks['configs']['recommended-latest'].rules,
-    ...reactRefresh.configs.vite.rules,
+    ...reactRefresh.configs.next.rules,
     ...eslintConfigPrettier.rules,
 
     // Note: you must disable the base rule as it can report incorrect errors
