@@ -81,6 +81,43 @@ This plan outlines the steps to integrate the existing Node.js/Express backend i
 - Testing: ⏳ 2-3 hours (pending)
 - Deployment: ⏳ 1 hour (pending)
 
+## Performance Optimization: GraphQL Ticker Requests
+
+### Problem
+
+Tab switching in `/buy/` pages triggers excessive GraphQL ticker requests due to:
+
+- Full page navigation causing component remounting
+- Individual ticker requests for each coin (20-50+ requests per tab)
+- Request cancellation when switching tabs quickly
+
+### 🚀 Recommended Implementation Order
+
+1. **Immediate**: Apply increased cache duration fix
+   - Extend CoinTicker cache-first policy
+   - Increase random delay staggering (100ms → 200ms)
+
+2. **Short-term**: Implement client-side tab switching
+   - Replace URL navigation with client-side state management
+   - Eliminate component remounting and request cancellation
+   - Cache data per tab to avoid refetching
+
+3. **Medium-term**: Add batch ticker requests
+   - Create `GET_MULTIPLE_TICKERS` GraphQL query
+   - Fetch all tickers in single request per tab
+   - Reduce network overhead significantly
+
+4. **Long-term**: Enhance overall GraphQL caching strategy
+   - Improve URQL cache configuration
+   - Add TTL-based cache expiration
+   - Implement cache-and-network strategy
+
+### Impact
+
+- Reduce GraphQL requests from 50+ per tab switch to near zero
+- Eliminate request cancellation and improve UX
+- Better cache utilization across tab switches
+
 ## Resources
 
 - Next.js App Router documentation
