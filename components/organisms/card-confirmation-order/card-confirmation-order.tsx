@@ -1,10 +1,21 @@
-import { Alert, Box, Card, Snackbar, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Snackbar, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import { Market } from '~/graphql/types';
 import NumberFormatText from '../../atoms/number-format-text';
 import Loader from '../../molecules/loader';
-import useStyles from './use-styles';
+import {
+  ConfirmationGrid,
+  ConfirmationGridCard,
+  ConfirmationGridCol,
+  ConfirmationLoader,
+  ConfirmationLoaderText,
+  ConfirmationSeparator,
+  ConfirmationTitle,
+  ConfirmationTitleRed,
+  Logs,
+  OrderReference,
+} from './components';
 
 interface CardConfirmationOrderProps {
   symbol: Market['symbol'];
@@ -27,7 +38,6 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
   orderReferences,
   hasErrors,
 }) => {
-  const { classes } = useStyles();
   const [showPinTooltip, setShowPinTooltip] = useState(false);
   const [showPinAlert, setShowPinAlert] = useState(false);
 
@@ -60,12 +70,12 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
 
   return (
     <>
-      <Box className={classes.confirmationGrid}>
-        <Box className={classes.confirmationGridCol}>
-          <Card className={classes.confirmationGridCard}>
-            <h2 className={classes.confirmationTitle}>Payment received</h2>
+      <ConfirmationGrid>
+        <ConfirmationGridCol>
+          <ConfirmationGridCard>
+            <ConfirmationTitle>Payment received</ConfirmationTitle>
 
-            {pin && <h4 className={classes.confirmationTitleRed}>Take note of data below</h4>}
+            {pin && <ConfirmationTitleRed>Take note of data below</ConfirmationTitleRed>}
 
             <Typography>Your order number: {orderNumber}</Typography>
             <Typography>
@@ -87,7 +97,7 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
               </Tooltip>
             </Typography>
 
-            <hr className={classes.confirmationSeparator} />
+            <ConfirmationSeparator />
 
             <Typography>
               You bought: <NumberFormatText decimalScale={6} value={cryptoCurrency} /> {symbol}
@@ -96,50 +106,50 @@ const CardConfirmationOrder: FC<CardConfirmationOrderProps> = ({
             <Typography>
               You spent: <NumberFormatText value={Number(totalAmount)} decimalScale={2} /> ZAR
             </Typography>
-          </Card>
-        </Box>
+          </ConfirmationGridCard>
+        </ConfirmationGridCol>
 
-        <Box className={classes.confirmationGridCol}>
-          <Card className={classes.confirmationGridCard}>
+        <ConfirmationGridCol>
+          <ConfirmationGridCard>
             {!waitingOrderConfirmation && !hasErrors ?
-              <Box className={classes.confirmationLoader}>
+              <ConfirmationLoader>
                 <Loader text="Waiting for the exchange order..." centered />
-              </Box>
+              </ConfirmationLoader>
             : hasErrors ?
-              <Box className={`${classes.confirmationLoader} float-animation`}>
+              <ConfirmationLoader className={`float-animation`}>
                 <Image src="/assets/error-illustration.png" width="128" height="128" alt="error-illustration.png" />
-                <div className={classes.confirmationLoaderText}>
+                <ConfirmationLoaderText>
                   Order with problems.
                   <br />
                   Please, contact Support.
-                </div>
-              </Box>
-            : <Box className={`${classes.confirmationLoader} float-animation`}>
+                </ConfirmationLoaderText>
+              </ConfirmationLoader>
+            : <ConfirmationLoader className={`float-animation`}>
                 <Image
                   src="/assets/transparent-yellow-dollar-coins-illustration.png"
                   width="200"
                   height="130"
                   alt="transparent-yellow-dollar-coins-illustration.png"
                 />
-                <div className={classes.confirmationLoaderText}>Order confirmed and coins allocated.</div>
-              </Box>
+                <ConfirmationLoaderText>Order confirmed and coins allocated.</ConfirmationLoaderText>
+              </ConfirmationLoader>
             }
 
-            <hr className={classes.confirmationSeparator} />
+            <ConfirmationSeparator />
 
             <Box>
-              <Box className={classes.logs}>
+              <Logs>
                 Order logs:
                 {orderReferences?.map((reference, ix) => (
-                  <div key={ix} className={classes.orderReference} title={transformReference(reference)}>
+                  <OrderReference key={ix} title={transformReference(reference)}>
                     {transformReference(reference)}
-                  </div>
+                  </OrderReference>
                 ))}
-              </Box>
+              </Logs>
             </Box>
-          </Card>
-        </Box>
-      </Box>
+          </ConfirmationGridCard>
+        </ConfirmationGridCol>
+      </ConfirmationGrid>
 
       <Snackbar open={showPinAlert} autoHideDuration={6000} onClose={onClosePinHandler}>
         <Alert onClose={onClosePinHandler} severity="info" sx={{ width: '100%' }}>

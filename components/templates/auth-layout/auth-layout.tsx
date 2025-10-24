@@ -1,21 +1,19 @@
 import { ReactNode } from 'react';
 import Bottombar from '../../organisms/bottom-bar';
-import useStyles from './use-styles';
+import { AppFrame, Content, Inner } from './components';
 
 interface Props {
   children: ReactNode;
 }
 
 const AuthLayout = ({ children }: Props) => {
-  const { classes } = useStyles();
-
   return (
-    <div className={classes.appFrame}>
-      <div className={classes.inner}>
-        <main className={classes.content}>{children}</main>
-      </div>
+    <AppFrame>
+      <Inner>
+        <Content>{children}</Content>
+      </Inner>
       <Bottombar />
-    </div>
+    </AppFrame>
   );
 };
 

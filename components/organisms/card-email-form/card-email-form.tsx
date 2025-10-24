@@ -1,15 +1,14 @@
-import { Alert, Box, Button, Card, Grid, Snackbar, TextField } from '@mui/material';
+import { Alert, Box, Grid, Snackbar, TextField } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import { UPDATE_ORDER } from '~/graphql/mutations';
 import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
-import useStyles from './use-styles';
+import { BuyButton, ConfirmationGrid, ConfirmationTitle, RootCard } from './components';
 
 interface CardEmailFormProps {
   orderId: string;
 }
 
 const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
-  const { classes } = useStyles();
   const [formDisabled, setFormDisabled] = useState(false);
   const [emailValue, setEmailValue] = useState('');
   const [showEmailSent, setShowEmailSent] = useState(false);
@@ -39,10 +38,10 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
 
   return (
     <>
-      <Card className={classes.root}>
-        <Box className={classes.confirmationGrid}>
+      <RootCard>
+        <ConfirmationGrid>
           <Box sx={{ width: '100%' }}>
-            <h2 className={classes.confirmationTitle}>Send order to E-Mail</h2>
+            <ConfirmationTitle>Send order to E-Mail</ConfirmationTitle>
 
             <form noValidate method="POST" onSubmit={onSubmitHandler}>
               <Grid container gap={2}>
@@ -65,23 +64,17 @@ const CardEmailForm: FC<CardEmailFormProps> = ({ orderId }) => {
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 3.765 }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    className={classes.buyButton}
-                    disabled={formDisabled}
-                  >
+                  <BuyButton variant="contained" color="primary" type="submit" disabled={formDisabled}>
                     Send order copy
-                  </Button>
+                  </BuyButton>
                 </Grid>
               </Grid>
             </form>
 
-            {/* <hr className={classes.confirmationSeparator} /> */}
+            {/* <ConfirmationSeparator /> */}
           </Box>
-        </Box>
-      </Card>
+        </ConfirmationGrid>
+      </RootCard>
 
       <Snackbar open={showEmailSent} autoHideDuration={6000} onClose={onCloseAlertHandler}>
         <Alert severity="success" sx={{ width: '100%' }}>

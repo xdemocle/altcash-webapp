@@ -1,7 +1,7 @@
 'use client';
 
 import { List as ListIcon, NewReleases as NewReleasesIcon, Star } from '@mui/icons-material';
-import { Paper, Tab, Tabs, Typography } from '@mui/material';
+import { Tabs, Typography } from '@mui/material';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import { useEffect, useState } from 'react';
 import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '~/common/constants';
@@ -12,7 +12,7 @@ import CoinsUserList from '~/components/templates/coins-user-list';
 import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR } from '~/graphql/queries';
 import { Market } from '~/graphql/types';
 import useGlobal from '~/hooks/use-global';
-import useStyles from '~/styles/buy-use-styles';
+import { Root, StyledPaper, StyledTab, Title } from './components';
 
 interface MarketCache {
   [key: number]: { markets: Market[]; loading: boolean; loaded: boolean };
@@ -21,7 +21,6 @@ interface MarketCache {
 const DEFAULT_MARKET_CACHE: ValueOf<MarketCache> = { markets: [], loading: true, loaded: false };
 
 export default function BuyPage() {
-  const { classes } = useStyles();
   const { tab: activeTab, setTab } = useGlobal();
   const [marketsCache, setMarketsCache] = useState<MarketCache>(DEFAULT_MARKET_CACHE);
 
@@ -109,25 +108,25 @@ export default function BuyPage() {
   const currentTabData = marketsCache[activeTab] || DEFAULT_MARKET_CACHE;
 
   return (
-    <div className={classes.root}>
-      <Typography color="primary" variant="h4" gutterBottom className={classes.title}>
+    <Root>
+      <Title color="primary" variant="h4" gutterBottom>
         Altcoins
-      </Typography>
+      </Title>
 
       <TopBarSearch />
 
-      <Paper className={classes.paper}>
+      <StyledPaper>
         <Tabs
           value={activeTab}
           onChange={(_evt, tabNumber) => handleTabChange(tabNumber)}
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab label="Featured" icon={<NewReleasesIcon />} classes={{ root: classes.tabRoot }} />
-          <Tab label="All Coins" icon={<ListIcon />} classes={{ root: classes.tabRoot }} />
-          <Tab label="Favourite" icon={<Star />} classes={{ root: classes.tabRoot }} />
+          <StyledTab label="Featured" icon={<NewReleasesIcon />} />
+          <StyledTab label="All Coins" icon={<ListIcon />} />
+          <StyledTab label="Favourite" icon={<Star />} />
         </Tabs>
-      </Paper>
+      </StyledPaper>
 
       {/* Render content based on active tab */}
       {!currentTabData.loading && activeTab === BUY_TAB_FEATURED && (
@@ -138,6 +137,6 @@ export default function BuyPage() {
 
       {/* Show loading state */}
       {currentTabData.loading && <Typography>Loading...</Typography>}
-    </div>
+    </Root>
   );
 }

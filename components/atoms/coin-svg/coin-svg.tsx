@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
@@ -7,7 +6,7 @@ import { GET_META_COIN_LOGO } from '~/graphql/queries';
 import type { MetaCoinAllItem } from '~/graphql/types';
 import { find } from '~/lib/lodash-utils';
 import { urqlClient } from '~common/graphql';
-import useStyles from './use-styles';
+import { AvatarContainer } from './components';
 
 type MetaCoinLogoQuery = {
   metaCoinAll?: MetaCoinAllItem[];
@@ -19,7 +18,6 @@ type Props = {
 };
 
 const CoinSVG = ({ coinSymbol, size }: Props) => {
-  const { classes } = useStyles();
   const [metadata, setMetadata] = useState<MetaCoinLogoQuery | null>(null);
   let symbol = coinSymbol.toLowerCase();
   let imgCoinPath = '';
@@ -62,20 +60,13 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
   }
 
   return (
-    svgCoinPath ?
-      <ReactSVG
-        src={svgCoinPath.default.src}
-        className={clsx(
-          classes.avatar,
-          symbol,
-          classes.regular,
-          size === 'avatar' && classes[size],
-          size === 'large' && classes[size]
-        )}
-      />
-    : imgCoinPath ?
+    svgCoinPath ? (
+      <AvatarContainer size={size as any}>
+        <ReactSVG src={svgCoinPath.default.src} />
+      </AvatarContainer>
+    ) : imgCoinPath ? (
       <Image src={imgCoinPath} alt={`Logo ${coinSymbol}`} width="32" height="32" title={`Logo ${coinSymbol}`} />
-    : null
+    ) : null
   );
 };
 

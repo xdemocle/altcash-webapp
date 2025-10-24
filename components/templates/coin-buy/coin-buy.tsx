@@ -2,7 +2,7 @@
 
 import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
-import { Box, Button, Card, Grid, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
+import { Box, Grid, InputAdornment, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
@@ -20,7 +20,22 @@ import useGlobal from '~/hooks/use-global';
 import useMultiplier from '~/hooks/use-multiplier';
 import useRound from '~/hooks/use-round';
 import NumberFormatText from '../../atoms/number-format-text';
-import useStyles from './use-styles';
+import {
+  BoxBuyButtonRoot,
+  BoxBuyLed,
+  BuyButton,
+  BuyButtonContainer,
+  ConfirmationSeparator,
+  Flex,
+  GridItem,
+  GridTitle,
+  GridWrapper,
+  InnerCard,
+  InnerCardOpen,
+  InnerCardRoot,
+  RootCard,
+  Symbol,
+} from './components';
 
 interface CoinBuyProps {
   coin: Market;
@@ -28,7 +43,7 @@ interface CoinBuyProps {
 }
 
 const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
-  const { classes } = useStyles();
+  
   const router = useRouter();
   const { getRound } = useRound();
   const { bitcoinRandPrice } = useGlobal();
@@ -238,12 +253,12 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
 
   return (
     <form noValidate autoComplete="off" method="POST" onSubmit={onSubmitHandler}>
-      <Card className={classes.root}>
-        <div className={classes.grid}>
-          <Grid size={{ xs: 12, md: 4 }} className={classes.gridItem} sx={{ minWidth: '45%' }}>
-            <InputLabel htmlFor="gridLeftInput" className={classes.gridTitle}>
+      <RootCard>
+        <GridWrapper>
+          <Grid size={{ xs: 12, md: 4 }} component={GridItem} sx={{ minWidth: '45%' }}>
+            <GridTitle htmlFor="gridLeftInput">
               You pay in <strong>Rand (ZAR)</strong>
-            </InputLabel>
+            </GridTitle>
             <TextField
               id="gridLeftInput"
               name="localCurrency"
@@ -274,19 +289,22 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
             />
           </Grid>
 
-          <div className={classes.flex}>
+          <Flex>
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-              <ArrowForward color="primary" className={classes.arrow} />
+              <ArrowForward color="primary" sx={{ width: '2rem !important', height: '2rem !important' }} />
             </Box>
             <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-              <ArrowDownward color="primary" className={clsx(classes.arrow, classes.arrowMobile)} />
+              <ArrowDownward
+                color="primary"
+                sx={{ width: '3rem !important', height: '3rem !important', margin: '1.5rem 0 1rem 0' }}
+              />
             </Box>
-          </div>
+          </Flex>
 
-          <Grid size={{ xs: 12, md: 4 }} className={classes.gridItem} sx={{ minWidth: '45%' }}>
-            <InputLabel htmlFor="gridRightInput" className={classes.gridTitle}>
-              You get <strong className={classes.symbol}>{coin.name}</strong>
-            </InputLabel>
+          <Grid size={{ xs: 12, md: 4 }} component={GridItem} sx={{ minWidth: '45%' }}>
+            <GridTitle htmlFor="gridRightInput">
+              You get <Symbol>{coin.name}</Symbol>
+            </GridTitle>
             <TextField
               id="gridRightInput"
               name="cryptoCurrency"
@@ -307,35 +325,28 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               disabled
             />
           </Grid>
-        </div>
+        </GridWrapper>
 
-        <Box className={classes.boxBuyButtonRoot}>
-          <div className={classes.buyButtonContainer}>
-            <Button
+        <BoxBuyButtonRoot>
+          <BuyButtonContainer>
+            <BuyButton
               variant="contained"
               color="primary"
               type="submit"
-              className={classes.buyButton}
               disabled={localCurrency <= minTradeAmount || formDisabled || bulbColor === 'red'}
             >
               Buy Now
-            </Button>
-          </div>
-        </Box>
+            </BuyButton>
+          </BuyButtonContainer>
+        </BoxBuyButtonRoot>
 
-        <Box className={classes.boxBuyLed}>
+        <BoxBuyLed>
           <div className={`led-${bulbColor}`}></div>
-        </Box>
-      </Card>
+        </BoxBuyLed>
+      </RootCard>
 
-      <Card
-        className={clsx(
-          classes.innerCard,
-          localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA &&
-            classes.innerCardOpen
-        )}
-      >
-        <div className={classes.innerCardRoot}>
+      <InnerCard className={clsx(localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA && 'open')}>
+        <InnerCardRoot>
           <Typography
             variant="h6"
             sx={{
@@ -356,8 +367,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
           <NumberFormatText decimalScale={2} value={(PERCENTAGE_FEE_PAYMENT / 100) * localCurrency + 1} /> +<br />
           (altcash fee) R <NumberFormatText decimalScale={2} value={(PERCENTAGE_FEE / 100) * localCurrency} /> +
           <br />
-        </div>
-      </Card>
+        </InnerCardRoot>
+      </InnerCard>
     </form>
   );
 };
