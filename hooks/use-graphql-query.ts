@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { DocumentNode } from 'graphql';
-import { urqlClient } from '~/common/graphql-client';
+import { urqlClient } from '~common/graphql';
 
 export function useGraphQLQuery<TData = any>(
   key: string[],

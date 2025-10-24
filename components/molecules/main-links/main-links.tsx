@@ -9,7 +9,7 @@ import { styled, ThemeProvider } from '@mui/material/styles';
 import { theme } from 'common/theme';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-// import useAuth from '../../hooks/use-auth';
+// import useAuth from '~/hooks/use-auth';
 
 const StyledList = styled(List)({
   position: 'relative',

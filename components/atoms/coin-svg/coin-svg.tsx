@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import { find } from 'lodash';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { svgCoinPathHelper } from '../../../common/utils';
-import { GET_META_COIN_LOGO } from '../../../graphql/queries';
-import type { MetaCoinAllItem } from '../../../graphql/types';
-import { urqlClient } from '../../../common/graphql-client';
+import { svgCoinPathHelper } from '~/common/utils';
+import { GET_META_COIN_LOGO } from '~/graphql/queries';
+import type { MetaCoinAllItem } from '~/graphql/types';
+import { find } from '~/lib/lodash-utils';
+import { urqlClient } from '~common/graphql';
 import useStyles from './use-styles';
 
 type MetaCoinLogoQuery = {

@@ -2,7 +2,7 @@ import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import useGlobal from '../../../hooks/use-global';
+import useGlobal from '~/hooks/use-global';
 
 const TopBarSearch = () => {
   const router = useRouter();

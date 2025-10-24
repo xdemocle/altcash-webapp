@@ -1,7 +1,7 @@
 import { Alert, Box, Card, Snackbar, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC, useState } from 'react';
-import { Market } from '../../../graphql/types';
+import { Market } from '~/graphql/types';
 import NumberFormatText from '../../atoms/number-format-text';
 import Loader from '../../molecules/loader';
 import useStyles from './use-styles';

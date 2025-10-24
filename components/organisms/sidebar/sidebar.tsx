@@ -2,7 +2,7 @@ import { Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import useGlobal from '../../../hooks/use-global';
+import useGlobal from '~/hooks/use-global';
 import MainLinks from '../../molecules/main-links';
 import styles from './sidebar.module.scss';
 import { ButtonLogoStyled, DrawerStyled, ToolbarHeaderStyled, ToolbarStyled, ToolbarTitleStyled } from './styled';

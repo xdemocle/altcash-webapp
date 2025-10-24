@@ -3,12 +3,12 @@ import { COINS_PER_PAGE } from 'common/constants';
 import Loader from 'components/molecules/loader';
 import CoinsListMap from 'components/organisms/coins-list-map';
 import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
-import { CountResponse, Market, MarketsResponse, MarketsVariables } from 'graphql/types';
+import { CountResponse, Market, MarketsResponse } from 'graphql/types';
 import useGlobal from 'hooks/use-global';
-import { clone, find } from 'lodash';
 import dynamic from 'next/dynamic';
-import { ChangeEvent, Fragment, memo, useMemo, useEffect, useState } from 'react';
-import { urqlClient } from 'common/graphql-client';
+import { ChangeEvent, Fragment, memo, useEffect, useMemo, useState } from 'react';
+import { find } from '~/lib/lodash-utils';
+import { urqlClient } from '~common/graphql';
 import useStyles from './use-styles';
 
 const PaginationClient = dynamic(
@@ -61,9 +61,11 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
 
     const fetchMarkets = async () => {
       setLoading(true);
-      const result = await urqlClient.query(GET_MARKETS, {
-        term: coinPageNeedle,
-      }).toPromise();
+      const result = await urqlClient
+        .query(GET_MARKETS, {
+          term: coinPageNeedle,
+        })
+        .toPromise();
       if (result.error) {
         setError(result.error);
       } else {
@@ -77,7 +79,7 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
 
   const getListSlice = (limit: number) => {
-    const list = dataCoins ? clone(dataCoins) : [];
+    const list = dataCoins ? [...dataCoins] : [];
 
     if (shouldQuerySearch) {
       return list;

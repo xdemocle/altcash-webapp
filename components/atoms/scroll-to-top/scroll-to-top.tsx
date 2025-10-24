@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { isServer } from '../../../common/utils';
+import { isServer } from '~/common/utils';
 
 const ScrollToTop = () => {
   const router = useRouter();

@@ -1,8 +1,7 @@
 import { Alert, Box, Button, Card, Grid, Snackbar, TextField } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
-import { UPDATE_ORDER } from '../../../graphql/mutations';
-import { OrderParams } from '../../../graphql/types';
-import { useGraphQLMutation } from '../../../hooks/use-graphql-mutation';
+import { UPDATE_ORDER } from '~/graphql/mutations';
+import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import useStyles from './use-styles';
 
 interface CardWithdrawalFormProps {

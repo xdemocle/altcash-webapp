@@ -4,9 +4,9 @@ import CoinItem from 'components/organisms/coin-item';
 import { GET_MARKETS } from 'graphql/queries';
 import { Market } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
-import { isUndefined } from 'lodash';
 import { memo, useEffect, useState } from 'react';
-import { urqlClient } from 'common/graphql-client';
+import { isUndefined } from '~/lib/lodash-utils';
+import { urqlClient } from '~common/graphql';
 
 interface CoinsUserListProps {
   predefined?: string[];
@@ -22,9 +22,11 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   useEffect(() => {
     const fetchMarkets = async () => {
       setLoading(true);
-      const result = await urqlClient.query(GET_MARKETS, {
-        symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
-      }).toPromise();
+      const result = await urqlClient
+        .query(GET_MARKETS, {
+          symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
+        })
+        .toPromise();
       if (!result.error) {
         setData(result.data as { markets: Market[] });
       }

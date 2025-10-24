@@ -1,6 +1,6 @@
 import { List } from '@mui/material';
 import { memo } from 'react';
-import { Market } from '../../../graphql/types';
+import { Market } from '~/graphql/types';
 import CoinItem from '../coin-item';
 
 type Props = {

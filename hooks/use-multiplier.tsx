@@ -1,4 +1,3 @@
-import { isNaN } from 'lodash';
 import { useEffect, useState } from 'react';
 import { btcToRandPrice } from '../common/currency';
 import { Ticker } from '../graphql/types';
@@ -11,7 +10,7 @@ const useMultiplier = (ticker: Ticker) => {
   useEffect(() => {
     const newMultiplier = Number(btcToRandPrice(Number(ticker.price), bitcoinRandPrice));
 
-    if (!isNaN(newMultiplier)) {
+    if (!Number.isNaN(newMultiplier)) {
       setMultiplier(newMultiplier);
     }
   }, [ticker, bitcoinRandPrice]);

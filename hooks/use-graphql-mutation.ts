@@ -1,6 +1,6 @@
-import { useMutation as useTanstackMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/react-query';
 import { DocumentNode } from 'graphql';
-import { urqlClient } from '~/common/graphql-client';
+import { urqlClient } from '~common/graphql';
 
 export function useGraphQLMutation<TData = any, TVariables extends Record<string, any> = any>(
   mutation: DocumentNode,

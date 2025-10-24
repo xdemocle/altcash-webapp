@@ -1,8 +1,8 @@
-import { btcToRandPriceWithSymbol } from '../../../common/currency';
-import { GET_PAIR, GET_TICKER } from '../../../graphql/queries';
-import { Market, PairResponse, PairVariables, Ticker } from '../../../graphql/types';
 import { memo, useEffect, useState } from 'react';
-import { urqlClient } from '../../../common/graphql-client';
+import { btcToRandPriceWithSymbol } from '~/common/currency';
+import { urqlClient } from '~/common/graphql';
+import { GET_PAIR, GET_TICKER } from '~/graphql/queries';
+import { Market, PairResponse, Ticker } from '~/graphql/types';
 
 type Props = {
   coin: Market;

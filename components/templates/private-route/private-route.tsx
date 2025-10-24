@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
-import useAuth from '../../../hooks/use-auth';
+import { ReactNode } from 'react';
+import useAuth from '~/hooks/use-auth';
 
 type Props = {
   children: ReactNode;

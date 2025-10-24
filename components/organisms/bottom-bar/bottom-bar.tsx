@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { Tooltip, Typography } from '@mui/material';
-import { GET_COUNT } from '../../../graphql/queries';
-import type { CountItem, CountResponse } from '../../../graphql/types';
-import { urqlClient } from '../../../common/graphql-client';
+import { useEffect, useState } from 'react';
+import { urqlClient } from '~/common/graphql';
+import { GET_COUNT } from '~/graphql/queries';
+import type { CountItem, CountResponse } from '~/graphql/types';
 import { AppBarStyled, LinkStyled } from './styled';
 
 const BottomBar = () => {

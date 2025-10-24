@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from 'react';
-import { REFRESH_BTCZAR_LIVE_PRICE } from '../../../common/constants';
-import { isServer } from '../../../common/utils';
-import { GET_PAIR } from '../../../graphql/queries';
-import type { PairResponse, PairVariables } from '../../../graphql/types';
-import useGlobal from '../../../hooks/use-global';
-import { urqlClient } from '../../../common/graphql-client';
+import { REFRESH_BTCZAR_LIVE_PRICE } from '~/common/constants';
+import { urqlClient } from '~/common/graphql';
+import { isServer } from '~/common/utils';
+import { GET_PAIR } from '~/graphql/queries';
+import type { PairResponse, PairVariables } from '~/graphql/types';
+import useGlobal from '~/hooks/use-global';
 
 const BitcoinRandLivePrice = () => {
   const { setBitcoinRandPrice } = useGlobal();

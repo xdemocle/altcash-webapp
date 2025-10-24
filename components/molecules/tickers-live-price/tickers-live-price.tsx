@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react';
-import { GET_TICKERS } from '../../../graphql/queries';
-import { urqlClient } from '../../../common/graphql-client';
-import { isServer } from '../../../common/utils';
+import { urqlClient } from '~/common/graphql';
+import { isServer } from '~/common/utils';
+import { GET_TICKERS } from '~/graphql/queries';
 
 const TickersLivePrice = () => {
   useEffect(() => {

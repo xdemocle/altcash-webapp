@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { makeStyles } from 'tss-react/mui';
-import { strPxRem } from '../../../common/utils';
+import { strPxRem } from '~/common/utils';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   buttonLoadMore: {
