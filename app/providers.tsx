@@ -1,7 +1,8 @@
+import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, Suspense, useMemo } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import { NextAppDirEmotionCacheProvider } from 'tss-react/next/appDir';
+import createEmotionCache from '../common/createEmotionCache';
 import { QueryProvider } from '../common/providers/query-provider';
 import { theme } from '../common/theme';
 import { isServer } from '../common/utils';
@@ -17,9 +18,13 @@ interface ProvidersProps {
   children: ReactNode;
 }
 
+const clientSideEmotionCache = createEmotionCache();
+
 export function Providers({ children }: ProvidersProps) {
+  const emotionCache: EmotionCache = useMemo(() => clientSideEmotionCache, []);
+
   return (
-    <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
+    <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <QueryProvider>
           <GlobalProvider>
@@ -58,6 +63,6 @@ export function Providers({ children }: ProvidersProps) {
           </GlobalProvider>
         </QueryProvider>
       </ThemeProvider>
-    </NextAppDirEmotionCacheProvider>
+    </CacheProvider>
   );
 }
