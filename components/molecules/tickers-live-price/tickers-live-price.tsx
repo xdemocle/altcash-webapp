@@ -1,3 +1,5 @@
+'use client';
+
 import { Fragment, useEffect } from 'react';
 import { urqlClient } from '~/common/graphql';
 import { isServer } from '~/common/utils';
