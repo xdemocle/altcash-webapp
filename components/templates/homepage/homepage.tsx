@@ -1,6 +1,8 @@
+'use client';
+
 import { Grid, Icon, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Parallax } from 'react-parallax';
 import {
   CTOButton,
   GridContainer,
@@ -12,6 +14,10 @@ import {
   Root,
   StyledTypography,
 } from './components';
+
+const Parallax = dynamic(() => import('react-parallax').then(m => m.Parallax), {
+  ssr: false,
+});
 
 const Homepage = () => {
   return (

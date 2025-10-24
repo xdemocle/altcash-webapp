@@ -1,3 +1,5 @@
+'use client';
+
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ReactNode, Suspense, useMemo } from 'react';
