@@ -68,6 +68,7 @@
     "graphql-yoga": "^5.16.0",
     "localforage": "^1.10.0",
     "next": "^16.0.0",
+    "orderbooks": "^1.1.14",
     "prettier": "^3.6.2",
     "react": "19.2.0",
     "react-cookie-consent": "^9.0.0",
