@@ -1,6 +1,6 @@
-import { each, filter } from 'lodash';
+import { each, filter } from '~/lib/lodash-utils';
+import logger from '~/lib/logger';
 import { AccountStatus, BinanceOrderResponse, Market, Order, Summary, Ticker } from '../types';
-import logger from '../utilities/logger';
 
 const SPOT_REST_API_PROD_URL = 'https://api.binance.com/api';
 
@@ -49,7 +49,7 @@ class BinanceAPI {
     logger.debug(`Total markets from Binance: ${symbols?.length}`);
 
     // Removing not needed markets
-    symbols = filter(symbols, market => {
+    symbols = filter(symbols, (market: any) => {
       if (!market.baseAsset || market.baseAsset === 'undefined') {
         logger.error(`FILTERING OUT market with undefined baseAsset: ${JSON.stringify(market)}`);
         return false;

@@ -1,4 +1,4 @@
-import { each } from 'lodash';
+import { each } from '~/lib/lodash-utils';
 import { CMC_PRO_API_KEY } from '../config';
 import { Metadata } from '../types';
 
@@ -30,11 +30,11 @@ class MetadataAPI {
 
     const arr: Metadata[] = [];
 
-    each(response.data, (value, key) => {
+    each(response.data, (value: any, key: any) => {
       arr.push({
-        id: key,
+        id: String(key),
         metadataId: value.id,
-        symbol: key,
+        symbol: String(key),
         name: value.name,
         slug: value.slug,
         description: value.description,

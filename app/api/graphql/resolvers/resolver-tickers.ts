@@ -1,4 +1,4 @@
-import { filter, isUndefined } from 'lodash';
+import { filter, isUndefined } from '~/lib/lodash-utils';
 import { Context, Ticker } from '../types';
 
 const queryTickers = async (_: unknown, { symbols }: { symbols: string }, context: Context): Promise<Ticker[]> => {

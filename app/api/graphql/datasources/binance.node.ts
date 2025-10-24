@@ -1,5 +1,5 @@
 import { MainClient, OrderResponse } from 'binance';
-import { each, filter, find } from 'lodash';
+import { each, filter, find } from '~/lib/lodash-utils';
 import { BINANCE_API_KEY, BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET, BINANCE_API_SECRET_TESTNET } from '../config';
 import { NewOrderSideEnum, NewOrderTypeEnum, Order, Ticker } from '../types';
 import logger from '../utilities/logger';
@@ -145,7 +145,7 @@ class BinanceAPI {
     } else {
       const accountBalance = find(accountData.balances as any, {
         asset: 'BTC',
-      });
+      }) as any;
 
       if (Number(accountBalance?.free ?? 0) > 0.0006) {
         canTrade = true;
@@ -168,7 +168,7 @@ class BinanceAPI {
       return new Error(`Binance.postOrder: ${ERROR.notrade}`);
     }
 
-    const accountBalance = find(accountData.balances as any, { asset: 'BTC' });
+    const accountBalance = find(accountData.balances as any, { asset: 'BTC' }) as any;
     logger.debug(`accountBalance: ${JSON.stringify(accountBalance)}`);
 
     let apiResponse: OrderResponse | Error | { data: any } | null = null;

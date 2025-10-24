@@ -1,15 +1,8 @@
-import { clone, each, isUndefined } from 'lodash';
-import {
-  BinanceOrderResponse,
-  DataSource,
-  Order,
-  OrderQueue,
-  OrderQueueParams,
-  UpdateOrderQueueParams,
-} from '../types';
+import { each, isUndefined } from '~/lib/lodash-utils';
+import { BinanceOrderResponse, Order, OrderQueue, OrderQueueParams, UpdateOrderQueueParams } from '../types';
 import logger from '../utilities/logger';
 
-class OrdersQueueAPI extends DataSource<OrderQueue> {
+class OrdersQueueAPI {
   async getQueues(): Promise<OrderQueue[] | null> {
     const orders = await this.model.find();
 

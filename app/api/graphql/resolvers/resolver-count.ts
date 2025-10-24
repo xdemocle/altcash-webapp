@@ -1,4 +1,4 @@
-import { filter } from 'lodash';
+import { filter } from '~/lib/lodash-utils';
 import { Context, Count } from '../types';
 
 const queryCount = async (_: unknown, { limit }: { limit: number }, context: Context): Promise<Count[]> => {

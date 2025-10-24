@@ -1,6 +1,6 @@
-import { each, filter, find, isUndefined } from 'lodash';
+import { each, filter, find, isUndefined } from '~/lib/lodash-utils';
+import logger from '~/lib/logger';
 import { AccountStatus, Context, Market, MissingMarket } from '../types';
-import logger from '../utilities/logger';
 
 interface QueryMarketsArgs {
   limit?: number;
