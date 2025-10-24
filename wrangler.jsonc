@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "altcash-webapp",
+  "name": "altcash",
   "main": "packages/worker/app.ts",
   "workers_dev": true,
   "preview_urls": true,
@@ -9,23 +9,23 @@
     "nodejs_compat",
     "enable_nodejs_process_v2",
     "nodejs_compat_populate_process_env",
-    "global_fetch_strictly_public"
+    "global_fetch_strictly_public",
   ],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "altcash-webapp"
-    }
+      "service": "altcash",
+    },
   ],
   "kv_namespaces": [
     {
       "binding": "NEXT_INC_CACHE_KV",
       "id": "<YOUR_KV_NAMESPACE_ID>",
-      "preview_id": "<YOUR_KV_PREVIEW_ID>"
-    }
-  ]
+      "preview_id": "<YOUR_KV_PREVIEW_ID>",
+    },
+  ],
 }
