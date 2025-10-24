@@ -13,7 +13,16 @@ import { PaginationWrapper } from './components';
 
 const PaginationClient = dynamic(
   () =>
-    Promise.resolve(({ count, page, onChange }: any) => (
+    Promise.resolve(
+      ({
+        count,
+        page,
+        onChange,
+      }: {
+        count: number;
+        page: number;
+        onChange: (event: ChangeEvent<unknown>, page: number) => void;
+      }) => (
       <Pagination
         count={count}
         size="large"
@@ -24,7 +33,8 @@ const PaginationClient = dynamic(
         onChange={onChange}
         className="pagination-coins-list"
       />
-    )),
+    )
+    ),
   { ssr: false }
 );
 
@@ -37,7 +47,7 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   const [dataCount, setDataCount] = useState<CountResponse | null>(null);
   const [data, setData] = useState<MarketsResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<{ message: string } | null>(null);
   const networkStatus = data ? 7 : 4;
 
   useEffect(() => {

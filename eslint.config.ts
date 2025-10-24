@@ -1,9 +1,6 @@
 import js from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import compat from 'eslint-plugin-compat';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -33,8 +30,6 @@ export default defineConfig({
     ...tseslint.configs.strict,
     ...tseslint.configs.recommended,
     ...tseslint.configs.stylistic,
-    compat.configs['flat/recommended'],
-    // Next.js plugin configs for flat config
     nextPlugin.configs.recommended,
     nextPlugin.configs['core-web-vitals'],
   ],
@@ -42,10 +37,8 @@ export default defineConfig({
   languageOptions: {
     globals: globals.browser,
   },
-  // No explicit plugins needed; we apply rules from plugin configs directly above
   rules: {
-    ...reactHooks['configs']['recommended-latest'].rules,
-    ...reactRefresh.configs.next.rules,
+    ...nextPlugin.configs.recommended.rules,
     ...eslintConfigPrettier.rules,
 
     // Note: you must disable the base rule as it can report incorrect errors
@@ -55,24 +48,5 @@ export default defineConfig({
     'no-debugger': isDevelopment ? 'warn' : 'error',
 
     'no-empty-pattern': 'warn',
-    'react-refresh/only-export-components': [
-      'warn',
-      {
-        allowExportNames: [
-          'action',
-          'clientAction',
-          'clientLoader',
-          'ErrorBoundary',
-          'handle',
-          'headers',
-          'HydrateFallback',
-          'links',
-          'loader',
-          'meta',
-          'middleware',
-          'shouldRevalidate',
-        ],
-      },
-    ],
   },
 });

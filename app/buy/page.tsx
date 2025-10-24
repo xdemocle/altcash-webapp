@@ -14,9 +14,7 @@ import { Market } from '~/graphql/types';
 import useGlobal from '~/hooks/use-global';
 import { Root, StyledPaper, StyledTab, Title } from './components';
 
-interface MarketCache {
-  [key: number]: { markets: Market[]; loading: boolean; loaded: boolean };
-}
+type MarketCache = Record<number, { markets: Market[]; loading: boolean; loaded: boolean }>;
 
 const DEFAULT_MARKET_CACHE: ValueOf<MarketCache> = { markets: [], loading: true, loaded: false };
 
