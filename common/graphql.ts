@@ -10,5 +10,5 @@ export const urqlClient = createClient({
   },
   preferGetMethod: false,
   // Default to cache-first for better performance with ticker requests
-  requestPolicy: 'cache-first',
+  requestPolicy: 'cache-and-network',
 });
