@@ -10,7 +10,7 @@ import { urqlClient } from '~common/graphql';
 
 interface CoinsUserListProps {
   predefined?: string[];
-  markets: Market[];
+  markets?: Market[];
 }
 
 const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
@@ -19,21 +19,26 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   const [loading, setLoading] = useState(false);
   const networkStatus = data ? 7 : 4;
 
+  const fetchMarkets = async () => {
+    setLoading(true);
+
+    const result = await urqlClient
+      .query(GET_MARKETS, {
+        symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
+      })
+      .toPromise();
+
+    if (!result.error) {
+      setData(result.data as { markets: Market[] });
+    }
+
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchMarkets = async () => {
-      setLoading(true);
-      const result = await urqlClient
-        .query(GET_MARKETS, {
-          symbols: predefined ? predefined.join('|') : userCoinFavourites.join('|'),
-        })
-        .toPromise();
-      if (!result.error) {
-        setData(result.data as { markets: Market[] });
-      }
-      setLoading(false);
-    };
+    debugger;
     fetchMarkets();
-  }, [predefined, userCoinFavourites]);
+  }, []);
 
   const isFeaturedView = !isUndefined(predefined);
   const dataCoins = data?.markets;

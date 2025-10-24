@@ -72,7 +72,7 @@ bun clean          # Remove node_modules/.next/dist
 - Next.js **15.5.6** (Pages Router)
 - React **19.2.0** with TypeScript **5.9.3**
 - graphql-yoga Client
-- MUI **v7.3.4** + `tss-react` for styling
+- MUI **v7.3.4** for styling
 - Emotion for SSR-compatible CSS-in-JS
 - Bun scripts: `bun dev`, `bun run build`, `bun start`, `bun run lint`, `bun run fix-code`, `bun run export`
 
@@ -81,16 +81,11 @@ bun clean          # Remove node_modules/.next/dist
 - **Atomic design:**
   - `src/components/atoms/`, `molecules/`, `organisms/`, `templates/`
   - Each folder typically includes an `index.tsx`, implementation file, and optional `use-styles.tsx`
-- **Styling with `tss-react`:** always use `const { classes } = useStyles();` (never assign the hook return directly).
 - **graphql-yoga setup:**
   - Operations stored under `src/graphql/`
 - **Context providers:** `src/context/global.tsx`, `favourites.tsx`, `auth.tsx` (composed in `src/pages/_app.tsx`).
 - **Utilities:** `src/common/utils.tsx` exposes `isServer()` to guard browser-only code.
 - **Theme:** MUI theme in `src/common/theme.ts`; global CSS in `src/styles/global.css`.
-
-### Notes & Known Issues
-
-- Development SSR may emit a non-blocking “Element type is invalid…” warning from `tss-react`; it does not affect production builds.
 
 ## Backend (`packages/backend`)
 
@@ -165,7 +160,7 @@ Queue --> Binance
 
 - **Add a frontend feature:**
   1. Define or update GraphQL operations under `packages/frontend/src/graphql/`.
-  2. Build UI components following the atomic structure and style with `tss-react`.
+  2. Build UI components following the atomic structure and style with MUI / styled.
   3. Consume data using hooks (`useQuery`, `useMutation`, `useLazyQuery`).
   4. Update context providers or themes if shared state/UI changes are needed.
 

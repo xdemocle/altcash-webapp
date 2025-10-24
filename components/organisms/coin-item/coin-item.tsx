@@ -5,20 +5,17 @@ import {
   Box,
   Button,
   Divider,
-  ListItemButton,
   ListItemIcon,
-  ListItemText,
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
-import clsx from 'clsx';
 import CoinSVG from 'components/atoms/coin-svg';
 import CoinTicker from 'components/organisms/coin-ticker';
 import { Market } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
 import { useRouter } from 'next/navigation';
 import { Fragment, SyntheticEvent, memo } from 'react';
-import useStyles from './use-styles';
+import { Column, StyledListItemButton, TickerColumn } from './components';
 
 type Props = {
   coin: Market;
@@ -26,7 +23,6 @@ type Props = {
 
 const CoinItem = memo(({ coin }: Props) => {
   const router = useRouter();
-  const { classes } = useStyles();
   const showBuy = useMediaQuery('(min-width:600px)');
   const { addFavourites, removeFavourites, userCoinFavourites } = useFavourites();
 
@@ -77,22 +73,21 @@ const CoinItem = memo(({ coin }: Props) => {
 
   return (
     <Fragment>
-      <ListItemButton className={classes.listItem} onClick={handleRowClick}>
+      <StyledListItemButton onClick={handleRowClick}>
         <ListItemIcon>
           <CoinSVG coinSymbol={coin.symbol} />
         </ListItemIcon>
-        <ListItemText
+        <Column
           primary={coin.name || coin.id}
           secondary={`${coin.symbol.toUpperCase()} ${coin.status !== 'TRADING' ? ' / ' + coin.status : ''}`}
-          className={classes.column}
         />
-        <ListItemText
+        <TickerColumn
           primary={<CoinTicker coin={coin} />}
           secondary="Live Price"
-          className={clsx(classes.column, classes.ticker, coin.status)}
+          className={`ticker ${coin.status}`}
         />
         <Box sx={{ display: 'flex', gap: 1 }}>{secondaryAction}</Box>
-      </ListItemButton>
+      </StyledListItemButton>
       <Divider />
     </Fragment>
   );

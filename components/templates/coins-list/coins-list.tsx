@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { find } from '~/lib/lodash-utils';
 import { urqlClient } from '~common/graphql';
-import useStyles from './use-styles';
+import { PaginationWrapper } from './components';
 
 const PaginationClient = dynamic(
   () =>
@@ -33,7 +33,6 @@ interface CoinsListProps {
 }
 
 const CoinsList = memo(({ markets }: CoinsListProps) => {
-  const { classes } = useStyles();
   const { coinListPage, coinPageNeedle, setCoinListPage } = useGlobal();
   const [dataCount, setDataCount] = useState<CountResponse | null>(null);
   const [data, setData] = useState<MarketsResponse | null>(null);
@@ -117,9 +116,9 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
       {coinsList && <CoinsListMap markets={coinsList} />}
 
       {!hidePagination && (
-        <div className={classes.pagination}>
+        <PaginationWrapper>
           <PaginationClient count={paginationPages} page={coinListPage} onChange={handleChange} />
-        </div>
+        </PaginationWrapper>
       )}
     </Fragment>
   );

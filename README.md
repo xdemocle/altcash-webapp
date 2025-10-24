@@ -86,7 +86,6 @@ bun build
 - TypeScript
 - graphql-yoga Client (GraphQL)
 - Material-UI v7
-- tss-react (styling)
 - Socket.IO client
 
 ### Backend
