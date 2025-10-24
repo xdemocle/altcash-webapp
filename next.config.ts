@@ -13,18 +13,7 @@ const nextConfig: NextConfig = {
         os: false,
       };
     }
-    if (nextRuntime === 'edge') {
-      config.externals = [...(config.externals || [])];
-      // Mock Node.js modules for edge runtime
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        crypto: false,
-        fs: false,
-        https: false,
-        os: false,
-        path: false,
-      };
-    }
+
     return config;
   },
   images: {

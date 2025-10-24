@@ -7,9 +7,6 @@ import resolvers from './resolvers';
 import { typeDefs } from './schema';
 import { Context } from './types';
 
-// Define runtime
-export const runtime = 'edge';
-
 // Cloudflare Workers environment type
 interface Env {
   NEXT_INC_CACHE_KV?: KVNamespace;
