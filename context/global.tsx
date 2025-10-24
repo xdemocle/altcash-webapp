@@ -1,8 +1,7 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
-import { BUY_TABS_DEFAULT, BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED } from '../common/constants';
+import { BUY_TABS_DEFAULT } from '../common/constants';
 
 export interface GlobalContextProps {
   isSidebarOpen: boolean;
@@ -24,18 +23,9 @@ interface Props {
 }
 
 const GlobalProvider = ({ children }: Props) => {
-  const pathname = usePathname();
-  let defaultTab = BUY_TABS_DEFAULT;
-
-  if (pathname === '/buy/featured') {
-    defaultTab = BUY_TAB_FEATURED;
-  } else if (pathname === '/buy/all') {
-    defaultTab = BUY_TAB_ALL;
-  } else if (pathname === '/buy/favourite') {
-    defaultTab = BUY_TAB_FAVOURITE;
-  }
-
-  const [tab, setTab] = useState<GlobalContextProps['tab']>(defaultTab);
+  // Default to Featured tab since we're using client-side tab switching
+  // No longer depend on URL pathname for tab state
+  const [tab, setTab] = useState<GlobalContextProps['tab']>(BUY_TABS_DEFAULT);
 
   const [isSidebarOpen, setSidebarOpen] = useState<GlobalContextProps['isSidebarOpen']>(false);
   const [coinPageNeedle, setCoinPageNeedle] = useState<GlobalContextProps['coinPageNeedle']>('');
