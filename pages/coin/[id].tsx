@@ -14,18 +14,14 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
-import { btcToRandPriceWithSymbol } from '../../common/currency';
-import { urqlClient } from '../../common/graphql-client';
-import CoinSVG from '../../components/atoms/coin-svg';
-import LinkExtBlank from '../../components/atoms/link-ext-blank';
-import CoinBuy from '../../components/templates/coin-buy';
-import {
-  GET_META_COIN,
-  GET_PAGE_DATA,
-  GET_PAIR, // GET_META_COIN_LOGO
-} from '../../graphql/queries';
-import type { Market, Metadata, PageDataResponse, PairResponse, Summary, Ticker } from '../../graphql/types';
-import useStyles from '../../styles/coin-use-styles';
+import { btcToRandPriceWithSymbol } from '~/common/currency';
+import { urqlClient } from '~/common/graphql';
+import CoinSVG from '~/components/atoms/coin-svg';
+import LinkExtBlank from '~/components/atoms/link-ext-blank';
+import CoinBuy from '~/components/templates/coin-buy';
+import { GET_META_COIN, GET_PAGE_DATA, GET_PAIR } from '~/graphql/queries';
+import type { Market, Metadata, PageDataResponse, PairResponse, Summary, Ticker } from '~/graphql/types';
+import useStyles from '~/styles/coin-use-styles';
 
 const fallbackMarket: Market = {
   id: '',

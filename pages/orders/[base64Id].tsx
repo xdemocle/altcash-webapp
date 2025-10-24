@@ -2,15 +2,15 @@ import { Alert, Box, Snackbar } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { urqlClient } from '../../common/graphql-client';
-import { isServer } from '../../common/utils';
-import RootStyled from '../../components/atoms/root';
-import Loader from '../../components/molecules/loader';
-import CardConfirmationOrder from '../../components/organisms/card-confirmation-order';
-import CardEmailForm from '../../components/organisms/card-email-form';
-import CardWithdrawalForm from '../../components/organisms/card-withdrawal-form';
-import { GET_ORDER_IS_PENDING } from '../../graphql/queries';
-import { Order as OrderType } from '../../graphql/types';
+import { urqlClient } from '~/common/graphql';
+import { isServer } from '~/common/utils';
+import RootStyled from '~/components/atoms/root';
+import Loader from '~/components/molecules/loader';
+import CardConfirmationOrder from '~/components/organisms/card-confirmation-order';
+import CardEmailForm from '~/components/organisms/card-email-form';
+import CardWithdrawalForm from '~/components/organisms/card-withdrawal-form';
+import { GET_ORDER_IS_PENDING } from '~/graphql/queries';
+import { Order as OrderType } from '~/graphql/types';
 
 const Order: NextPage = () => {
   const router = useRouter();

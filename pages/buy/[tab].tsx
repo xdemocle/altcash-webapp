@@ -3,15 +3,15 @@ import { Paper, Tab, Tabs, Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '../../common/constants';
-import TopBarSearch from '../../components/organisms/top-bar-search';
-import CoinsList from '../../components/templates/coins-list';
-import CoinsUserList from '../../components/templates/coins-user-list';
-import { GET_META_COIN_LOGO, GET_MARKETS, GET_PAIR, GET_TICKER } from '../../graphql/queries';
-import { Market } from '../../graphql/types';
-import useGlobal from '../../hooks/use-global';
-import useStyles from '../../styles/buy-use-styles';
-import { urqlClient } from '../../common/graphql-client';
+import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '~/common/constants';
+import { urqlClient } from '~/common/graphql';
+import TopBarSearch from '~/components/organisms/top-bar-search';
+import CoinsList from '~/components/templates/coins-list';
+import CoinsUserList from '~/components/templates/coins-user-list';
+import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR, GET_TICKER } from '~/graphql/queries';
+import { Market } from '~/graphql/types';
+import useGlobal from '~/hooks/use-global';
+import useStyles from '~/styles/buy-use-styles';
 
 interface BuyTabPageProps {
   markets: Market[];
@@ -96,13 +96,17 @@ export async function getServerSideProps(context: any) {
       symbols = SYMBOLS_FEATURED.sort().join('|');
     }
 
-    const marketsResult = await urqlClient.query<{ markets: Market[] }>(GET_MARKETS, {
-      ...(symbols ? { symbols } : {}),
-    }).toPromise();
+    const marketsResult = await urqlClient
+      .query<{ markets: Market[] }>(GET_MARKETS, {
+        ...(symbols ? { symbols } : {}),
+      })
+      .toPromise();
 
-    await urqlClient.query(GET_PAIR, {
-      pair: 'XBTZAR',
-    }).toPromise();
+    await urqlClient
+      .query(GET_PAIR, {
+        pair: 'XBTZAR',
+      })
+      .toPromise();
 
     const markets = marketsResult.data?.markets || [];
 

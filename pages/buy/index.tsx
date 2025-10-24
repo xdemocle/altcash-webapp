@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED } from '../../common/constants';
-import RootStyled from '../../components/atoms/root';
-import Loader from '../../components/molecules/loader';
-import useGlobal from '../../hooks/use-global';
+import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED } from '~/common/constants';
+import RootStyled from '~/components/atoms/root';
+import Loader from '~/components/molecules/loader';
+import useGlobal from '~/hooks/use-global';
 
 const CustomBuyRouter: NextPage = () => {
   const router = useRouter();
