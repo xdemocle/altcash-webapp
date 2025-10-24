@@ -8,4 +8,5 @@ export const urqlClient = createClient({
   fetchOptions: {
     credentials: 'include',
   },
+  preferGetMethod: false,
 });
