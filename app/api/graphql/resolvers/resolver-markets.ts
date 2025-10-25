@@ -152,11 +152,11 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
     symbol: m.baseAsset,
     baseAsset: m.baseAsset,
     quoteAsset: m.quoteAsset,
-    quotePrecision: m.quoteAssetPrecision,
-    minNotional: Number(m.minNotional ?? 0),
-    minTradeSize: Number(m.minTradeSize ?? 0),
-    stepSize: Number(m.stepSize ?? 0),
-    status: m.status,
+    quotePrecision: m.quoteAssetPrecision ?? 0,
+    minNotional: Number(m.minNotional ?? 0) || 0,
+    minTradeSize: Number(m.minTradeSize ?? 0) || 0,
+    stepSize: Number(m.stepSize ?? 0) || 0,
+    status: m.status ?? '',
     name: m.name ?? '',
   }));
 
@@ -207,12 +207,12 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     symbol: market.baseAsset,
     baseAsset: market.baseAsset,
     quoteAsset: market.quoteAsset,
-    quotePrecision: market.quoteAssetPrecision,
-    minNotional: Number(notionalFilter?.minNotional),
-    minTradeSize: Number(lotSizeFilter?.minQty),
-    stepSize: Number(lotSizeFilter?.stepSize),
-    status: market.status,
-    name: metaCoin.name,
+    quotePrecision: market.quoteAssetPrecision ?? 0,
+    minNotional: Number(notionalFilter?.minNotional) || 0,
+    minTradeSize: Number(lotSizeFilter?.minQty) || 0,
+    stepSize: Number(lotSizeFilter?.stepSize) || 0,
+    status: market.status ?? '',
+    name: metaCoin.name ?? '',
   };
 };
 

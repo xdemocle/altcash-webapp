@@ -30,11 +30,11 @@ const querySummary = async (_: unknown, { id }: { id: string }, context: Context
     // Add the id for client caching purpouse
     id: response.symbol,
     symbol: response.symbol,
-    high: Number(response.highPrice),
-    low: Number(response.lowPrice),
-    volume: Number(response.volume),
-    quoteVolume: Number(response.quoteVolume),
-    percentChange: Number(response.priceChange),
+    high: Number(response.highPrice) || 0,
+    low: Number(response.lowPrice) || 0,
+    volume: Number(response.volume) || 0,
+    quoteVolume: Number(response.quoteVolume) || 0,
+    percentChange: Number(response.priceChange) || 0,
   };
 };
 
