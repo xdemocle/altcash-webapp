@@ -68,11 +68,11 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     });
   }, []);
 
-  const { mutate: createOrder, isPending: isCreatingOrder, error: errorCreateOrder } = useGraphQLMutation<{ createOrder: Order }, OrderParams>(CREATE_ORDER);
+  const { mutate: createOrder, isPending: isCreatingOrder, error: errorCreateOrder } = useGraphQLMutation<OrderParams, { createOrder: Order }>(CREATE_ORDER);
 
   const { mutate: updateOrder, isPending: isUpdatingOrder, error: errorUpdateOrder } = useGraphQLMutation<
-    { updateOrder: Order },
-    { id: string; input: OrderParams }
+    { id: string; input: OrderParams },
+    { updateOrder: Order }
   >(UPDATE_ORDER);
 
   if (errorCreateOrder || errorUpdateOrder) {

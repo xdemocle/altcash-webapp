@@ -2,7 +2,7 @@ import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/re
 import { DocumentNode } from 'graphql';
 import { urqlClient } from '~common/graphql';
 
-export function useGraphQLMutation<TData = unknown, TVariables extends Record<string, unknown> = Record<string, unknown>>(
+export function useGraphQLMutation<TVariables extends Record<string, unknown>, TData = unknown>(
   mutation: DocumentNode,
   options?: {
     onSuccess?: (data: TData, variables: TVariables, context: unknown) => void;

@@ -1,4 +1,4 @@
-export type MetadataUrls = {
+export interface MetadataUrls {
   website: string[];
   twitter: string[];
   chat: string[];
@@ -8,9 +8,9 @@ export type MetadataUrls = {
   technical_doc: string[];
   source_code: string[];
   announcement: string[];
-};
+}
 
-export type Metadata = {
+export interface Metadata {
   id: string;
   metadataId: number;
   name: string;
@@ -19,7 +19,7 @@ export type Metadata = {
   description: string;
   logo: string;
   urls: MetadataUrls;
-};
+}
 
 export interface Market {
   id: string;
@@ -67,31 +67,31 @@ export interface PageDataVariables {
   id: string;
 }
 
-export type MetaCoinAllItem = {
+export interface MetaCoinAllItem {
   logo: string;
   symbol: string;
-};
+}
 
-export type PairResponse = {
+export interface PairResponse {
   pair?: {
     pair: string;
     last_trade: string;
     timestamp: string;
   };
-};
+}
 
-export type PairVariables = {
+export interface PairVariables {
   pair: string;
-};
+}
 
-export type CountItem = {
+export interface CountItem {
   name: string;
   count: number;
-};
+}
 
-export type CountResponse = {
+export interface CountResponse {
   count?: CountItem[];
-};
+}
 
 export interface Order {
   _id: string;
@@ -125,4 +125,5 @@ export interface OrderParams {
   reference?: string;
   orderReferences?: string[];
   hasErrors?: boolean;
+  [key: string]: unknown;
 }

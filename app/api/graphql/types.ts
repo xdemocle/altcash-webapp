@@ -110,6 +110,7 @@ export interface OrderParams {
   reference?: string;
   hasErrors?: boolean;
   orderReferences?: string[];
+  [key: string]: unknown;
 }
 
 export interface UpdateOrderParams {
