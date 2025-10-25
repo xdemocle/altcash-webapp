@@ -22,8 +22,6 @@ export const SENDGRID_API_KEY = env.SENDGRID_API_KEY || '';
 
 export const CMC_PRO_API_KEY = env.CMC_PRO_API_KEY || '';
 
-export const BINANCE_API_URL = env.BINANCE_API_URL || '';
-
 export const BINANCE_API_KEY = env.BINANCE_API_KEY || '';
 
 export const BINANCE_API_SECRET = env.BINANCE_API_SECRET || '';

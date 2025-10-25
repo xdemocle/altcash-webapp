@@ -62,7 +62,6 @@ bun clean          # Remove node_modules/.next/dist
   BINANCE_API_SECRET=<value>
   BINANCE_API_KEY_TESTNET=<value>
   BINANCE_API_SECRET_TESTNET=<value>
-  BINANCE_API_URL=https://api.binance.com
   ```
 
 ## Frontend (`packages/frontend`)
