@@ -1,4 +1,5 @@
 import { Viewport } from 'next';
+import { Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
 import '../styles/global.css';
 import { Providers } from './providers';
@@ -6,6 +7,11 @@ import { Providers } from './providers';
 interface RootLayoutProps {
   children: ReactNode;
 }
+
+const roboto = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export const viewport: Viewport = {
   themeColor: 'black',
@@ -40,13 +46,12 @@ export const metadata = {
 
 export default function Layout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={roboto.className}>
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,500,700&display=swap" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
