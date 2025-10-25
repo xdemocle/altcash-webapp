@@ -1,6 +1,6 @@
 // default open-next.config.ts file created by @opennextjs/cloudflare
 import { defineCloudflareConfig } from '@opennextjs/cloudflare/config';
-import kvCachePurge from '@opennextjs/cloudflare/overrides/cache-purge/index';
+// import kvCachePurge from '@opennextjs/cloudflare/overrides/cache-purge/index';
 import kvIncrementalCache from '@opennextjs/cloudflare/overrides/incremental-cache/kv-incremental-cache';
 // TODO
 // import memoryQueue from '@opennextjs/cloudflare/overrides/queue/memory-queue';
@@ -8,7 +8,7 @@ import kvIncrementalCache from '@opennextjs/cloudflare/overrides/incremental-cac
 
 export default defineCloudflareConfig({
   incrementalCache: kvIncrementalCache,
-  cachePurge: kvCachePurge,
+  // cachePurge: kvCachePurge,
   // queue: memoryQueue,
   enableCacheInterception: true,
   // tagCache: kvNextTagCache,
