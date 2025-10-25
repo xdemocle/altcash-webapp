@@ -2,16 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { DocumentNode } from 'graphql';
 import { urqlClient } from '~common/graphql';
 
-export function useGraphQLQuery<TData = any>(
+export function useGraphQLQuery<TData = unknown, TVariables extends Record<string, unknown> = Record<string, unknown>>(
   key: string[],
   query: DocumentNode,
-  variables?: Record<string, any>,
-  options?: any
+  variables?: TVariables,
+  options?: Record<string, unknown>
 ) {
   return useQuery({
     queryKey: [key, variables],
     queryFn: async () => {
-      const result = await urqlClient.query(query, variables).toPromise();
+      const result = await urqlClient.query(query, variables || {}).toPromise();
       if (result.error) {
         throw new Error(result.error.message);
       }

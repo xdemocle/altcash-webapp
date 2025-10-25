@@ -39,8 +39,10 @@ const normalize = (level: Level, args: LogInput[]) => {
 
 const log = (level: Level, ...args: LogInput[]) => {
   const entry = normalize(level, args);
+
   // Print as JSON for consistency with previous logs
   const line = JSON.stringify(entry);
+
   switch (level) {
     case 'debug':
       console.debug(line);

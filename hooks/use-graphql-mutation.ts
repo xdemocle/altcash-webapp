@@ -2,15 +2,19 @@ import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/re
 import { DocumentNode } from 'graphql';
 import { urqlClient } from '~common/graphql';
 
-export function useGraphQLMutation<TData = any, TVariables extends Record<string, any> = any>(
+export function useGraphQLMutation<TData = unknown, TVariables extends Record<string, unknown> = Record<string, unknown>>(
   mutation: DocumentNode,
-  options?: any
+  options?: {
+    onSuccess?: (data: TData, variables: TVariables, context: unknown) => void;
+    onError?: (error: Error, variables: TVariables, context: unknown) => void;
+    [key: string]: unknown;
+  }
 ) {
   const queryClient = useQueryClient();
 
   return useTanstackMutation<TData, Error, TVariables>({
     mutationFn: async (variables: TVariables) => {
-      const result = await urqlClient.mutation(mutation, variables as any).toPromise();
+      const result = await urqlClient.mutation(mutation, variables).toPromise();
       if (result.error) {
         throw new Error(result.error.message);
       }

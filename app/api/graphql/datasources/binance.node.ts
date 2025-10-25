@@ -1,8 +1,15 @@
 import { MainClient, OrderResponse } from 'binance';
-import { each, filter, find } from '~/lib/lodash-utils';
+import { each, filter } from '~/lib/lodash-utils';
 import logger from '~/lib/logger';
 import { BINANCE_API_KEY, BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET, BINANCE_API_SECRET_TESTNET } from '../config';
 import { NewOrderSideEnum, NewOrderTypeEnum, Order, Ticker } from '../types';
+
+// Map binance library response to expected format without tight coupling to SDK types
+interface AccountBalance {
+  asset: string;
+  free: string;
+  locked?: string;
+}
 
 const ERROR = {
   notrade: "Your Binance Account can't trade!",
@@ -126,9 +133,9 @@ class BinanceAPI {
 
   async getAccountData() {
     const response = await this.client.getAccountInfo();
-    // Map binance library response to expected format without tight coupling to SDK types
-    interface AccountBalance { asset: string; free: string; locked?: string }
-    const accountData = (response as unknown as { canTrade?: boolean; balances?: AccountBalance[] }) ?? {};
+
+    const accountData = (response as { canTrade?: boolean; balances?: AccountBalance[] }) ?? {};
+
     return {
       canTrade: accountData.canTrade ?? true,
       balances: accountData.balances ?? [],

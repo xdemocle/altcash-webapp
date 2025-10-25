@@ -8,14 +8,14 @@ import { find } from '~/lib/lodash-utils';
 import { urqlClient } from '~common/graphql';
 import { AvatarContainer } from './components';
 
-type MetaCoinLogoQuery = {
+interface MetaCoinLogoQuery {
   metaCoinAll?: MetaCoinAllItem[];
-};
+}
 
-type Props = {
+interface Props {
   coinSymbol: string;
-  size?: string;
-};
+  size?: 'regular' | 'large' | 'avatar';
+}
 
 const CoinSVG = ({ coinSymbol, size }: Props) => {
   const [metadata, setMetadata] = useState<MetaCoinLogoQuery | null>(null);
@@ -61,7 +61,7 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
 
   return (
     svgCoinPath ? (
-      <AvatarContainer size={size as any}>
+      <AvatarContainer size={size || 'regular'}>
         <ReactSVG src={svgCoinPath.default.src} />
       </AvatarContainer>
     ) : imgCoinPath ? (

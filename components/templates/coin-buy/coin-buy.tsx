@@ -56,11 +56,11 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [localCurrency, setLocalCurrency] = useState(0);
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
   const { multiplier } = useMultiplier(ticker);
-  const [paystack, setInitializePayment] = useState<any>(null);
+  const [paystack, setInitializePayment] = useState<unknown>(null);
 
   // Only initialize Paystack on client side
   useEffect(() => {
-    if (!!paystack) return;
+    if (paystack) return;
 
     import('@paystack/inline-js').then(Paystack => {
       const paystack = new Paystack.default();
@@ -201,14 +201,14 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   useEffect(() => {
     if (orderInfo.length > 0) {
       if (localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA) {
-        paystack.newTransaction({
+        (paystack as { newTransaction?: (args: Record<string, unknown>) => void })?.newTransaction?.({
           ...getPaystackConfig(totalAmount),
           onSuccess: onPaymentSuccess,
           onClose: onPaymentClose,
         });
       }
     }
-  }, [orderInfo]);
+  }, [orderInfo, localCurrency, coin, multiplier, totalAmount, paystack]);
 
   useEffect(() => {
     if (triggerConfirmationOrder) {

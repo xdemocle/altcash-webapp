@@ -43,7 +43,7 @@ export default function Order({ params }: OrderPageProps) {
   const [waitingOrderConfirmation, setOrderConfirmation] = useState(false);
   const [order, setOrder] = useState<OrderType>();
   const [showErrorAlert, setShowErrorAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState<any>(null);
+  const [errorAlert, setErrorAlert] = useState<Error | null>(null);
 
   const onCloseErrorAlertHandler = () => {
     setShowErrorAlert(false);

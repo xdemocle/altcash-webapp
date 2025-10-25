@@ -3,14 +3,14 @@
  * Avoids dynamic code evaluation issues in edge runtime
  */
 
-export function find<T>(array: T[], predicate: ((item: T) => boolean) | Record<string, any>): T | undefined {
+export function find<T>(array: T[], predicate: ((item: T) => boolean) | Record<string, unknown>): T | undefined {
   if (typeof predicate === 'function') {
-    return (array as any[]).find(predicate as any);
+    return array.find(predicate);
   }
   // Handle object predicate like { filterType: 'NOTIONAL' }
-  return (array as any[]).find(item => {
+  return array.find(item => {
     for (const key in predicate) {
-      if (item[key] !== predicate[key]) {
+      if ((item as Record<string, unknown>)[key] !== predicate[key]) {
         return false;
       }
     }
@@ -18,14 +18,14 @@ export function find<T>(array: T[], predicate: ((item: T) => boolean) | Record<s
   });
 }
 
-export function filter<T>(array: T[], predicate: ((item: T) => boolean) | Record<string, any>): T[] {
+export function filter<T>(array: T[], predicate: ((item: T) => boolean) | Record<string, unknown>): T[] {
   if (typeof predicate === 'function') {
-    return (array as any[]).filter(predicate as any);
+    return array.filter(predicate);
   }
   // Handle object predicate
-  return (array as any[]).filter(item => {
+  return array.filter(item => {
     for (const key in predicate) {
-      if (item[key] !== predicate[key]) {
+      if ((item as Record<string, unknown>)[key] !== predicate[key]) {
         return false;
       }
     }
@@ -43,6 +43,6 @@ export function each<T>(array: T[] | Record<string, T>, callback: (item: T, keyO
   }
 }
 
-export function isUndefined(value: any): boolean {
+export function isUndefined(value: unknown): boolean {
   return value === undefined;
 }
