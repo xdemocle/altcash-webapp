@@ -111,9 +111,9 @@ const StyledListItemButton = ({
   );
 };
 
-type Props = {
+interface Props {
   isSidebarOpen: boolean;
-};
+}
 
 const MainLinks = ({ isSidebarOpen }: Props) => {
   const pathname = usePathname();

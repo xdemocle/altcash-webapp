@@ -17,9 +17,9 @@ import { useRouter } from 'next/navigation';
 import { Fragment, SyntheticEvent, memo } from 'react';
 import { Column, StyledListItemButton, TickerColumn } from './components';
 
-type Props = {
+interface Props {
   coin: Market;
-};
+}
 
 const CoinItem = memo(({ coin }: Props) => {
   const router = useRouter();

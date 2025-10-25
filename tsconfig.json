@@ -3,10 +3,17 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "~*": ["./*"]
+      "~*": [
+        "./*"
+      ]
     },
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "es6", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es6",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
@@ -18,7 +25,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
@@ -45,5 +52,8 @@
     "worker-configuration.d.ts",
     "worker"
   ],
-  "exclude": ["server", "node_modules"]
+  "exclude": [
+    "server",
+    "node_modules"
+  ]
 }

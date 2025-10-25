@@ -4,9 +4,9 @@ import { urqlClient } from '~/common/graphql';
 import { GET_PAIR, GET_TICKER } from '~/graphql/queries';
 import { Market, PairResponse, Ticker } from '~/graphql/types';
 
-type Props = {
+interface Props {
   coin: Market;
-};
+}
 
 const CoinTicker = memo(({ coin }: Props) => {
   const [data, setData] = useState<{ ticker: Ticker } | null>(null);

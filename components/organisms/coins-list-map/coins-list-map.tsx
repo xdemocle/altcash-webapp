@@ -3,9 +3,9 @@ import { memo } from 'react';
 import { Market } from '~/graphql/types';
 import CoinItem from '../coin-item';
 
-type Props = {
+interface Props {
   markets: Market[];
-};
+}
 
 const CoinsListMap = memo(({ markets }: Props) => {
   return (

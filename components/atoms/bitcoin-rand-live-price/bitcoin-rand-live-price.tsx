@@ -47,7 +47,6 @@ const BitcoinRandLivePrice = () => {
     }
   }, [data, setBitcoinRandPrice]);
 
-  // eslint-disable-next-line no-console
   console.info('bitcoinRandPrice', data && data.pair && data.pair.last_trade);
 
   return <Fragment />;

@@ -1,4 +1,4 @@
-import { Viewport } from 'next';
+import { Metadata, Viewport } from 'next';
 import { Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
 import '../styles/global.css';
@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   themeColor: 'black',
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Altcash Demo | Cryptocurrency Trading Platform (Demo Only)',
   description:
     'Altcash Demo - A demonstration cryptocurrency trading platform showcasing Bitcoin, Ethereum, and altcoin trading features. This is a demo platform for educational purposes only, not a real trading platform.',

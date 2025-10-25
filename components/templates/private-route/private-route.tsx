@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 import useAuth from '~/hooks/use-auth';
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 const PrivateRoute = ({ children }: Props) => {
   const router = useRouter();
