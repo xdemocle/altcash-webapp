@@ -3,23 +3,22 @@
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { Box, Grid, InputAdornment, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { BinanceMarket } from 'graphql/types';
-import { useRouter } from 'next/navigation';
-import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import ReactPlaceholder from 'react-placeholder';
 import {
   MIN_AMOUNT_EXTRA,
   MIN_AMOUNT_MULTIPLIER,
   PERCENTAGE_FEE, // PERCENTAGE_FEE_EXCHANGE,
   PERCENTAGE_FEE_PAYMENT,
-} from '~/common/constants';
-import { getPaystackConfig, isServer } from '~/common/utils';
-import { CREATE_ORDER, UPDATE_ORDER } from '~/graphql/mutations';
-import { Order, OrderParams, Ticker } from '~/graphql/types';
-import useGlobal from '~/hooks/use-global';
-import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
-import useMultiplier from '~/hooks/use-multiplier';
-import useRound from '~/hooks/use-round';
+} from 'common/constants';
+import { getPaystackConfig, isServer } from 'common/utils';
+import { CREATE_ORDER, UPDATE_ORDER } from 'graphql/mutations';
+import { BinanceMarket, Order, OrderParams, Ticker } from 'graphql/types';
+import useGlobal from 'hooks/use-global';
+import { useGraphQLMutation } from 'hooks/use-graphql-mutation';
+import useMultiplier from 'hooks/use-multiplier';
+import useRound from 'hooks/use-round';
+import { useRouter } from 'next/navigation';
+import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import ReactPlaceholder from 'react-placeholder';
 import NumberFormatText from '../../atoms/number-format-text';
 import {
   BoxBuyButtonRoot,

@@ -1,16 +1,16 @@
 'use client';
 
 import { Alert, Box, Snackbar } from '@mui/material';
+import { urqlClient } from 'common/graphql';
+import { isServer } from 'common/utils';
+import RootStyled from 'components/atoms/root';
+import Loader from 'components/molecules/loader';
+import CardConfirmationOrder from 'components/organisms/card-confirmation-order';
+import CardEmailForm from 'components/organisms/card-email-form';
+import CardWithdrawalForm from 'components/organisms/card-withdrawal-form';
+import { GET_ORDER_IS_PENDING } from 'graphql/queries';
+import { Order as OrderType } from 'graphql/types';
 import { useEffect, useState } from 'react';
-import { urqlClient } from '~/common/graphql';
-import { isServer } from '~/common/utils';
-import RootStyled from '~/components/atoms/root';
-import Loader from '~/components/molecules/loader';
-import CardConfirmationOrder from '~/components/organisms/card-confirmation-order';
-import CardEmailForm from '~/components/organisms/card-email-form';
-import CardWithdrawalForm from '~/components/organisms/card-withdrawal-form';
-import { GET_ORDER_IS_PENDING } from '~/graphql/queries';
-import { Order as OrderType } from '~/graphql/types';
 
 interface OrderPageProps {
   params: Promise<{
@@ -23,7 +23,7 @@ export default function Order({ params }: OrderPageProps) {
   const [slug, setSlug] = useState<string[]>([]);
 
   useEffect(() => {
-    params.then((resolvedParams) => {
+    params.then(resolvedParams => {
       setBase64Id(resolvedParams.base64Id);
     });
   }, [params]);

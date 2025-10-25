@@ -1,4 +1,4 @@
-import { Metadata } from '~/graphql/types';
+import { Metadata } from 'graphql/types';
 import { AppGraphContext } from '../config';
 
 interface QueryMetaCoinArgs {

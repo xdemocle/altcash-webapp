@@ -1,8 +1,8 @@
 'use client';
 
+import { isServer } from 'common/utils';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { isServer } from '~/common/utils';
 
 const ScrollToTop = () => {
   const pathname = usePathname();

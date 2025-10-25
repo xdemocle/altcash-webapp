@@ -1,5 +1,5 @@
-import { urqlClient } from '~/common/graphql';
-import logger from '~/lib/logger';
+import { urqlClient } from 'common/graphql';
+import logger from 'lib/logger';
 import { queryCheckAndExecuteOrderQueue, queryImportAndCheckOrders } from './queries';
 
 export const runCron = () => {

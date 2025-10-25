@@ -1,8 +1,8 @@
 'use client';
 
+import useAuth from 'hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
-import useAuth from '~/hooks/use-auth';
 
 interface Props {
   children: ReactNode;

@@ -1,10 +1,10 @@
+import { svgCoinPathHelper } from 'common/utils';
+import { GET_META_COIN_LOGO } from 'graphql/queries';
+import type { MetaCoinAllItem } from 'graphql/types';
+import { find } from 'lib/lodash-utils';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { svgCoinPathHelper } from '~/common/utils';
-import { GET_META_COIN_LOGO } from '~/graphql/queries';
-import type { MetaCoinAllItem } from '~/graphql/types';
-import { find } from '~/lib/lodash-utils';
 import { urqlClient } from '~common/graphql';
 import { AvatarContainer } from './components';
 
@@ -60,13 +60,13 @@ const CoinSVG = ({ coinSymbol, size }: Props) => {
   }
 
   return (
-    svgCoinPath ? (
+    svgCoinPath ?
       <AvatarContainer size={size || 'regular'}>
         <ReactSVG src={svgCoinPath.default.src} />
       </AvatarContainer>
-    ) : imgCoinPath ? (
+    : imgCoinPath ?
       <Image src={imgCoinPath} alt={`Logo ${coinSymbol}`} width="32" height="32" title={`Logo ${coinSymbol}`} />
-    ) : null
+    : null
   );
 };
 

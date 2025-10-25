@@ -5,9 +5,9 @@ import CoinsListMap from 'components/organisms/coins-list-map';
 import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
 import { BinanceMarket, CountResponse } from 'graphql/types';
 import useGlobal from 'hooks/use-global';
+import { find } from 'lib/lodash-utils';
 import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useEffect, useMemo, useState } from 'react';
-import { find } from '~/lib/lodash-utils';
 import { urqlClient } from '~common/graphql';
 import { PaginationWrapper } from './components';
 

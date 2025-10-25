@@ -2,10 +2,10 @@
 
 import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import { BUY_TAB_ALL } from 'common/constants';
+import useGlobal from 'hooks/use-global';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { BUY_TAB_ALL } from '~/common/constants';
-import useGlobal from '~/hooks/use-global';
 
 const TopBarSearch = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 
 import { styled } from '@mui/material/styles';
-import { strPxRem } from '~/common/utils';
+import { strPxRem } from 'common/utils';
 
 const RootStyled = styled('div')(({ theme }) => ({
   // maxWidth: '64rem',

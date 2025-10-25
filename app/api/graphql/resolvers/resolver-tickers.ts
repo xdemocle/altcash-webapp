@@ -1,5 +1,5 @@
-import { Ticker } from '~/graphql/types';
-import { filter, isUndefined } from '~/lib/lodash-utils';
+import { Ticker } from 'graphql/types';
+import { filter, isUndefined } from 'lib/lodash-utils';
 import { AppGraphContext } from '../config';
 
 const queryTickers = async (

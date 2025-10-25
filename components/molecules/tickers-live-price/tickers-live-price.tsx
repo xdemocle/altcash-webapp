@@ -1,9 +1,9 @@
 'use client';
 
+import { urqlClient } from 'common/graphql';
+import { isServer } from 'common/utils';
+import { GET_TICKERS } from 'graphql/queries';
 import { Fragment, useEffect } from 'react';
-import { urqlClient } from '~/common/graphql';
-import { isServer } from '~/common/utils';
-import { GET_TICKERS } from '~/graphql/queries';
 
 const TickersLivePrice = () => {
   useEffect(() => {

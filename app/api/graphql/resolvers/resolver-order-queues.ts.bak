@@ -1,4 +1,4 @@
-import { each } from '~/lib/lodash-utils';
+import { each } from 'lib/lodash-utils';
 import { DataSources, OrderQueue } from '../types';
 import logger from '../utilities/logger';
 

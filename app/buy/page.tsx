@@ -2,16 +2,16 @@
 
 import { List as ListIcon, NewReleases as NewReleasesIcon, Star } from '@mui/icons-material';
 import { Tabs, Typography } from '@mui/material';
+import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from 'common/constants';
+import { urqlClient } from 'common/graphql';
+import TopBarSearch from 'components/organisms/top-bar-search';
+import CoinsList from 'components/templates/coins-list';
+import CoinsUserList from 'components/templates/coins-user-list';
+import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR } from 'graphql/queries';
 import { BinanceMarket } from 'graphql/types';
+import useGlobal from 'hooks/use-global';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import { useEffect, useState } from 'react';
-import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '~/common/constants';
-import { urqlClient } from '~/common/graphql';
-import TopBarSearch from '~/components/organisms/top-bar-search';
-import CoinsList from '~/components/templates/coins-list';
-import CoinsUserList from '~/components/templates/coins-user-list';
-import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR } from '~/graphql/queries';
-import useGlobal from '~/hooks/use-global';
 import { Root, StyledPaper, StyledTab, Title } from './components';
 
 type MarketCache = Record<number, { markets: BinanceMarket[]; loading: boolean; loaded: boolean }>;

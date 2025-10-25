@@ -1,8 +1,8 @@
 import { Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import clsx from 'clsx';
+import useGlobal from 'hooks/use-global';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import useGlobal from '~/hooks/use-global';
 import MainLinks from '../../molecules/main-links';
 import { ButtonLogoStyled, DrawerStyled, ToolbarHeaderStyled, ToolbarStyled, ToolbarTitleStyled } from './styled';
 

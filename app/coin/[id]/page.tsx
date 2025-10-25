@@ -2,16 +2,16 @@
 
 import { ArrowBack } from '@mui/icons-material';
 import { Grid, ListItem, Tooltip } from '@mui/material';
+import { btcToRandPriceWithSymbol } from 'common/currency';
+import { urqlClient } from 'common/graphql';
+import CoinSVG from 'components/atoms/coin-svg';
+import LinkExtBlank from 'components/atoms/link-ext-blank';
+import CoinBuy from 'components/templates/coin-buy';
+import { GET_META_COIN, GET_PAGE_DATA, GET_PAIR } from 'graphql/queries';
 import type { Metadata, PageDataResponse, PairResponse } from 'graphql/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
-import { btcToRandPriceWithSymbol } from '~/common/currency';
-import { urqlClient } from '~/common/graphql';
-import CoinSVG from '~/components/atoms/coin-svg';
-import LinkExtBlank from '~/components/atoms/link-ext-blank';
-import CoinBuy from '~/components/templates/coin-buy';
-import { GET_META_COIN, GET_PAGE_DATA, GET_PAIR } from '~/graphql/queries';
 import {
   BackButton,
   BoxBuy,

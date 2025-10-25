@@ -1,7 +1,7 @@
-import { each } from '~/lib/lodash-utils';
+import { Metadata } from 'graphql/types';
+import { each } from 'lib/lodash-utils';
+import logger from 'lib/logger';
 import { CMC_PRO_API_KEY } from '../config';
-import { Metadata } from '../types';
-import logger from '~/lib/logger';
 
 // Minimal shape for CMC /cryptocurrency/info responses
 export interface CmcInfoResponse {
@@ -60,16 +60,22 @@ class MetadataAPI {
     // Handle CMC error response format
     const errorResponse = response as unknown as CmcErrorResponse;
     if (errorResponse.status?.error_code) {
-      throw new Error(`CoinMarketCap API error: ${errorResponse.status.error_message} (code: ${errorResponse.status.error_code})`);
+      throw new Error(
+        `CoinMarketCap API error: ${errorResponse.status.error_message} (code: ${errorResponse.status.error_code})`
+      );
     }
 
     if (!response?.data) {
-      throw new Error(`Invalid response from CoinMarketCap API for symbol: ${symbol}. Response keys: ${Object.keys(response)}`);
+      throw new Error(
+        `Invalid response from CoinMarketCap API for symbol: ${symbol}. Response keys: ${Object.keys(response)}`
+      );
     }
 
     const entry = response.data[symbol.toUpperCase()]?.[0];
     if (!entry) {
-      throw new Error(`Metadata not found for symbol: ${symbol}. Available symbols: ${Object.keys(response.data).join(', ')}`);
+      throw new Error(
+        `Metadata not found for symbol: ${symbol}. Available symbols: ${Object.keys(response.data).join(', ')}`
+      );
     }
     const meta: Metadata = {
       id: symbol.toUpperCase(),
@@ -86,9 +92,7 @@ class MetadataAPI {
   async missingData(): Promise<Metadata[]> {
     // const symbols = 'AR,ETH,EOS,FCT,GO,NEO,SG,SMBSWAP,TFC'
     const symbols = 'IOTA';
-    const response = await this.fetchJson<CmcInfoResponse>(
-      `${this.baseURL}/cryptocurrency/info?symbol=${symbols}`
-    );
+    const response = await this.fetchJson<CmcInfoResponse>(`${this.baseURL}/cryptocurrency/info?symbol=${symbols}`);
 
     const arr: Metadata[] = [];
 

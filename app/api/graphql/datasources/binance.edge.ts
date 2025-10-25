@@ -1,6 +1,6 @@
-import { BinanceExchangeInfo, BinanceMarket, Ticker } from '~/graphql/types';
-import { filter } from '~/lib/lodash-utils';
-import logger from '~/lib/logger';
+import { BinanceExchangeInfo, BinanceMarket, Ticker } from 'graphql/types';
+import { filter } from 'lib/lodash-utils';
+import logger from 'lib/logger';
 
 const BINANCE_API_BASE = 'https://api.binance.com';
 

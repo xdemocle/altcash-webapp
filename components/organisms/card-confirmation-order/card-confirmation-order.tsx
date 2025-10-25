@@ -1,7 +1,7 @@
 import { Alert, Box, Snackbar, Tooltip, Typography } from '@mui/material';
+import { BinanceMarket } from 'graphql/types';
 import Image from 'next/image';
 import { FC, useState } from 'react';
-import { Market } from '~/graphql/types';
 import NumberFormatText from '../../atoms/number-format-text';
 import Loader from '../../molecules/loader';
 import {
@@ -18,7 +18,7 @@ import {
 } from './components';
 
 interface CardConfirmationOrderProps {
-  symbol: Market['symbol'];
+  symbol: BinanceMarket['symbol'];
   cryptoCurrency: number;
   totalAmount: number;
   orderNumber: string;

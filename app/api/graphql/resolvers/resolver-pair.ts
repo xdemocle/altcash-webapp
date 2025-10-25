@@ -1,4 +1,4 @@
-import { Pair } from '~/graphql/types';
+import { Pair } from 'graphql/types';
 import { AppGraphContext } from '../config';
 
 const queryPair = async (_: unknown, { pair }: { pair: string }, context: AppGraphContext): Promise<Pair> => {

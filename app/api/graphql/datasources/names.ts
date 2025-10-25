@@ -1,4 +1,4 @@
-import { Metadata } from '~/graphql/types';
+import { Metadata } from 'graphql/types';
 import missingsJson from '../data/missings.json';
 import namesJson from '../data/names.json';
 

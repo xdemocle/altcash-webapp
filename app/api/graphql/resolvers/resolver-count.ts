@@ -1,5 +1,5 @@
-import { Count } from '~/graphql/types';
-import { filter } from '~/lib/lodash-utils';
+import { Count } from 'graphql/types';
+import { filter } from 'lib/lodash-utils';
 import { AppGraphContext } from '../config';
 
 const queryCount = async (_: unknown, { limit }: { limit: number }, context: AppGraphContext): Promise<Count[]> => {
