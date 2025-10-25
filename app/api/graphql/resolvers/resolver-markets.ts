@@ -44,36 +44,38 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   });
 
   // Add names
-  each(markets, async market => {
-    const nameCoin = find(names, name => {
-      return name.symbol === market.baseAsset;
-    });
+  await Promise.all(
+    markets.map(async market => {
+      const nameCoin = find(names, name => {
+        return name.symbol === market.baseAsset;
+      });
 
-    if (!nameCoin) {
-      if (missingNames.indexOf(market.baseAsset) === -1) {
-        missingNames.push(market.baseAsset);
+      if (!nameCoin) {
+        if (missingNames.indexOf(market.baseAsset) === -1) {
+          missingNames.push(market.baseAsset);
+        }
+      } else {
+        market.name = nameCoin.name;
       }
-    } else {
-      market.name = nameCoin.name;
-    }
 
-    // Defensive check: skip if baseAsset is still undefined
-    if (!market.baseAsset || market.baseAsset === 'undefined') {
-      logger.error(`SKIPPING market with undefined baseAsset after filter: ${JSON.stringify(market)}`);
-      return;
-    }
+      // Defensive check: skip if baseAsset is still undefined
+      if (!market.baseAsset || market.baseAsset === 'undefined') {
+        logger.error(`SKIPPING market with undefined baseAsset after filter: ${JSON.stringify(market)}`);
+        return;
+      }
 
-    market.id = market.symbol = market.baseAsset;
+      market.id = market.symbol = market.baseAsset;
 
-    const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as { minNotional?: string } | undefined;
-    market.minNotional = Number(notionalFilter?.minNotional);
+      const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as { minNotional?: string } | undefined;
+      market.minNotional = Number(notionalFilter?.minNotional);
 
-    const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as
-      | { minQty?: string; stepSize?: string }
-      | undefined;
-    market.minTradeSize = Number(lotSizeFilter?.minQty);
-    market.stepSize = Number(lotSizeFilter?.stepSize);
-  });
+      const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as
+        | { minQty?: string; stepSize?: string }
+        | undefined;
+      market.minTradeSize = Number(lotSizeFilter?.minQty);
+      market.stepSize = Number(lotSizeFilter?.stepSize);
+    })
+  );
 
   // Final filter: remove any markets with undefined ID
   markets = markets.filter(market => {
