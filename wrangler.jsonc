@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "altcash",
-  "main": "packages/worker/app.ts",
+  "main": "worker/app.ts",
   "workers_dev": true,
   "preview_urls": true,
   "compatibility_date": "2025-09-15",
