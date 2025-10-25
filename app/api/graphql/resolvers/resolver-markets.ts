@@ -1,38 +1,18 @@
 import { each, filter, find, isUndefined } from '~/lib/lodash-utils';
 import logger from '~/lib/logger';
-import { AccountStatus, Context, Market, MissingMarket } from '../types';
-
-interface SymbolMarket {
-  baseAsset: string;
-  quoteAsset: string;
-  quoteAssetPrecision: number;
-  filters: { filterType: string; minNotional?: string; minQty?: string; stepSize?: string }[];
-  status: string;
-  symbol: string;
-  name?: string;
-  id?: string;
-  minNotional?: number;
-  minTradeSize?: number;
-  stepSize?: number;
-}
-
-interface QueryMarketsArgs {
-  limit?: number;
-  offset: number;
-  term: string;
-  symbols: string;
-}
+import { BinanceMarket, Context, Market, MissingMarket, QueryMarketsArgs } from '../types';
 
 const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context): Promise<Market[]> => {
   let { limit } = args;
   const offset = args.offset ?? 0;
   const term = args.term;
   const symbols = args.symbols;
-  logger.debug(`queryMarkets called with args: ${JSON.stringify({ limit, offset, term, symbols })}`);
-  let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as SymbolMarket[];
+  let markets = await context.dataSources.marketsAPI.getAllMarkets();
   const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
+
+  logger.debug(`queryMarkets called with args: ${JSON.stringify({ limit, offset, term, symbols })}`);
 
   // Filter out markets with undefined baseAsset
   markets = filter(markets, market => {
@@ -87,7 +67,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   });
 
   // Order by name
-  markets.sort((a: SymbolMarket, b: SymbolMarket) => {
+  markets.sort((a: BinanceMarket, b: BinanceMarket) => {
     // ignore upper and lowercase
     const nameA = a.symbol && a.symbol.toUpperCase();
     const nameB = b.symbol && b.symbol.toUpperCase();
@@ -136,9 +116,9 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   } else if (term && term.length) {
     limit = limit || 20;
 
-    markets = filter(markets, coin => {
+    markets = filter(markets, (coin: BinanceMarket) => {
       return (
-        (coin.name && coin.name.toLowerCase().search(term) !== -1) ||
+        (coin.name && (coin.name as string).toLowerCase().search(term) !== -1) ||
         coin.symbol.toLowerCase().search(term.toLowerCase()) !== -1
       );
     });
@@ -218,9 +198,9 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
   };
 };
 
-const queryCanTrade = (_: unknown, __: unknown, context: Context): Promise<AccountStatus> => {
-  return context.dataSources.marketsAPI.getCanTrade();
-};
+// const queryCanTrade = (_: unknown, __: unknown, context: Context): Promise<AccountStatus> => {
+//   return context.dataSources.marketsAPI.getCanTrade();
+// };
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
@@ -228,7 +208,7 @@ const resolvers = {
   Query: {
     markets: queryMarkets,
     market: queryMarket,
-    canTrade: queryCanTrade,
+    // canTrade: queryCanTrade,
   },
 };
 
