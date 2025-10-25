@@ -2,6 +2,7 @@
 
 import { ArrowBack } from '@mui/icons-material';
 import { Grid, ListItem, Tooltip } from '@mui/material';
+import type { Metadata, PageDataResponse, PairResponse } from 'graphql/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
@@ -11,7 +12,6 @@ import CoinSVG from '~/components/atoms/coin-svg';
 import LinkExtBlank from '~/components/atoms/link-ext-blank';
 import CoinBuy from '~/components/templates/coin-buy';
 import { GET_META_COIN, GET_PAGE_DATA, GET_PAIR } from '~/graphql/queries';
-import type { Market, Metadata, PageDataResponse, PairResponse, Summary, Ticker } from '~/graphql/types';
 import {
   BackButton,
   BoxBuy,
@@ -28,31 +28,6 @@ import {
   Title,
 } from './components';
 
-const fallbackMarket: Market = {
-  id: '',
-  symbol: '',
-  name: '',
-  status: '',
-  quotePrecision: 0,
-  minTradeSize: 0,
-  minNotional: 0,
-  stepSize: 1,
-};
-
-const fallbackSummary: Summary = {
-  id: '',
-  high: 0,
-  low: 0,
-  volume: 0,
-  quoteVolume: 0,
-  percentChange: 0,
-};
-
-const fallbackTicker: Ticker = {
-  id: '',
-  price: '0',
-};
-
 interface CoinPageProps {
   params: Promise<{
     id: string;
@@ -64,7 +39,7 @@ export default function CoinPage({ params }: CoinPageProps) {
   const [coinId, setCoinId] = useState<string>('');
 
   useEffect(() => {
-    params.then((resolvedParams) => {
+    params.then(resolvedParams => {
       setCoinId(String(resolvedParams.id).toUpperCase());
     });
   }, [params]);
@@ -122,12 +97,12 @@ export default function CoinPage({ params }: CoinPageProps) {
     fetchPair();
   }, []);
 
-  const dataCoin = data?.market ?? fallbackMarket;
-  const dataSummary = data?.summary ?? fallbackSummary;
-  const dataTicker = data?.ticker ?? fallbackTicker;
+  const dataCoin = data?.market;
+  const dataSummary = data?.summary;
+  const dataTicker = data?.ticker;
   const metaCoin = metadata?.metaCoin;
   const bitcoinRandPrice = Number(dataPair?.pair?.last_trade ?? 1);
-  const tickerPriceNumber = Number(dataTicker.price);
+  const tickerPriceNumber = Number(dataTicker?.price ?? 0);
 
   const handleBackButton = () => {
     router.push('/buy');
@@ -149,7 +124,7 @@ export default function CoinPage({ params }: CoinPageProps) {
 
       <Inner>
         <Title color="primary" variant="h4" gutterBottom>
-          {dataCoin.name || coinId}
+          {dataCoin?.name || coinId}
         </Title>
 
         <PageAvatar>
@@ -174,7 +149,7 @@ export default function CoinPage({ params }: CoinPageProps) {
         <DataParagraph aria-label="Coin Data">
           <ListItem divider>
             <Column primary={<strong>Current Buy Price</strong>} />
-            {dataTicker.price && bitcoinRandPrice ?
+            {dataTicker?.price && bitcoinRandPrice ?
               <Column
                 primary={btcToRandPriceWithSymbol(tickerPriceNumber, bitcoinRandPrice)}
                 secondary={`${dataTicker.price} BTC`}
@@ -183,14 +158,11 @@ export default function CoinPage({ params }: CoinPageProps) {
           </ListItem>
           <ListItem divider>
             <Column primary="Price Change" />
-            <Column
-              primary={`${dataSummary.percentChange}%`}
-              secondary={'Last 24hrs'}
-            />
+            <Column primary={`${dataSummary?.percentChange}%`} secondary={'Last 24hrs'} />
           </ListItem>
           <ListItem divider>
             <Column primary="Price at Highest" />
-            {dataSummary.high && bitcoinRandPrice ?
+            {dataSummary?.high && bitcoinRandPrice ?
               <Column
                 primary={btcToRandPriceWithSymbol(dataSummary.high, bitcoinRandPrice)}
                 secondary={`${dataSummary.high} BTC`}
@@ -199,7 +171,7 @@ export default function CoinPage({ params }: CoinPageProps) {
           </ListItem>
           <ListItem divider>
             <Column primary="Price at Lowest" />
-            {dataSummary.low && bitcoinRandPrice ?
+            {dataSummary?.low && bitcoinRandPrice ?
               <Column
                 primary={btcToRandPriceWithSymbol(dataSummary.low, bitcoinRandPrice)}
                 secondary={`${dataSummary.low} BTC`}
@@ -209,15 +181,15 @@ export default function CoinPage({ params }: CoinPageProps) {
           <ListItem divider>
             <Column primary="Trading Volume" />
             <Column
-              primary={`${dataSummary.volume.toFixed(2)} ${dataCoin.symbol}`}
-              secondary={`of ${dataCoin.name}`}
+              primary={`${dataSummary?.volume?.toFixed(2)} ${dataCoin?.symbol}`}
+              secondary={`of ${dataCoin?.name}`}
             />
           </ListItem>
           <ListItem divider>
             <Column primary="Quote Volume" />
             <Column
-              primary={`${btcToRandPriceWithSymbol(dataSummary.quoteVolume, bitcoinRandPrice)}`}
-              secondary={`${dataSummary.quoteVolume.toFixed(2)} BTC`}
+              primary={`${btcToRandPriceWithSymbol(dataSummary?.quoteVolume ?? 0, bitcoinRandPrice)}`}
+              secondary={`${dataSummary?.quoteVolume?.toFixed(2)} BTC`}
             />
           </ListItem>
         </DataParagraph>

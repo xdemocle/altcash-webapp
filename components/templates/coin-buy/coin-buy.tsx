@@ -1,9 +1,9 @@
 'use client';
 
-import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import { ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { Box, Grid, InputAdornment, TextField, Typography } from '@mui/material';
 import clsx from 'clsx';
+import { BinanceMarket } from 'graphql/types';
 import { useRouter } from 'next/navigation';
 import { FC, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import ReactPlaceholder from 'react-placeholder';
@@ -15,8 +15,9 @@ import {
 } from '~/common/constants';
 import { getPaystackConfig, isServer } from '~/common/utils';
 import { CREATE_ORDER, UPDATE_ORDER } from '~/graphql/mutations';
-import { Market, Order, OrderParams, Ticker } from '~/graphql/types';
+import { Order, OrderParams, Ticker } from '~/graphql/types';
 import useGlobal from '~/hooks/use-global';
+import { useGraphQLMutation } from '~/hooks/use-graphql-mutation';
 import useMultiplier from '~/hooks/use-multiplier';
 import useRound from '~/hooks/use-round';
 import NumberFormatText from '../../atoms/number-format-text';
@@ -25,25 +26,22 @@ import {
   BoxBuyLed,
   BuyButton,
   BuyButtonContainer,
-  ConfirmationSeparator,
   Flex,
   GridItem,
   GridTitle,
   GridWrapper,
   InnerCard,
-  InnerCardOpen,
   InnerCardRoot,
   RootCard,
   Symbol,
 } from './components';
 
 interface CoinBuyProps {
-  coin: Market;
-  ticker: Ticker;
+  coin?: BinanceMarket;
+  ticker?: Ticker;
 }
 
 const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
-  
   const router = useRouter();
   const { getRound } = useRound();
   const { bitcoinRandPrice } = useGlobal();
@@ -55,7 +53,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [localCurrency, setLocalCurrency] = useState(0);
   const [cryptoCurrency, setCryptoCurrencyValue] = useState(0);
-  const { multiplier } = useMultiplier(ticker);
+  const { multiplier } = useMultiplier(ticker || { id: '', symbol: '', price: '' });
   const [paystack, setInitializePayment] = useState<unknown>(null);
 
   // Only initialize Paystack on client side
@@ -68,31 +66,37 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
     });
   }, []);
 
-  const { mutate: createOrder, isPending: isCreatingOrder, error: errorCreateOrder } = useGraphQLMutation<OrderParams, { createOrder: Order }>(CREATE_ORDER);
+  const {
+    mutate: createOrder,
+    isPending: isCreatingOrder,
+    error: errorCreateOrder,
+  } = useGraphQLMutation<OrderParams, { createOrder: Order }>(CREATE_ORDER);
 
-  const { mutate: updateOrder, isPending: isUpdatingOrder, error: errorUpdateOrder } = useGraphQLMutation<
-    { id: string; input: OrderParams },
-    { updateOrder: Order }
-  >(UPDATE_ORDER);
+  const {
+    mutate: updateOrder,
+    isPending: isUpdatingOrder,
+    error: errorUpdateOrder,
+  } = useGraphQLMutation<{ id: string; input: OrderParams }, { updateOrder: Order }>(UPDATE_ORDER);
 
   if (errorCreateOrder || errorUpdateOrder) {
     console.debug('Mutations', errorCreateOrder, errorUpdateOrder);
   }
 
   const setCryptoCurrency = (value: number) => {
-    const valueRounded = getRound(value, coin.stepSize);
-    setCryptoCurrencyValue(Number(valueRounded.toFixed(coin.quotePrecision)));
+    if (!coin) return;
+    const valueRounded = getRound(value, coin.stepSize ?? 1);
+    setCryptoCurrencyValue(Number(valueRounded.toFixed(coin.quotePrecision ?? 0)));
   };
 
   const updateOrderHandler = async (input: OrderParams) => {
     const id = orderInfo.split('/')[0];
 
     // UPDATE new order to backend with payment reference
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       updateOrder(
         { id, input },
         {
-          onSuccess: (data) => resolve(data),
+          onSuccess: data => resolve(data),
         }
       );
     });
@@ -101,6 +105,9 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const updateOrderWithReference = async (reference: string) => {
     // UPDATE new order to backend with payment reference
     const data = await updateOrderHandler({
+      amount: '',
+      total: '',
+      symbol: '',
       isPaid: true,
       reference: JSON.stringify(reference),
     });
@@ -111,6 +118,9 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const updateOrderCancelled = async () => {
     // UPDATE new order to backend to cancel it
     const data = await updateOrderHandler({
+      amount: '',
+      total: '',
+      symbol: '',
       isCancelled: true,
     });
 
@@ -120,6 +130,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!coin) return;
     setFormDisabled(true);
 
     // POST new order to backend
@@ -132,16 +143,19 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
             symbol: coin.symbol,
           },
           {
-            onSuccess: (data) => {
+            onSuccess: data => {
               const createdOrder = data?.createOrder;
 
               if (!createdOrder) {
                 throw new Error('Create order mutation returned no data');
               }
 
-              setOrderInfo(createdOrder._id + '/' + createdOrder.amount + '/' + createdOrder.total + '/' + createdOrder.pin);
+              const orderId = createdOrder.symbol || '';
+              setOrderInfo(
+                orderId + '/' + createdOrder.amount + '/' + createdOrder.total + '/' + (createdOrder.pin || '')
+              );
             },
-            onError: (error) => {
+            onError: error => {
               setOrderInfo('');
               console.debug(error);
             },
@@ -175,17 +189,16 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   };
 
   const gotoConfirmationOrder = () => {
-    if (!isServer()) {
-      const orderNumberRawArray = orderInfo.split('/');
-      let slashedString = `${coin.symbol}/${orderNumberRawArray[0]}/${orderNumberRawArray[1]}/${orderNumberRawArray[2]}`;
+    if (!coin || isServer()) return;
+    const orderNumberRawArray = orderInfo.split('/');
+    let slashedString = `${coin.symbol}/${orderNumberRawArray[0]}/${orderNumberRawArray[1]}/${orderNumberRawArray[2]}`;
 
-      // For the pin
-      if (orderNumberRawArray[3]) {
-        slashedString = `${slashedString}/${orderNumberRawArray[3]}`;
-      }
-
-      router.push(`/orders/${window.btoa(slashedString)}`);
+    // For the pin
+    if (orderNumberRawArray[3]) {
+      slashedString = `${slashedString}/${orderNumberRawArray[3]}`;
     }
+
+    router.push(`/orders/${window.btoa(slashedString)}`);
   };
 
   const onFocusInputHandler = (e: SyntheticEvent | Event) => {
@@ -199,14 +212,13 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   };
 
   useEffect(() => {
-    if (orderInfo.length > 0) {
-      if (localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA) {
-        (paystack as { newTransaction?: (args: Record<string, unknown>) => void })?.newTransaction?.({
-          ...getPaystackConfig(totalAmount),
-          onSuccess: onPaymentSuccess,
-          onClose: onPaymentClose,
-        });
-      }
+    if (!coin || orderInfo.length === 0) return;
+    if (localCurrency > (coin.minTradeSize ?? 0) * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA) {
+      (paystack as { newTransaction?: (args: Record<string, unknown>) => void })?.newTransaction?.({
+        ...getPaystackConfig(totalAmount),
+        onSuccess: onPaymentSuccess,
+        onClose: onPaymentClose,
+      });
     }
   }, [orderInfo, localCurrency, coin, multiplier, totalAmount, paystack]);
 
@@ -218,11 +230,11 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   }, [triggerConfirmationOrder]);
 
   useEffect(() => {
-    if (coin.status === 'TRADING') {
+    if (coin?.status === 'TRADING') {
       setBulbColor('yellow');
       setTimeout(() => setBulbColor('green'), 3000);
     }
-  }, [multiplier]);
+  }, [coin?.status]);
 
   useEffect(() => {
     setCryptoCurrency(localCurrency / multiplier);
@@ -247,8 +259,8 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
   }, [coin, bitcoinRandPrice]);
 
   const minTradeAmount = useMemo(
-    () => coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA + notional,
-    [coin.minTradeSize, notional]
+    () => (coin?.minTradeSize ?? 0) * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA + notional,
+    [coin?.minTradeSize, notional, multiplier]
   );
 
   return (
@@ -303,7 +315,7 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
 
           <Grid size={{ xs: 12, md: 4 }} component={GridItem} sx={{ minWidth: '45%' }}>
             <GridTitle htmlFor="gridRightInput">
-              You get <Symbol>{coin.name}</Symbol>
+              You get <Symbol>{coin?.name}</Symbol>
             </GridTitle>
             <TextField
               id="gridRightInput"
@@ -311,13 +323,13 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
               fullWidth
               helperText={
                 <ReactPlaceholder type="textRow" ready={!!coin}>
-                  Step: {coin.stepSize}
+                  Step: {coin?.stepSize}
                 </ReactPlaceholder>
               }
               variant="outlined"
               slotProps={{
                 input: {
-                  endAdornment: <InputAdornment position="start">{coin.symbol || ''}</InputAdornment>,
+                  endAdornment: <InputAdornment position="start">{coin?.symbol || ''}</InputAdornment>,
                 },
               }}
               value={String(cryptoCurrency)}
@@ -345,7 +357,13 @@ const CoinBuy: FC<CoinBuyProps> = ({ coin, ticker }) => {
         </BoxBuyLed>
       </RootCard>
 
-      <InnerCard className={clsx(localCurrency > coin.minTradeSize * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA && 'open')}>
+      <InnerCard
+        className={clsx(
+          coin &&
+            localCurrency > (coin.minTradeSize ?? 0) * multiplier * MIN_AMOUNT_MULTIPLIER + MIN_AMOUNT_EXTRA &&
+            'open'
+        )}
+      >
         <InnerCardRoot>
           <Typography
             variant="h6"

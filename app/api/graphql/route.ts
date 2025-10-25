@@ -1,20 +1,19 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { NextRequest } from 'next/server';
-import { NODE_ENV } from './config';
+import { AppGraphContext, NODE_ENV } from './config';
 import datasources from './datasources';
 import resolvers from './resolvers';
 import { typeDefs } from './schema';
-import { Context } from './types';
 
 // Create schema
-const schema = createSchema<Context>({
+const schema = createSchema<AppGraphContext>({
   typeDefs,
   resolvers,
 });
 
 // Create yoga instance
-const { handleRequest } = createYoga<Context>({
+const { handleRequest } = createYoga<AppGraphContext>({
   schema,
 
   graphiql: NODE_ENV === 'development',
@@ -26,7 +25,7 @@ const { handleRequest } = createYoga<Context>({
   fetchAPI: { Response },
 });
 
-function createYogaContext(env: Env): Context {
+function createYogaContext(env: Env): AppGraphContext {
   return {
     KV: env.NEXT_INC_CACHE_KV,
     dataSources: datasources,

@@ -1,7 +1,8 @@
+import { Count } from '~/graphql/types';
 import { filter } from '~/lib/lodash-utils';
-import { Context, Count } from '../types';
+import { AppGraphContext } from '../config';
 
-const queryCount = async (_: unknown, { limit }: { limit: number }, context: Context): Promise<Count[]> => {
+const queryCount = async (_: unknown, { limit }: { limit: number }, context: AppGraphContext): Promise<Count[]> => {
   const counts = [];
   const markets = await context.dataSources.marketsAPI.getAllMarkets();
   const activeMarkets = filter(markets, { status: 'TRADING' });

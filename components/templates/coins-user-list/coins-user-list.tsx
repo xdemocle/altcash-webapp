@@ -1,21 +1,21 @@
 import { List, Typography } from '@mui/material';
+import { urqlClient } from 'common/graphql';
 import Loader from 'components/molecules/loader';
 import CoinItem from 'components/organisms/coin-item';
 import { GET_MARKETS } from 'graphql/queries';
-import { Market } from 'graphql/types';
+import { BinanceMarket } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
+import { isUndefined } from 'lib/lodash-utils';
 import { memo, useEffect, useState } from 'react';
-import { isUndefined } from '~/lib/lodash-utils';
-import { urqlClient } from '~common/graphql';
 
 interface CoinsUserListProps {
   predefined?: string[];
-  markets?: Market[];
+  markets?: BinanceMarket[];
 }
 
 const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
   const { userCoinFavourites } = useFavourites();
-  const [data, setData] = useState<{ markets: Market[] } | null>(null);
+  const [data, setData] = useState<{ markets: BinanceMarket[] } | null>(null);
   const [loading, setLoading] = useState(false);
   const networkStatus = data ? 7 : 4;
 
@@ -29,7 +29,7 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
       .toPromise();
 
     if (!result.error) {
-      setData(result.data as { markets: Market[] });
+      setData(result.data as { markets: BinanceMarket[] });
     }
 
     setLoading(false);
@@ -52,7 +52,7 @@ const CoinsUserList = memo(({ predefined, markets }: CoinsUserListProps) => {
       )}
       {coinsList && coinsList.length > 0 && (
         <List>
-          {coinsList.map((coin: Market) => (
+          {coinsList.map((coin: BinanceMarket) => (
             <CoinItem key={coin.id} coin={coin} />
           ))}
         </List>

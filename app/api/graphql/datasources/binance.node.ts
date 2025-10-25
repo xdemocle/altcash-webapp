@@ -1,8 +1,8 @@
-import { MainClient, OrderResponse } from 'binance';
+import { MainClient, type OrderResponse } from 'binance';
+import { NewOrderSideEnum, NewOrderTypeEnum, Order, Ticker } from '~/graphql/types';
 import { each, filter } from '~/lib/lodash-utils';
 import logger from '~/lib/logger';
 import { BINANCE_API_KEY, BINANCE_API_KEY_TESTNET, BINANCE_API_SECRET, BINANCE_API_SECRET_TESTNET } from '../config';
-import { NewOrderSideEnum, NewOrderTypeEnum, Order, Ticker } from '../types';
 
 // Map binance library response to expected format without tight coupling to SDK types
 interface AccountBalance {

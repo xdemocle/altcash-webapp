@@ -1,24 +1,17 @@
 'use client';
 
 import { ShoppingBasket, Star, StarBorder } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Divider,
-  ListItemIcon,
-  Tooltip,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Button, Divider, ListItemIcon, Tooltip, useMediaQuery } from '@mui/material';
 import CoinSVG from 'components/atoms/coin-svg';
 import CoinTicker from 'components/organisms/coin-ticker';
-import { Market } from 'graphql/types';
+import { BinanceMarket } from 'graphql/types';
 import useFavourites from 'hooks/use-favourites';
 import { useRouter } from 'next/navigation';
 import { Fragment, SyntheticEvent, memo } from 'react';
 import { Column, StyledListItemButton, TickerColumn } from './components';
 
 interface Props {
-  coin: Market;
+  coin: BinanceMarket;
 }
 
 const CoinItem = memo(({ coin }: Props) => {
@@ -68,7 +61,7 @@ const CoinItem = memo(({ coin }: Props) => {
   );
 
   const handleRowClick = () => {
-    router.push(`/coin/${coin.id.toLowerCase()}`);
+    router.push(`/coin/${coin?.id?.toLowerCase()}`);
   };
 
   return (
@@ -81,11 +74,7 @@ const CoinItem = memo(({ coin }: Props) => {
           primary={coin.name || coin.id}
           secondary={`${coin.symbol.toUpperCase()} ${coin.status !== 'TRADING' ? ' / ' + coin.status : ''}`}
         />
-        <TickerColumn
-          primary={<CoinTicker coin={coin} />}
-          secondary="Live Price"
-          className={`ticker ${coin.status}`}
-        />
+        <TickerColumn primary={<CoinTicker coin={coin} />} secondary="Live Price" className={`ticker ${coin.status}`} />
         <Box sx={{ display: 'flex', gap: 1 }}>{secondaryAction}</Box>
       </StyledListItemButton>
       <Divider />

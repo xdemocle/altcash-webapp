@@ -1,4 +1,5 @@
-import { Context, Summary } from '../types';
+import { Summary } from '~graphql/types';
+import { AppGraphContext } from '../config';
 
 interface MinimalSummaryResponse {
   symbol: string;
@@ -9,7 +10,7 @@ interface MinimalSummaryResponse {
   priceChange?: string | number;
 }
 
-const querySummary = async (_: unknown, { id }: { id: string }, context: Context): Promise<Summary> => {
+const querySummary = async (_: unknown, { id }: { id: string }, context: AppGraphContext): Promise<Summary> => {
   if (!id || id === 'undefined' || id === undefined) {
     const empty: Summary = {
       id: '',

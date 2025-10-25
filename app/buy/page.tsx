@@ -2,6 +2,7 @@
 
 import { List as ListIcon, NewReleases as NewReleasesIcon, Star } from '@mui/icons-material';
 import { Tabs, Typography } from '@mui/material';
+import { BinanceMarket } from 'graphql/types';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import { useEffect, useState } from 'react';
 import { BUY_TAB_ALL, BUY_TAB_FAVOURITE, BUY_TAB_FEATURED, SYMBOLS_FEATURED } from '~/common/constants';
@@ -10,11 +11,10 @@ import TopBarSearch from '~/components/organisms/top-bar-search';
 import CoinsList from '~/components/templates/coins-list';
 import CoinsUserList from '~/components/templates/coins-user-list';
 import { GET_MARKETS, GET_META_COIN_LOGO, GET_PAIR } from '~/graphql/queries';
-import { Market } from '~/graphql/types';
 import useGlobal from '~/hooks/use-global';
 import { Root, StyledPaper, StyledTab, Title } from './components';
 
-type MarketCache = Record<number, { markets: Market[]; loading: boolean; loaded: boolean }>;
+type MarketCache = Record<number, { markets: BinanceMarket[]; loading: boolean; loaded: boolean }>;
 
 const DEFAULT_MARKET_CACHE: ValueOf<MarketCache> = { markets: [], loading: true, loaded: false };
 
@@ -57,7 +57,7 @@ export default function BuyPage() {
       }
 
       const marketsResult = await urqlClient
-        .query<{ markets: Market[] }>(GET_MARKETS, {
+        .query<{ markets: BinanceMarket[] }>(GET_MARKETS, {
           ...(symbols.length > 0 ? { symbols } : {}),
         })
         .toPromise();
@@ -71,7 +71,7 @@ export default function BuyPage() {
         .toPromise();
 
       const marketsData = marketsResult.data?.markets || [];
-      const validMarkets = marketsData.filter((market: Market) => market.id && market.id !== 'undefined');
+      const validMarkets = marketsData.filter((market: BinanceMarket) => market.id && market.id !== 'undefined');
 
       setMarketsCache(prev => ({
         ...prev,

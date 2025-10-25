@@ -1,6 +1,7 @@
-import { Context, Pair } from '../types';
+import { Pair } from '~/graphql/types';
+import { AppGraphContext } from '../config';
 
-const queryPair = async (_: unknown, { pair }: { pair: string }, context: Context): Promise<Pair> => {
+const queryPair = async (_: unknown, { pair }: { pair: string }, context: AppGraphContext): Promise<Pair> => {
   const response = await context.dataSources.mybitxAPI.getPair(pair);
 
   return response;

@@ -3,7 +3,7 @@ import { COINS_PER_PAGE } from 'common/constants';
 import Loader from 'components/molecules/loader';
 import CoinsListMap from 'components/organisms/coins-list-map';
 import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
-import { CountResponse, Market, MarketsResponse } from 'graphql/types';
+import { BinanceMarket, CountResponse } from 'graphql/types';
 import useGlobal from 'hooks/use-global';
 import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useEffect, useMemo, useState } from 'react';
@@ -23,23 +23,27 @@ const PaginationClient = dynamic(
         page: number;
         onChange: (event: ChangeEvent<unknown>, page: number) => void;
       }) => (
-      <Pagination
-        count={count}
-        size="large"
-        color="primary"
-        page={page}
-        defaultPage={1}
-        siblingCount={6}
-        onChange={onChange}
-        className="pagination-coins-list"
-      />
-    )
+        <Pagination
+          count={count}
+          size="large"
+          color="primary"
+          page={page}
+          defaultPage={1}
+          siblingCount={6}
+          onChange={onChange}
+          className="pagination-coins-list"
+        />
+      )
     ),
   { ssr: false }
 );
 
 interface CoinsListProps {
-  markets: Market[];
+  markets: BinanceMarket[];
+}
+
+interface MarketsResponse {
+  markets: BinanceMarket[];
 }
 
 const CoinsList = memo(({ markets }: CoinsListProps) => {

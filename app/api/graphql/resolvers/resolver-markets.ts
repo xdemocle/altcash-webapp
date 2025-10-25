@@ -1,16 +1,18 @@
-import { each, filter, find, isUndefined } from '~/lib/lodash-utils';
-import logger from '~/lib/logger';
-import { BinanceMarket, Context, Market, MissingMarket, QueryMarketsArgs } from '../types';
+import { AccountStatus, BinanceMarket, MissingMarket, QueryMarketsArgs } from 'graphql/types';
+import { each, filter, find, isUndefined } from 'lib/lodash-utils';
+import logger from 'lib/logger';
+import { AppGraphContext } from '../config';
 
-const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context): Promise<Market[]> => {
+const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: AppGraphContext): Promise<BinanceMarket[]> => {
   let { limit } = args;
   const offset = args.offset ?? 0;
   const term = args.term;
   const symbols = args.symbols;
-  let markets = await context.dataSources.marketsAPI.getAllMarkets();
-  const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
+
+  let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as BinanceMarket[];
+  const names = await context.dataSources.namesAPI.getAll();
 
   logger.debug(`queryMarkets called with args: ${JSON.stringify({ limit, offset, term, symbols })}`);
 
@@ -129,7 +131,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
     markets = markets.slice(offset, offset + limit);
   }
 
-  const result: Market[] = markets.map(m => ({
+  const result: BinanceMarket[] = markets.map(m => ({
     id: m.id ?? m.baseAsset,
     symbol: m.baseAsset,
     baseAsset: m.baseAsset,
@@ -140,14 +142,14 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
     stepSize: Number(m.stepSize ?? 0) || 0,
     status: m.status ?? '',
     name: m.name ?? '',
-  }));
+  } as BinanceMarket));
 
   return result;
 };
 
-const queryMarket = async (_: unknown, args: { id: string }, context: Context): Promise<Market> => {
+const queryMarket = async (_: unknown, args: { id: string }, context: AppGraphContext): Promise<BinanceMarket> => {
   if (!args.id || args.id === 'undefined' || args.id === undefined) {
-    const empty: Market = {
+    const empty: BinanceMarket = {
       id: '',
       symbol: '',
       baseAsset: '',
@@ -158,7 +160,7 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
       stepSize: 0,
       status: '',
       name: '',
-    };
+    } as BinanceMarket;
     return empty;
   }
   const market = (await context.dataSources.marketsAPI.getMarket(args.id)) as {
@@ -195,12 +197,12 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     stepSize: Number(lotSizeFilter?.stepSize) || 0,
     status: market.status ?? '',
     name: metaCoin.name ?? '',
-  };
+  } as BinanceMarket;
 };
 
-// const queryCanTrade = (_: unknown, __: unknown, context: Context): Promise<AccountStatus> => {
-//   return context.dataSources.marketsAPI.getCanTrade();
-// };
+const queryCanTrade = (_: unknown, __: unknown, context: AppGraphContext): Promise<AccountStatus> => {
+  return context.dataSources.marketsAPI.getCanTrade();
+};
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
@@ -208,7 +210,7 @@ const resolvers = {
   Query: {
     markets: queryMarkets,
     market: queryMarket,
-    // canTrade: queryCanTrade,
+    canTrade: queryCanTrade,
   },
 };
 

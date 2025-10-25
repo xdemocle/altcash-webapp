@@ -1,7 +1,12 @@
+import { Ticker } from '~/graphql/types';
 import { filter, isUndefined } from '~/lib/lodash-utils';
-import { Context, Ticker } from '../types';
+import { AppGraphContext } from '../config';
 
-const queryTickers = async (_: unknown, { symbols }: { symbols: string }, context: Context): Promise<Ticker[]> => {
+const queryTickers = async (
+  _: unknown,
+  { symbols }: { symbols: string },
+  context: AppGraphContext
+): Promise<Ticker[]> => {
   let tickers = await context.dataSources.marketsAPI.getAllTickers();
 
   // Search feature or symbols one
@@ -14,7 +19,7 @@ const queryTickers = async (_: unknown, { symbols }: { symbols: string }, contex
   return tickers;
 };
 
-const queryTicker = async (_: unknown, { id }: { id: string }, context: Context): Promise<Ticker> => {
+const queryTicker = async (_: unknown, { id }: { id: string }, context: AppGraphContext): Promise<Ticker> => {
   if (!id || id === 'undefined' || id === undefined) {
     const empty: Ticker = {
       id: '',

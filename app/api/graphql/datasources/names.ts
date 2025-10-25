@@ -1,6 +1,6 @@
+import { Metadata } from '~/graphql/types';
 import missingsJson from '../data/missings.json';
 import namesJson from '../data/names.json';
-import { Metadata } from '../types';
 
 class NamesAPI {
   async getAll() {

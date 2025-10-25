@@ -1,4 +1,4 @@
-import { Pair } from '../types';
+import { Pair } from '~/graphql/types';
 
 class MybitxAPI {
   private baseURL = 'https://api.mybitx.com/api/1';

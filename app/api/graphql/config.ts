@@ -1,3 +1,5 @@
+import datasources from './datasources';
+
 interface EnvWithNode extends Env {
   NODE_ENV: string;
 }
@@ -29,3 +31,9 @@ export const BINANCE_API_SECRET = env.BINANCE_API_SECRET || '';
 export const BINANCE_API_KEY_TESTNET = env.BINANCE_API_KEY_TESTNET || '';
 
 export const BINANCE_API_SECRET_TESTNET = env.BINANCE_API_SECRET_TESTNET || '';
+
+// Define context
+export interface AppGraphContext {
+  KV?: KVNamespace;
+  dataSources: typeof datasources;
+}
