@@ -1,17 +1,33 @@
-export const NODE_ENV = process.env.NODE_ENV;
+interface EnvWithNode extends Env {
+  NODE_ENV: string;
+}
 
-export const SERVER_HTTP_PORT = process.env.PORT || 4000;
+// Get environment from Cloudflare Workers or fallback to process.env for local dev
+const getEnv = () => {
+  // Check if we're in Cloudflare Workers
+  if (typeof globalThis !== 'undefined' && 'process' in globalThis === false) {
+    // Will be set by route.ts from env parameter
+    return (globalThis as { Env?: EnvWithNode }).Env || ({} as EnvWithNode);
+  }
 
-export const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+  // Local development with Next.js
+  return process.env;
+};
 
-export const CMC_PRO_API_KEY = process.env.CMC_PRO_API_KEY || '';
+const env = getEnv();
 
-export const BINANCE_API_URL = process.env.BINANCE_API_URL || '';
+export const NODE_ENV = env.NODE_ENV || 'development';
 
-export const BINANCE_API_KEY = process.env.BINANCE_API_KEY || '';
+export const SENDGRID_API_KEY = env.SENDGRID_API_KEY || '';
 
-export const BINANCE_API_SECRET = process.env.BINANCE_API_SECRET || '';
+export const CMC_PRO_API_KEY = env.CMC_PRO_API_KEY || '';
 
-export const BINANCE_API_KEY_TESTNET = process.env.BINANCE_API_KEY_TESTNET || '';
+export const BINANCE_API_URL = env.BINANCE_API_URL || '';
 
-export const BINANCE_API_SECRET_TESTNET = process.env.BINANCE_API_SECRET_TESTNET || '';
+export const BINANCE_API_KEY = env.BINANCE_API_KEY || '';
+
+export const BINANCE_API_SECRET = env.BINANCE_API_SECRET || '';
+
+export const BINANCE_API_KEY_TESTNET = env.BINANCE_API_KEY_TESTNET || '';
+
+export const BINANCE_API_SECRET_TESTNET = env.BINANCE_API_SECRET_TESTNET || '';
