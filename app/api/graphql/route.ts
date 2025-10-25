@@ -7,12 +7,6 @@ import resolvers from './resolvers';
 import { typeDefs } from './schema';
 import { Context } from './types';
 
-// Cloudflare Workers environment type
-interface Env {
-  NEXT_INC_CACHE_KV?: KVNamespace;
-  [key: string]: any;
-}
-
 // Create schema
 const schema = createSchema<Context>({
   typeDefs,

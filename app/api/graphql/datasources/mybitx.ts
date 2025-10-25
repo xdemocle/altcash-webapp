@@ -5,7 +5,7 @@ class MybitxAPI {
 
   async getPair(pair: string): Promise<Pair> {
     const response = await fetch(`${this.baseURL}/ticker?pair=${pair}`);
-    return (await response.json()) as Pair;
+    return await response.json();
   }
 }
 

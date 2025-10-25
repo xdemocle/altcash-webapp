@@ -2,6 +2,20 @@ import { each, filter, find, isUndefined } from '~/lib/lodash-utils';
 import logger from '~/lib/logger';
 import { AccountStatus, Context, Market, MissingMarket } from '../types';
 
+interface SymbolMarket {
+  baseAsset: string;
+  quoteAsset: string;
+  quoteAssetPrecision: number;
+  filters: { filterType: string; minNotional?: string; minQty?: string; stepSize?: string }[];
+  status: string;
+  symbol: string;
+  name?: string;
+  id?: string;
+  minNotional?: number;
+  minTradeSize?: number;
+  stepSize?: number;
+}
+
 interface QueryMarketsArgs {
   limit?: number;
   offset: number;
@@ -10,9 +24,12 @@ interface QueryMarketsArgs {
 }
 
 const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context): Promise<Market[]> => {
-  let { limit, offset = 0, term, symbols } = args;
+  let { limit } = args;
+  const offset = args.offset ?? 0;
+  const term = args.term;
+  const symbols = args.symbols;
   logger.debug(`queryMarkets called with args: ${JSON.stringify({ limit, offset, term, symbols })}`);
-  let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as any[];
+  let markets = (await context.dataSources.marketsAPI.getAllMarkets()) as SymbolMarket[];
   const names = await context.dataSources.namesAPI.getAll();
   const missingNames: string[] = [];
   const missingNamesArr: MissingMarket[] = [];
@@ -37,7 +54,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
         missingNames.push(market.baseAsset);
       }
     } else {
-      (market as any).name = nameCoin.name;
+      market.name = nameCoin.name;
     }
 
     // Defensive check: skip if baseAsset is still undefined
@@ -46,19 +63,21 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
       return;
     }
 
-    (market as any).id = market.symbol = market.baseAsset;
+    market.id = market.symbol = market.baseAsset;
 
-    const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as any;
-    (market as any).minNotional = Number(notionalFilter?.minNotional);
+    const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as { minNotional?: string } | undefined;
+    market.minNotional = Number(notionalFilter?.minNotional);
 
-    const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as any;
-    (market as any).minTradeSize = Number(lotSizeFilter?.minQty);
-    (market as any).stepSize = Number(lotSizeFilter?.stepSize);
+    const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as
+      | { minQty?: string; stepSize?: string }
+      | undefined;
+    market.minTradeSize = Number(lotSizeFilter?.minQty);
+    market.stepSize = Number(lotSizeFilter?.stepSize);
   });
 
   // Final filter: remove any markets with undefined ID
   markets = markets.filter(market => {
-    if (!(market as any).id || (market as any).id === 'undefined') {
+    if (!market.id || market.id === 'undefined') {
       logger.error(`FINAL FILTER: Removing market with undefined ID: ${JSON.stringify(market)}`);
       return false;
     }
@@ -66,7 +85,7 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
   });
 
   // Order by name
-  markets.sort((a: any, b: any) => {
+  markets.sort((a: SymbolMarket, b: SymbolMarket) => {
     // ignore upper and lowercase
     const nameA = a.symbol && a.symbol.toUpperCase();
     const nameB = b.symbol && b.symbol.toUpperCase();
@@ -128,26 +147,45 @@ const queryMarkets = async (_: unknown, args: QueryMarketsArgs, context: Context
     markets = markets.slice(offset, offset + limit);
   }
 
-  return markets;
+  const result: Market[] = markets.map(m => ({
+    id: m.id ?? m.baseAsset,
+    symbol: m.baseAsset,
+    baseAsset: m.baseAsset,
+    quoteAsset: m.quoteAsset,
+    quotePrecision: m.quoteAssetPrecision,
+    minNotional: Number(m.minNotional ?? 0),
+    minTradeSize: Number(m.minTradeSize ?? 0),
+    stepSize: Number(m.stepSize ?? 0),
+    status: m.status,
+    name: m.name ?? '',
+  }));
+
+  return result;
 };
 
 const queryMarket = async (_: unknown, args: { id: string }, context: Context): Promise<Market> => {
   if (!args.id || args.id === 'undefined' || args.id === undefined) {
-    return {
+    const empty: Market = {
       id: '',
       symbol: '',
       baseAsset: '',
       quoteAsset: '',
       quotePrecision: 0,
-      filters: [],
       minNotional: 0,
       minTradeSize: 0,
       stepSize: 0,
       status: '',
       name: '',
-    } as any;
+    };
+    return empty;
   }
-  const market = (await context.dataSources.marketsAPI.getMarket(args.id)) as any;
+  const market = (await context.dataSources.marketsAPI.getMarket(args.id)) as {
+    baseAsset: string;
+    quoteAsset: string;
+    quoteAssetPrecision: number;
+    filters: { filterType: string; minNotional?: string; minQty?: string; stepSize?: string }[];
+    status: string;
+  };
   let metaCoin = {
     name: '',
   };
@@ -158,8 +196,10 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     logger.debug(`queryMarkets ${error}`);
   }
 
-  const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as any;
-  const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as any;
+  const notionalFilter = find(market.filters, { filterType: 'NOTIONAL' }) as { minNotional?: string } | undefined;
+  const lotSizeFilter = find(market.filters, { filterType: 'LOT_SIZE' }) as
+    | { minQty?: string; stepSize?: string }
+    | undefined;
 
   // Add the id for client caching purpose
   return {
@@ -168,7 +208,6 @@ const queryMarket = async (_: unknown, args: { id: string }, context: Context): 
     baseAsset: market.baseAsset,
     quoteAsset: market.quoteAsset,
     quotePrecision: market.quoteAssetPrecision,
-    filters: market.filters,
     minNotional: Number(notionalFilter?.minNotional),
     minTradeSize: Number(lotSizeFilter?.minQty),
     stepSize: Number(lotSizeFilter?.stepSize),

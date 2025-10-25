@@ -1,9 +1,9 @@
 import { isUndefined } from '../utilities/lodash-utils';
-import { DataSource, Order, OrderParams, UpdateOrderParams } from '../types';
+import { Order, OrderParams, UpdateOrderParams } from '../types';
 import { getNewRandomPin } from '../utilities';
 import logger from '../utilities/logger';
 
-class OrdersAPI extends DataSource<Order> {
+class OrdersAPI {
   async getOrders() {
     const orders = await this.model.find();
 

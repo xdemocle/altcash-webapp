@@ -2,14 +2,13 @@
 
 import { ContactSupport, Home, MonetizationOn, People } from '@mui/icons-material';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { useRouter, usePathname } from 'next/navigation';
-import { ChangeEvent } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 const SimpleBottomNavigation = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleChange = (event: ChangeEvent<unknown>, newValue: string) => {
+  const handleChange = (_: unknown, newValue: string) => {
     router.push(newValue);
   };
 

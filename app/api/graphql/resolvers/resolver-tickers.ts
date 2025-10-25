@@ -16,13 +16,14 @@ const queryTickers = async (_: unknown, { symbols }: { symbols: string }, contex
 
 const queryTicker = async (_: unknown, { id }: { id: string }, context: Context): Promise<Ticker> => {
   if (!id || id === 'undefined' || id === undefined) {
-    return {
+    const empty: Ticker = {
       id: '',
       price: '0',
       symbol: '',
-    } as any;
+    };
+    return empty;
   }
-  const response = await context.dataSources.marketsAPI.getTicker(id);
+  const response = (await context.dataSources.marketsAPI.getTicker(id)) as Ticker;
 
   // Add the id for client caching purpouse
   response.id = response.symbol.replace('BTC', '');

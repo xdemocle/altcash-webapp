@@ -29,8 +29,7 @@ export interface Metadata {
 }
 
 export interface Market {
-  [x: string]: any;
-  symbols?: any;
+  symbols?: string;
   id: string;
   symbol: string;
   baseAsset: string;
@@ -146,58 +145,6 @@ export interface UpdateOrderQueueParams {
   hasErrors?: boolean;
 }
 
-export interface DataSourceInterface<T = any> {
-  getCanTrade(): Promise<AccountStatus>;
-  executeOrders(orders: OrderQueue[]): Promise<OrderQueue[] | null>;
-  getAllMarkets(): Promise<Market[]>;
-  getMarket(id: string): Promise<Market>;
-  getTicker(id: string): Promise<Ticker>;
-  getPair(pair: string): Promise<Pair>;
-  getAllTickers(): Promise<Ticker[]>;
-  getSummary(id: string): Promise<Summary>;
-  getCoin(id: string): Promise<Metadata>;
-  getOrders(): Promise<Order[]>;
-  getOrder(id: string): Promise<Order>;
-  getQueues(): Promise<OrderQueue[] | null>;
-  getQueue(id: string): Promise<OrderQueue>;
-  createOrder(amount: string, total: string, symbol: string): Promise<Order>;
-  updateOrder(id: string, input: OrderParams): Promise<Order>;
-  createQueue(orderId: string, isExecuted: boolean, isFilled: boolean): Promise<OrderQueue>;
-  updateQueue(id: string, input: UpdateOrderQueueParams): Promise<any>;
-  getAll(): Promise<Metadata[]>;
-  missingData(): Promise<Metadata[]>;
-  importAndCheckOrders(orders: Order[]): Promise<any>;
-  checkPendingPaidOrders(): Promise<Order[]>;
-}
-
-export abstract class DataSource<T = any> implements DataSourceInterface<T> {
-  abstract getCanTrade(): Promise<AccountStatus>;
-  abstract executeOrders(orders: OrderQueue[]): Promise<OrderQueue[] | null>;
-  abstract getAllMarkets(): Promise<Market[]>;
-  abstract getMarket(id: string): Promise<Market>;
-  abstract getTicker(id: string): Promise<Ticker>;
-  abstract getPair(pair: string): Promise<Pair>;
-  abstract getAllTickers(): Promise<Ticker[]>;
-  abstract getSummary(id: string): Promise<Summary>;
-  abstract getCoin(id: string): Promise<Metadata>;
-  abstract getOrders(): Promise<Order[]>;
-  abstract getOrder(id: string): Promise<Order>;
-  abstract getQueues(): Promise<OrderQueue[] | null>;
-  abstract getQueue(id: string): Promise<OrderQueue>;
-  abstract createOrder(amount: string, total: string, symbol: string): Promise<Order>;
-  abstract updateOrder(id: string, input: OrderParams): Promise<Order>;
-  abstract createQueue(orderId: string, isExecuted: boolean, isFilled: boolean): Promise<OrderQueue>;
-  abstract updateQueue(id: string, input: UpdateOrderQueueParams): Promise<any>;
-  abstract getAll(): Promise<Metadata[]>;
-  abstract missingData(): Promise<Metadata[]>;
-  abstract importAndCheckOrders(orders: Order[]): Promise<any>;
-  abstract checkPendingPaidOrders(): Promise<Order[]>;
-}
-
-export type DataSources = {
-  [name: string]: DataSource;
-};
-
 export interface BinanceOrderResponse {
   statusText: string;
   data: {
@@ -238,14 +185,14 @@ export interface Context {
   dataSources: typeof datasources;
 }
 
-export type OrderQueueSchema = {
+export interface OrderQueueSchema {
   orderId: string;
   isExecuted: boolean;
   isFilled: boolean;
   hasErrors: boolean;
-};
+}
 
-export type OrderSchema = {
+export interface OrderSchema {
   amount: string;
   total: string;
   symbol: string;
@@ -259,7 +206,7 @@ export type OrderSchema = {
   reference: string;
   hasErrors: boolean;
   orderReferences: string[];
-};
+}
 
 /**
  * Request parameters for newOrder operation in TradeApi.
@@ -382,16 +329,11 @@ export interface NewOrderRequest {
   readonly recvWindow?: number;
 }
 
-declare enum DeleteOrderCancelRestrictionsEnum {
-  ONLY_NEW = 'ONLY_NEW',
-  NEW = 'NEW',
-  ONLY_PARTIALLY_FILLED = 'ONLY_PARTIALLY_FILLED',
-  PARTIALLY_FILLED = 'PARTIALLY_FILLED',
-}
 export enum NewOrderSideEnum {
   BUY = 'BUY',
   SELL = 'SELL',
 }
+
 export enum NewOrderTypeEnum {
   MARKET = 'MARKET',
   LIMIT = 'LIMIT',
@@ -402,12 +344,14 @@ export enum NewOrderTypeEnum {
   LIMIT_MAKER = 'LIMIT_MAKER',
   NON_REPRESENTABLE = 'NON_REPRESENTABLE',
 }
+
 export enum NewOrderTimeInForceEnum {
   GTC = 'GTC',
   IOC = 'IOC',
   FOK = 'FOK',
   NON_REPRESENTABLE = 'NON_REPRESENTABLE',
 }
+
 export enum NewOrderNewOrderRespTypeEnum {
   ACK = 'ACK',
   RESULT = 'RESULT',

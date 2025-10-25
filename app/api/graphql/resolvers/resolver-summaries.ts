@@ -1,8 +1,17 @@
 import { Context, Summary } from '../types';
 
+interface MinimalSummaryResponse {
+  symbol: string;
+  highPrice?: string | number;
+  lowPrice?: string | number;
+  volume?: string | number;
+  quoteVolume?: string | number;
+  priceChange?: string | number;
+}
+
 const querySummary = async (_: unknown, { id }: { id: string }, context: Context): Promise<Summary> => {
   if (!id || id === 'undefined' || id === undefined) {
-    return {
+    const empty: Summary = {
       id: '',
       symbol: '',
       high: 0,
@@ -10,9 +19,10 @@ const querySummary = async (_: unknown, { id }: { id: string }, context: Context
       volume: 0,
       quoteVolume: 0,
       percentChange: 0,
-    } as any;
+    };
+    return empty;
   }
-  const response = (await context.dataSources.marketsAPI.getSummary(id)) as any;
+  const response = (await context.dataSources.marketsAPI.getSummary(id)) as MinimalSummaryResponse;
 
   response.symbol = response.symbol.replace('BTC', '');
 

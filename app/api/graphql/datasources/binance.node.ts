@@ -52,7 +52,7 @@ class BinanceAPI {
 
     logger.debug(`Filtered markets (BTC pairs): ${symbols.length}`);
 
-    const undefinedMarkets = symbols.filter((m: any) => !m.baseAsset || m.baseAsset === 'undefined');
+    const undefinedMarkets = symbols.filter(m => !m.baseAsset || m.baseAsset === 'undefined');
 
     if (undefinedMarkets.length > 0) {
       logger.error(`STILL HAVE UNDEFINED MARKETS: ${JSON.stringify(undefinedMarkets)}`);
@@ -126,8 +126,9 @@ class BinanceAPI {
 
   async getAccountData() {
     const response = await this.client.getAccountInfo();
-    // Map binance library response to expected format
-    const accountData = response as any;
+    // Map binance library response to expected format without tight coupling to SDK types
+    interface AccountBalance { asset: string; free: string; locked?: string }
+    const accountData = (response as unknown as { canTrade?: boolean; balances?: AccountBalance[] }) ?? {};
     return {
       canTrade: accountData.canTrade ?? true,
       balances: accountData.balances ?? [],
@@ -143,9 +144,7 @@ class BinanceAPI {
     if (!accountData.canTrade) {
       msg = `Binance.postOrder: ${ERROR.notrade}`;
     } else {
-      const accountBalance = find(accountData.balances as any, {
-        asset: 'BTC',
-      }) as any;
+      const accountBalance = accountData.balances.find(b => b.asset === 'BTC');
 
       if (Number(accountBalance?.free ?? 0) > 0.0006) {
         canTrade = true;
@@ -168,10 +167,10 @@ class BinanceAPI {
       return new Error(`Binance.postOrder: ${ERROR.notrade}`);
     }
 
-    const accountBalance = find(accountData.balances as any, { asset: 'BTC' }) as any;
+    const accountBalance = accountData.balances.find(b => b.asset === 'BTC');
     logger.debug(`accountBalance: ${JSON.stringify(accountBalance)}`);
 
-    let apiResponse: OrderResponse | Error | { data: any } | null = null;
+    let apiResponse: OrderResponse | Error | { data: unknown } | null = null;
 
     // Check if account has funds
     if (Number(accountBalance?.free ?? 0) > 0.0006) {
@@ -183,15 +182,19 @@ class BinanceAPI {
           type: NewOrderTypeEnum.MARKET,
           quantity: Number(order.amount),
         });
-      } catch (error: any) {
-        let err = error;
-
-        if (error && error.response && error.response.data) {
-          err = error.response.data;
+      } catch (error: unknown) {
+        let err: unknown = error;
+        if (
+          typeof error === 'object' &&
+          error !== null &&
+          'response' in error &&
+          (error as { response?: { data?: unknown } }).response?.data !== undefined
+        ) {
+          err = (error as { response?: { data?: unknown } }).response?.data;
         }
 
         // return new Error(`Binance.postOrder error: ${JSON.stringify(err)}`);
-        apiResponse = err;
+        apiResponse = err as Error | { data: unknown };
       }
     } else {
       // return new Error(`Binance.postOrder: ${ERROR.nofunds} ${JSON.stringify(accountBalance)}`);
