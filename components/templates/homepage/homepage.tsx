@@ -1,6 +1,7 @@
 'use client';
 
-import { Grid, Icon, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import { Info, Help, TrendingUp } from '@mui/icons-material';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import {
@@ -93,13 +94,13 @@ const Homepage = () => {
                 </Typography>
                 <Typography variant="body1" color="inherit" align="left">
                   <LeftIconButton variant="text" size="small" href="/about">
-                    <Icon>info</Icon> About Altcash Demo
+                    <Info /> About Altcash Demo
                   </LeftIconButton>
                   <LeftIconButton variant="text" size="small" href="/support">
-                    <Icon>help</Icon> FAQ & Support
+                    <Help /> FAQ & Support
                   </LeftIconButton>
                   <LeftIconButton variant="text" size="small" href="/buy">
-                    <Icon>trending_up</Icon> Explore Markets
+                    <TrendingUp /> Explore Markets
                   </LeftIconButton>
                 </Typography>
               </GridOverlayItem>
