@@ -1,4 +1,4 @@
-import { Summary } from '~graphql/types';
+import { Summary } from 'graphql/types';
 import { AppGraphContext } from '../config';
 
 interface MinimalSummaryResponse {

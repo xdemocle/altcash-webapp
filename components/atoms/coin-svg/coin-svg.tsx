@@ -1,3 +1,4 @@
+import { urqlClient } from 'common/graphql';
 import { svgCoinPathHelper } from 'common/utils';
 import { GET_META_COIN_LOGO } from 'graphql/queries';
 import type { MetaCoinAllItem } from 'graphql/types';
@@ -5,7 +6,6 @@ import { find } from 'lib/lodash-utils';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { urqlClient } from '~common/graphql';
 import { AvatarContainer } from './components';
 
 interface MetaCoinLogoQuery {

@@ -1,3 +1,4 @@
+import { NEXT_PUBLIC_GA_MEASUREMENT_ID } from 'common/constants';
 import { Metadata, Viewport } from 'next';
 import { Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -56,17 +57,14 @@ export default function Layout({ children }: RootLayoutProps) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${NEXT_PUBLIC_GA_MEASUREMENT_ID}`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+            gtag('config', '${NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
               page_path: window.location.pathname,
             });
           `,

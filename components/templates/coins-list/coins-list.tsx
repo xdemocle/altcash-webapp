@@ -1,5 +1,6 @@
 import { Pagination, Typography } from '@mui/material';
 import { COINS_PER_PAGE } from 'common/constants';
+import { urqlClient } from 'common/graphql';
 import Loader from 'components/molecules/loader';
 import CoinsListMap from 'components/organisms/coins-list-map';
 import { GET_COUNT, GET_MARKETS } from 'graphql/queries';
@@ -8,7 +9,6 @@ import useGlobal from 'hooks/use-global';
 import { find } from 'lib/lodash-utils';
 import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, memo, useEffect, useMemo, useState } from 'react';
-import { urqlClient } from '~common/graphql';
 import { PaginationWrapper } from './components';
 
 const PaginationClient = dynamic(

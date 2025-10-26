@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_GA_MEASUREMENT_ID } from './constants';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   interface Window {
@@ -7,7 +9,7 @@ declare global {
 
 // log the pageview with their URL
 export const pageview = (url: string) => {
-  window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+  window.gtag('config', NEXT_PUBLIC_GA_MEASUREMENT_ID, {
     page_path: url,
   });
 };

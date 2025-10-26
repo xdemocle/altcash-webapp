@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { urqlClient } from 'common/graphql';
 import { DocumentNode } from 'graphql';
-import { urqlClient } from '~common/graphql';
 
 export function useGraphQLQuery<TData = unknown, TVariables extends Record<string, unknown> = Record<string, unknown>>(
   key: string[],
