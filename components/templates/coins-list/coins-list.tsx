@@ -107,7 +107,6 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
 
   const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
   const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
-
   const hidePagination = shouldQuerySearch;
   const coinsList = useMemo(() => getListSlice(COINS_PER_PAGE), [dataCoins, coinPageNeedle, coinListPage]);
   const coinsTotal = useMemo(
