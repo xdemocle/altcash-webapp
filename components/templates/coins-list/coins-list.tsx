@@ -54,42 +54,27 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   const [error, setError] = useState<{ message: string } | null>(null);
   const networkStatus = data ? 7 : 4;
 
-  useEffect(() => {
-    const fetchCount = async () => {
-      const result = await urqlClient.query(GET_COUNT, {}).toPromise();
-      if (!result.error) {
-        setDataCount(result.data as CountResponse);
-      }
-    };
-    fetchCount();
-  }, []);
-
-  const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
-
-  useEffect(() => {
-    if (!shouldQuerySearch) {
-      setData(null);
-      return;
+  const fetchCount = async () => {
+    const result = await urqlClient.query(GET_COUNT, {}).toPromise();
+    if (!result.error) {
+      setDataCount(result.data as CountResponse);
     }
+  };
 
-    const fetchMarkets = async () => {
-      setLoading(true);
-      const result = await urqlClient
-        .query(GET_MARKETS, {
-          term: coinPageNeedle,
-        })
-        .toPromise();
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setData(result.data as MarketsResponse);
-      }
-      setLoading(false);
-    };
-    fetchMarkets();
-  }, [coinPageNeedle]);
-
-  const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
+  const fetchMarkets = async () => {
+    setLoading(true);
+    const result = await urqlClient
+      .query(GET_MARKETS, {
+        term: coinPageNeedle,
+      })
+      .toPromise();
+    if (result.error) {
+      setError(result.error);
+    } else {
+      setData(result.data as MarketsResponse);
+    }
+    setLoading(false);
+  };
 
   const getListSlice = (limit: number) => {
     const list = dataCoins ? [...dataCoins] : [];
@@ -106,6 +91,22 @@ const CoinsList = memo(({ markets }: CoinsListProps) => {
   const handleChange = (event: ChangeEvent<unknown>, page: number) => {
     setCoinListPage(page);
   };
+
+  useEffect(() => {
+    fetchCount();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldQuerySearch) {
+      setData(null);
+      return;
+    }
+
+    fetchMarkets();
+  }, [coinPageNeedle]);
+
+  const shouldQuerySearch = coinPageNeedle && coinPageNeedle.trim().length >= 2;
+  const dataCoins = shouldQuerySearch ? (data?.markets ?? []) : markets;
 
   const hidePagination = shouldQuerySearch;
   const coinsList = useMemo(() => getListSlice(COINS_PER_PAGE), [dataCoins, coinPageNeedle, coinListPage]);
